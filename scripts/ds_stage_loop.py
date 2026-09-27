@@ -744,7 +744,7 @@ def main() -> int:
             "stage_id": cur, "stage_name": stage["name"],
             "no_change_count": 0,
             "reasons": ["全部阶段已完成"],
-            "action": "全部阶段已完成（P16 已通过）。不再调度后续轮次。",
+            "action": f"全部阶段已完成（末阶段 {cur} 已通过）。不再调度后续轮次。",
         }
         if not args.dry_run:
             write_report(payload)
@@ -877,7 +877,7 @@ def main() -> int:
             "stage_id": cur, "stage_name": stage["name"],
             "no_change_count": 0,
             "reasons": reasons, "gate": gate,
-            "action": "全部阶段已完成（P16 已通过）。不再调度后续轮次。",
+            "action": f"全部阶段已完成（末阶段 {cur} 已通过）。不再调度后续轮次。",
         }
         if not args.dry_run:
             write_report(payload)

@@ -146,7 +146,7 @@ exploration = explorer.read_dataset(protocol["resources"]["E"])
 
 本版本不含单位自动换算、插补器、通用领域规则表达式或统计检验执行器。可以登记这些后续活动所需的语义与计划；不能把登记成功解释为新理论成立。
 
-## 上层模块（M2–M9）
+## 上层模块（M2–M10）
 
 `README.md` 上文描述的是 M1（数据与证据协议）。在其之上，本项目还实现了完整的发现回路：
 
@@ -160,10 +160,35 @@ exploration = explorer.read_dataset(protocol["resources"]["E"])
 | M7 | `sdl_m07/acquisition.py` | 主动取证**建议**（纯建议对象，不执行采集） |
 | M8 | `sdl_m08/archive.py` | 知识归档、证据等级机械判定（E0/E1/E2） |
 | M9 | `sdl_m09/collection.py` | 自主取数**执行器**：把 M7 建议变成真的数据 |
+| M10 | `sdl_m10/toolbox.py` | 分析**决策层**：把 M2–M9 封装为 LLM 可调用的工具目录 |
 | 主循环 | `sdl_pipeline/loop.py` | 端到端调度（P16） |
 
 **M7 与 M9 的分工**是「建议层 / 执行层」：M7 说「哪里最值得看」，M9 说「那就去取这些」。
 M9 原样采信 M7 的启发式排序，不授予证据等级、不执行统计检验。
+
+**M10 与 M2–M9 的分工**是「决策层 / 算法层」：M10 把既有公开接口封装为工具目录，
+**由 LLM 决定调用顺序与参数**，算法负责执行与校验。这是框架设计意图的落点——
+[SDL算法框架说明.md](SDL算法框架说明.md) §7 要求「LLM 辅助提出表示、候选解释、竞争假说、
+可执行代码草案以及取证建议」，即 **LLM 自己使用已有算法做分析**，而不是仅做文本润色。
+
+M10 **不放松任何证据闸门**：不新增统计能力（`TOOLBOX_ADDS_ALGORITHMS=False`）、
+不授予证据等级（`TOOLBOX_GRANTS_EVIDENCE_GRADE=False`）、不执行统计检验
+（`TOOLBOX_RUNS_STATISTICS=False`）、不替 LLM 决策（`TOOLBOX_DECIDES_NOT_LLM=False`）。
+
+```python
+from sdl_m10.toolbox import build_default_toolbox
+tb = build_default_toolbox()
+print(tb.names())                     # 15 个工具，覆盖表达式/候选/拟合/稳定性/假说/评估/取证建议
+print(tb.describe("m03.fit_relation").to_dict())   # 参数 schema 由 inspect.signature 派生
+r = tb.call("m02.parse_expression", text="X1 / X2")  # ToolResult，成功时带句柄 h_<hex>
+print(r.status, r.handle)             # ok h_...
+```
+
+工具名统一带模块前缀（`m02.`–`m09.`），便于 LLM 从目录中辨认算法归属。
+
+**句柄机制**：M2–M9 的算法接收富对象（`Candidate`、`ExplorationSample`、`KnowledgeBase` 等），
+无法经 JSON 传递。M10 为其分配不透明句柄（形如 `h_<hex>`），LLM **只能引用上游真实产出**，
+无法凭空构造内部对象绕过校验——这类似于 M1 中 `historical_ref` 的不透明引用语义。
 
 **端到端自主发现演示**（含合成验证标注）：
 

@@ -10,6 +10,8 @@
 - 阶段配置在 `.workbuddy/ds-loop/stages.json`：每阶段声明 `outputs`（交付物）与 `tests`（本阶段测试文件，门禁校验其指纹相对基线必须变化）。**只许动这两个文件，多一个少一个都不行。**
 - **动笔前先 `ls` 目标文件 + `cat state.json` 确认 current_stage**：工单反映调用瞬间状态，撰写期间协同实例可能已推进。
 - 全部阶段完成后循环**幂等短路**（秒退、不重跑测试）。若发现「每次都报 updated 且跑满全量测试」，是 `output_fingerprints` 停在 `MISSING` 未回写所致（已于 09-27 修复）。
+- **新增阶段（如 P18）的登记法**：① 向 `stages.json` 的 `stages` 追加配置；② 手工把 `state.json` 置为 `current_stage=<新阶段>`、`stage_status=in_progress`、`output_fingerprints`/`test_fingerprints` 置 `MISSING`、刷新 `baseline_epoch`——**这一步不可省**：若不重置，`stage_status` 仍是上一末阶段的 `done`，脚本走终态短路直接报 `all_done`，新阶段永远不会被检测。基线为 `MISSING` 时门禁天然视交付物为「本轮新增」（脚本第 279 行注释明确支持此路径）。③ 跑 `python scripts/ds_stage_loop.py --force-run --json`；④ 门禁通过后脚本自动回写真实指纹并置 `done`。
+- **`last-report.md` 里「全部阶段已完成（P16 已通过）」这类文案已改为动态取 `{cur}`**（此前硬编码 P16，阶段推进后失真）。
 
 ## 门禁自身的匹配范围（元层缺陷，已连踩三例）
 门禁是元层代码，匹配范围过宽会**自己把自己判失败**，症状是「阶段莫名 blocked」，极难定位。
@@ -53,8 +55,17 @@
 - **`freeze_cap` 不能取 1**：M7 的 `divergence` 至少需要 2 个竞争假说，`freeze_cap=1` 时只冻结 1 个会抛 `AcquisitionInputError`。端到端最小可用预算：`max_candidates=60, freeze_cap=2, n_resamples=2`（两轮约 3.2s）。
 - **测「规律提取」用轻量假对象**（只需 `version`/`entries` 与条目上的 `hypothesis_id`/`grade`/`status`/`round_index`/`evidence_identity` 等）；不要走 M8 构造器——其不变量极严（E2 须有先行确证、绑定与数据身份须与归档一致、等级与凭据须匹配）。
 
+## M10 分析决策层语义（P18 起复用，写断言/扩展工具前必读）
+- **M10 是「决策层」，M2–M9 是「算法层」**：M10 把既有公开接口封装为 LLM 可调用工具，**由 LLM 决定调用顺序与参数**，算法执行与校验。五个机检常量：`TOOLBOX_DECIDES_NOT_LLM=False`（决策归 LLM）、`TOOLBOX_ADDS_ALGORITHMS=False`、`TOOLBOX_GRANTS_EVIDENCE_GRADE=False`、`TOOLBOX_RUNS_STATISTICS=False`、`TOOLBOX_EXPLORATION_ONLY=True`。**这是设计意图的落点**——框架 §7 要求 LLM 自己用算法分析，而非仅润色文本（旧实现的 `text_enricher` 是偏差）。
+- **句柄机制是核心约束**：`HandleStore` 把富对象（`Candidate`/`ExplorationSample`/`KnowledgeBase`/`Evaluation`）映射为不透明句柄 `h_<hex>`。`_require_handle` 只认 `h_` 前缀 → LLM 只能引用上游**真实产出**，无法构造内部对象绕过校验。保留句柄（`client:explorer`）不进 `kinds()`/计数器，也不可经 `_require_handle` 取出。**别给句柄强加类型前缀语义**（同 M1 `historical_ref`）。
+- **工具名带模块前缀**（`m02.`–`m09.`），15 个；参数 schema 由 `inspect.signature` 派生（`_spec_params`），**不手写**以免漂移。`describe()` 返回 `ToolSpec` 对象（非 dict，要 `.to_dict()`）。
+- **封存泄漏守卫必须校准**：不能直接复用 M8 的 `check_no_sealed_leak`——其 `ARCHIVE_SEALED_KEYS` 含 `source`/`source_ref`，而 M5 `complexity` 的**合法输出键**恰是 `source`，会误杀。M10 自建 `LEAK_GUARD_EXEMPT_KEYS={"source","source_ref"}`，`M10_SEALED_KEYS = ARCHIVE_SEALED_KEYS − 豁免`。**再次印证「宁窄勿宽」**。
+- **两种知识对象不可混用**：M8 `KnowledgeVersion`（证据等级）≠ M5 `KnowledgeBase`（新颖度）。`m05.novelty` 要后者；误传前者被**类型守卫**拦为 `rejected`/`bad_handle`（比 `failed` 更准确）。
+- **`fit_relation` 要同时接受 `Candidate` 与 `Ast` 句柄**（预拟合链用 Ast）；`gain_against` 需 `_as_fit_result()` 拆 `RelationFit.candidate`（`RelationFit` 是包装层）。
+- 原因码：`unknown_tool`/`forbidden_argument`/`bad_handle`/`missing_argument`/`unexpected_argument`/`sealed_leak`/`tool_raised`。`FORBIDDEN_TOOL_ARGUMENTS` 14 个（`grade`/`p_value`/`conclusion`/`causal`/`supported`…），LLM 不能传这些参数名。
+
 ## 模块约定
-- 依赖方向：M2 → M3 → M4 → M5 → M6/M7 → M8 → M9（M9 在模块层不导入 `sdl_m01`，端到端编排函数体内惰性导入），`sdl_m01/` 是**冻结目录**（mtime 应恒为 09-19），任何阶段不得修改或导入它。
+- 依赖方向：M2 → M3 → M4 → M5 → M6/M7 → M8 → M9 → **M10（封装以上全部，不反向依赖）**（M9 在模块层不导入 `sdl_m01`，端到端编排函数体内惰性导入），`sdl_m01/` 是**冻结目录**（mtime 应恒为 09-19），任何阶段不得修改或导入它。
 - 每个模块自带「本层不做什么」的机检常量（`NOT_PROVIDED_BY_Pxx`）+ 边界说明 note，随结果对象输出。
 - 口径一致性优先：下游**原样采信**上游口径（如 C 采信 P04 的复杂度映射），不一致时只记录差异、不推翻。
 - **「没算」与「算出来是 0」必须可区分**：证据缺失记 `None` 并列入 `missing_*`，**不插补、不填默认值、不因此扣分**。

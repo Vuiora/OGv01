@@ -4,19 +4,19 @@
 
 ## 0. 定位与适用边界
 
-本文规定**如何用 ds 推进 SDL 后续模块（M2–M8）的实现**。它不描述算法本身，而是约束人与 ds 之间的协作方式。
+本文规定**如何用 ds 推进 SDL 后续模块（M2–M10）的实现**。它不描述算法本身，而是约束人与 ds 之间的协作方式。
 
 三条基本判断构成本文档的前提：
 
 1. **M1 已完成且冻结。** `sdl_m01` 提供数据与证据协议的完整逻辑边界（`initialize` / `Module01` / 四角色令牌 / `bind_confirmation` / `consume_confirmation` / `record_evaluation` / `release_results` / `archive_confirmation`），并通过 `tests/` 下的单元测试与 `demo` 端到端演示自证。**后续模块只调用其公开接口，不修改其内部实现。**
-2. **单次 ds 对话的可靠产出上限是一个最小增量。** 让 ds 在一轮对话里同时完成「接口设计 + 实现 + 测试 + 文档 + 集成」会显著提高返工率。因此本指南把整体任务切分为 17 个增量阶段，每个阶段严格对应**一轮对话**。
+2. **单次 ds 对话的可靠产出上限是一个最小增量。** 让 ds 在一轮对话里同时完成「接口设计 + 实现 + 测试 + 文档 + 集成」会显著提高返工率。因此本指南把整体任务切分为 19 个增量阶段，每个阶段严格对应**一轮对话**。
 3. **ds 不能授予证据等级。** LLM 产出的是可运行、可追溯的代码与文本，不是统计结论。任何「实现通过测试」都不等于「理论成立」——这一条继承自 [SDL算法框架说明.md](SDL算法框架说明.md) §7 与 [README.md](README.md) 实现的边界说明。
 
 ### 术语消歧：两种「轮次」
 
 | 概念 | 记法 | 含义 |
 |---|---|---|
-| **对话轮次** | 阶段编号 `P00`–`P17` | 人与 ds 的一次增量协作单元。本文的「一轮一个增量」指此。 |
+| **对话轮次** | 阶段编号 `P00`–`P18` | 人与 ds 的一次增量协作单元。本文的「一轮一个增量」指此。 |
 | **研究轮次** | $t=1,2,\dots$ | SDL 主循环的确证轮次，决定误差预算 $\alpha_t=\alpha/2^{t}$。**只由 P11–P13 的产物推进，与对话轮次无关。** |
 
 混淆这两者是本项目最容易犯的设计错误：一次对话轮次不得递增研究轮次 $t$，也不得消耗 α 预算。
@@ -47,6 +47,7 @@
 | P15 | 知识归档与假说更新 | M8 | P13 | `sdl_m08/archive.py` |
 | P16 | 端到端主循环集成 | 全 | P14, P15 | `sdl_pipeline/loop.py` + 集成 demo |
 | P17 | 自主取数执行器 | M9 | P16 | `sdl_m09/collection.py` |
+| P18 | 分析决策层与工具调度 | M10 | P17 | `sdl_m10/toolbox.py` |
 
 **横向贯穿项**（不单列阶段，但每个阶段都必须满足）：数据访问策略、资源预算计数、审计日志、单元测试、中文文档同步。
 
@@ -470,12 +471,48 @@ AutonomousCollector / extract_discovered_regularities / run_autonomous_discovery
 
 ---
 
+### P18 · 分析决策层与工具调度
+
+| 项 | 内容 |
+|---|---|
+| 目标 | **把分析主体还给 LLM**：将 M2–M9 的既有公开接口封装为 LLM 可调用的工具目录，由 LLM 决定调用顺序与参数 |
+| 输入 | P01–P17 全部模块的公开接口；框架说明 §7（LLM 辅助提出表示、候选解释、竞争假说与取证建议）、§2 末段（LLM 生成的代码须经检查并在隔离环境运行） |
+| 输出 | `sdl_m10/toolbox.py`：`Toolbox`、`ToolSpec`、`ToolResult`、`HandleStore`、`build_default_toolbox`、`self_check` |
+| 验收 | ① 工具目录不新增任何统计能力（`TOOLBOX_ADDS_ALGORITHMS=False`）；② 不授予证据等级（`TOOLBOX_GRANTS_EVIDENCE_GRADE=False`）、不执行统计检验（`TOOLBOX_RUNS_STATISTICS=False`）；③ 不替 LLM 决策（`TOOLBOX_DECIDES_NOT_LLM=False`）；④ 句柄机制只允许引用真实产物（形如 `h_<hex>`），不可构造内部对象；⑤ 四类调度护栏（未知工具 / 被禁参数 / 缺参多余参 / 句柄类型不符）与封存泄漏检查齐备；⑥ 参数 schema 由 `inspect.signature` 派生，杜绝手写漂移 |
+
+```text
+完成阶段 P18：分析决策层与工具调度。
+输出 sdl_m10/toolbox.py，提供 Toolbox / ToolSpec / ToolResult / HandleStore /
+build_default_toolbox / self_check。
+把 M2–M9 的既有公开接口封装为 LLM 可调用的工具目录，使 LLM 成为分析主体：
+由 LLM 决定调用顺序与参数，算法负责执行与校验。
+验收：工具目录不新增任何统计能力、不授予证据等级、不替 LLM 决策；
+句柄机制只允许引用真实产物（形如 h_<hex>），不可构造内部对象；
+四类调度护栏（未知工具/被禁参数/缺参多余参/句柄类型不符）与封存泄漏检查齐备；
+参数 schema 由 inspect.signature 派生，不手写漂移。
+不得修改 sdl_m01/；不得实现 P19 及以后的内容。
+上下文：<CP-P18>
+```
+
+**设计要点**：M10 与 M2–M9 是「决策层 / 算法层」的一对补集，边界可机检——
+五个常量共同声明「M10 只做调度」：`TOOLBOX_DECIDES_NOT_LLM=False`（决策归 LLM）、
+`TOOLBOX_ADDS_ALGORITHMS=False`（不新增算法）、`TOOLBOX_GRANTS_EVIDENCE_GRADE=False`（不授予等级）、
+`TOOLBOX_RUNS_STATISTICS=False`（不跑统计）、`TOOLBOX_EXPLORATION_ONLY=True`（只面向探索数据）。
+
+**这一阶段的由来**：此前实现把 LLM 降格为 `text_enricher`（仅润色文本），与框架说明 §7
+「LLM 辅助提出表示、候选解释、竞争假说、可执行代码草案以及取证建议」的设计意图相悖。
+P18 恢复设计意图，同时**不放松任何证据闸门**——LLM 获得的是「调用算法的能力」，
+不是「判定结论的权力」。句柄机制是这一区分的技术落点：LLM 只能引用上游真实产出的对象，
+无法凭空构造候选或假说对象绕过校验。
+
+---
+
 ## 4. 对话迭代规则
 
 ### 4.1 主流程
 
 ```text
-对 阶段 P00 → P17 依次执行：
+对 阶段 P00 → P18 依次执行：
   A. 组包：按 §2.1 组装上下文包 CP-<编号>（含上一轮交接块）
   B. 提问：填入 §3 对应提示词模板，单轮只提交一个阶段
   C. 评审：逐条核对验收标准；运行验证命令并亲自复现，不采信自述
@@ -545,3 +582,4 @@ AutonomousCollector / extract_discovered_regularities / run_autonomous_discovery
 | P15 | §3 发现档案与证据等级；§7 停止条件 |
 | P16 | §5 主循环伪代码；§8 MVP 示例 |
 | P17 | §2 末段主动取证（执行侧）；§5 主循环伪代码（数据供应） |
+| P18 | §7 LLM 辅助提出表示/候选解释/竞争假说/取证建议；§2 末段（LLM 生成代码须经检查并隔离执行） |

@@ -424,6 +424,28 @@
       "tests": [
         "tests/test_collection.py"
       ]
+    },
+    {
+      "id": "P18",
+      "name": "分析决策层与工具调度",
+      "module": "M10",
+      "deps": [
+        "P17"
+      ],
+      "outputs": [
+        "sdl_m10/toolbox.py"
+      ],
+      "guide_section": "§3 P18",
+      "prompt_lines": [
+        "完成阶段 P18：分析决策层与工具调度。",
+        "输出 sdl_m10/toolbox.py，提供 Toolbox / ToolSpec / ToolResult / HandleStore / build_default_toolbox / self_check。",
+        "把 M2–M9 的既有公开接口封装为 LLM 可调用的工具目录，使 LLM 成为分析主体：由 LLM 决定调用顺序与参数，算法负责执行与校验。",
+        "验收：工具目录不新增任何统计能力、不授予证据等级、不替 LLM 决策；句柄机制只允许引用真实产物（形如 h_<hex>），不可构造内部对象；四类调度护栏（未知工具/被禁参数/缺参多余参/句柄类型不符）与封存泄漏检查齐备；参数 schema 由 inspect.signature 派生，不手写漂移。",
+        "不得修改 sdl_m01/；不得实现 P19 及以后的内容。"
+      ],
+      "tests": [
+        "tests/test_toolbox.py"
+      ]
     }
   ]
 }
