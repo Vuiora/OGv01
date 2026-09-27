@@ -350,6 +350,40 @@ _JSON_TYPE = {
     "dict": "object", "mapping": "object", "none": "null",
 }
 
+#: 复合注解的**基名** → JSON schema 类型。
+#: M10 的 ``ParamSpec.type`` 是**整段注解文本**（如 ``'Sequence[str]'`` /
+#: ``'Iterable[float]'``），精确匹配表查不到就会掉进默认值 ``"string"``——
+#: 这会让 LLM 误以为列表参数是字符串，从而永远调不对 ``prepare_sample`` /
+#: ``enumerate_candidates`` / ``knowledge_base`` 这类工具。故先取 ``[`` 之前的
+#: 基名再映射。（此缺陷由真实 endpoint 的端到端演示暴露，离线假 client 测不到。）
+_SEQUENCE_BASES = frozenset({
+    "sequence", "iterable", "list", "tuple", "set", "frozenset", "collection",
+})
+_MAPPING_BASES = frozenset({"mapping", "dict", "mutablemapping"})
+
+
+def _split_generic(type_str: str) -> tuple[str, str | None]:
+    """把 ``'Sequence[str]'`` 拆成 ``('sequence', 'str')``。"""
+    text = (type_str or "").strip()
+    if "[" in text and text.endswith("]"):
+        base = text[: text.index("[")].strip().lower()
+        return base, text[text.index("[") + 1: -1].strip()
+    return text.lower(), None
+
+
+def _json_type_for(type_str: str) -> tuple[str, str | None]:
+    """返回 ``(json_type, items_json_type)``；数组给出元素类型提示。"""
+    base, inner = _split_generic(type_str)
+    if base in _SEQUENCE_BASES:
+        items = None
+        if inner:
+            items, _ = _split_generic(inner)
+            items = _JSON_TYPE.get(items)
+        return "array", items or "string"
+    if base in _MAPPING_BASES:
+        return "object", None
+    return _JSON_TYPE.get(base, "string"), None
+
 
 def tool_schema(toolbox: Toolbox) -> tuple[dict[str, Any], ...]:
     """把 M10 的工具目录转成 LLM 可读的工具 schema（OpenAI 风格）。"""
@@ -360,13 +394,18 @@ def tool_schema(toolbox: Toolbox) -> tuple[dict[str, Any], ...]:
         props: dict[str, Any] = {}
         required: list[str] = []
         for p in spec.parameters:
-            props[p.name] = {
-                "type": _JSON_TYPE.get(p.type, "string"),
+            json_type, items_type = _json_type_for(p.type)
+            prop: dict[str, Any] = {
+                "type": json_type,
                 "description": (
                     f"句柄参数（{p.type}）" if p.type and p.type.startswith("h_")
                     else f"类型 {p.type}"
                 ),
             }
+            if json_type == "array":
+                prop["items"] = {"type": items_type or "string"}
+                prop["description"] = f"类型 {p.type}（JSON 数组）"
+            props[p.name] = prop
             if p.required:
                 required.append(p.name)
         out.append({

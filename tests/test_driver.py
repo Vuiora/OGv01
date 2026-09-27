@@ -219,6 +219,35 @@ class ToolSchemaTests(unittest.TestCase):
         self.assertEqual(props["text"]["type"], "string")
         self.assertEqual(props["max_depth"]["type"], "integer")
 
+    def test_generic_sequence_params_map_to_array(self):
+        """``Sequence[str]`` / ``Iterable[float]`` 必须映射为 JSON array，不能退化成 string。
+
+        回归缺陷：``ParamSpec.type`` 是整段注解文本，精确匹配表查不到就掉进默认
+        ``"string"``——LLM 会把列表参数当字符串传，``prepare_sample`` /
+        ``enumerate_candidates`` / ``knowledge_base`` 全部不可用。
+        **此缺陷由真实 endpoint 的端到端演示暴露，离线假 client 测不到。**
+        """
+        by_name = {t["function"]["name"]: t for t in tool_schema(self.toolbox)}
+        ps = by_name["m03.prepare_sample"]["function"]["parameters"]["properties"]
+        self.assertEqual(ps["variables"]["type"], "array")
+        self.assertEqual(ps["variables"]["items"]["type"], "string")
+        self.assertEqual(ps["protocol_id"]["type"], "string")
+        self.assertEqual(ps["target"]["type"], "string")
+
+        ec = by_name["m02.enumerate_candidates"]["function"]["parameters"]["properties"]
+        self.assertEqual(ec["variables"]["type"], "array")
+        self.assertEqual(ec["constants"]["type"], "array")
+        self.assertEqual(ec["constants"]["items"]["type"], "number")
+        self.assertEqual(ec["powers"]["items"]["type"], "integer")
+
+    def test_generic_split_helper(self):
+        from sdl_m11.driver import _json_type_for
+        self.assertEqual(_json_type_for("Sequence[str]"), ("array", "string"))
+        self.assertEqual(_json_type_for("Iterable[float]"), ("array", "number"))
+        self.assertEqual(_json_type_for("Mapping[str,int]"), ("object", None))
+        self.assertEqual(_json_type_for("int"), ("integer", None))
+        self.assertEqual(_json_type_for("str"), ("string", None))
+
 
 # ---------------------------------------------------------------------------
 # 驱动循环（离线）

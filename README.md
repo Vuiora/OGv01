@@ -238,6 +238,20 @@ M11 **不替 LLM 决策、不新增算法、不跑统计、不授予证据等级
 **凭据纪律**：`api_key` 只存在于内存，不入 `to_dict()`、不入规范化形式、不入 `content_digest()`、
 不入提示词。**离线可测**：对话被抽象为 `LLMClient` 协议，测试注入脚本化假 client 即可跑通整条链。
 
+**跑一次真实端到端分析**（真 M1 金库 + 真 endpoint 驱动；密钥只走环境变量）：
+
+```bash
+export SDL_LLM_BASE_URL=https://llm.ujn.edu.cn/v1
+export SDL_LLM_API_KEY=...          # 不落盘、不入库
+export SDL_LLM_MODEL=Qwen3.8-Flash-Next
+python scripts/demo_m11_live.py      # 产物写入 demo-output/p19-live/
+```
+
+一次实测运行中，LLM 自主完成：提出候选 `X1+X2`/`X1*X2` → 落 AST 句柄 → 制备样本（E 分区 72 行）
+→ **依据残差自己把假说改成 `X1^2`** → 拟合 → 建常数/线性基线 → `gain_against` → 报出证据地位
+「仅为探索性发现，不构成证据；V 分区未触碰，是否确证由系统机制判定」。这正是设计意图：
+**LLM 是分析主体，但无权授予证据**。
+
 ### M12 隔离代码执行：让 LLM 安全地提交代码草案
 
 框架要求「LLM 生成的代码须经检查并在隔离执行环境运行」。M12 接收一段代码，**先做 AST 静态检查，
