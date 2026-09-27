@@ -53,3 +53,8 @@
 ## 环境
 - 运行 Python：`C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\python.exe`。
 - 脚本 stdout 在 PowerShell 工具下可能丢失，用 Bash 工具运行以稳定拿到输出与退出码。
+
+## 版本控制（09-27 起）
+- 远程仓库：<https://github.com/Vuiora/StatisticalDiscoveryLearning>（**私有**，分支 `main`，GitHub 账号 `Vuiora`）。
+- `.gitignore` 已排除 `demo-output/`（含 `*.token` 与 `evidence.sqlite3`）、`__pycache__/`、`*.py[cod]` 等；提交前务必确认令牌与数据库未被纳入。
+- `.workbuddy/`（ds-loop 台账 + memory 日志）随仓库提交，供过程可追溯；不含明文凭据。
