@@ -146,7 +146,7 @@ exploration = explorer.read_dataset(protocol["resources"]["E"])
 
 本版本不含单位自动换算、插补器、通用领域规则表达式或统计检验执行器。可以登记这些后续活动所需的语义与计划；不能把登记成功解释为新理论成立。
 
-## 上层模块（M2–M10）
+## 上层模块（M2–M12）
 
 `README.md` 上文描述的是 M1（数据与证据协议）。在其之上，本项目还实现了完整的发现回路：
 
@@ -160,7 +160,9 @@ exploration = explorer.read_dataset(protocol["resources"]["E"])
 | M7 | `sdl_m07/acquisition.py` | 主动取证**建议**（纯建议对象，不执行采集） |
 | M8 | `sdl_m08/archive.py` | 知识归档、证据等级机械判定（E0/E1/E2） |
 | M9 | `sdl_m09/collection.py` | 自主取数**执行器**：把 M7 建议变成真的数据 |
-| M10 | `sdl_m10/toolbox.py` | 分析**决策层**：把 M2–M9 封装为 LLM 可调用的工具目录 |
+| M10 | `sdl_m10/toolbox.py` | 分析**决策层接口**：把 M2–M9 封装为 LLM 可调用的工具目录 |
+| M11 | `sdl_m11/driver.py` | LLM **驱动层**：真正把工具目录交给 LLM，编排并执行其工具调用 |
+| M12 | `sdl_m12/sandbox.py` | **隔离代码执行环境**：对 LLM 提交的代码先静态检查、后受限执行 |
 | 主循环 | `sdl_pipeline/loop.py` | 端到端调度（P16） |
 
 **M7 与 M9 的分工**是「建议层 / 执行层」：M7 说「哪里最值得看」，M9 说「那就去取这些」。
@@ -170,6 +172,11 @@ M9 原样采信 M7 的启发式排序，不授予证据等级、不执行统计�
 **由 LLM 决定调用顺序与参数**，算法负责执行与校验。这是框架设计意图的落点——
 [SDL算法框架说明.md](SDL算法框架说明.md) §7 要求「LLM 辅助提出表示、候选解释、竞争假说、
 可执行代码草案以及取证建议」，即 **LLM 自己使用已有算法做分析**，而不是仅做文本润色。
+
+**M10 / M11 / M12 三者合起来才补全框架 §7**：M10 只是**接口**（工具目录 + 句柄 + 护栏），
+本身不含 LLM；**M11 才是真正发起对话、解析并执行工具调用的一环**；**M12 则是让 LLM 能安全
+提交代码草案的前提**（框架同处写明「LLM 生成的代码须经检查并在隔离执行环境运行」）。
+
 
 M10 **不放松任何证据闸门**：不新增统计能力（`TOOLBOX_ADDS_ALGORITHMS=False`）、
 不授予证据等级（`TOOLBOX_GRANTS_EVIDENCE_GRADE=False`）、不执行统计检验
@@ -209,3 +216,45 @@ run_autonomous_discovery("demo-output/p17-autonomous", groups=60)
 产物：`regularities.json`（规律清单）、`collection.json`（逐轮取数）、`collection-trace.json`（建议→采样因果链）、`discovery-archive.json`、`说明.md`。**合成数据不宣称任何现实理论或因果结论。**
 
 > M9 的采样目录（观测标识 → 现实采样方式）**由调用方提供**；目录缺失时如实记为「没采」，绝不臆造设计。「没采」与「采了为空」始终分列，绝不用 0 条记录冒充「已经取过」。
+
+### M11 驱动层：把工具目录真正交给 LLM
+
+M11 读取 M10 的工具目录，组装成 LLM 可读的工具 schema，向 endpoint 发起对话，解析 LLM
+请求的工具调用，经 `Toolbox.call()` 执行后再把结果回喂，循环至 LLM 收手或触达预算。
+
+```python
+from sdl_m11.driver import EndpointConfig, HttpLLMClient, run_driver
+from sdl_m10.toolbox import build_default_toolbox
+
+cfg = EndpointConfig.from_env()          # 凭据只从 SDL_LLM_* 环境变量读，绝不落盘
+client = HttpLLMClient(cfg)
+session = run_driver(client=client, toolbox=build_default_toolbox(explorer=explorer),
+                     user_task="在探索数据里找一个能解释 Y 的比例关系，并给出竞争解释。")
+print(session.stop_reason, session.tool_call_count)
+```
+
+M11 **不替 LLM 决策、不新增算法、不跑统计、不授予证据等级**（`DRIVER_DECIDES_FOR_LLM=False`
+等），一切工具调用必须经 `Toolbox.call()`（`DRIVER_BYPASSES_TOOLBOX=False`）。
+**凭据纪律**：`api_key` 只存在于内存，不入 `to_dict()`、不入规范化形式、不入 `content_digest()`、
+不入提示词。**离线可测**：对话被抽象为 `LLMClient` 协议，测试注入脚本化假 client 即可跑通整条链。
+
+### M12 隔离代码执行：让 LLM 安全地提交代码草案
+
+框架要求「LLM 生成的代码须经检查并在隔离执行环境运行」。M12 接收一段代码，**先做 AST 静态检查，
+只有完全通过的代码才在受限运行时里执行；检查不过一律不执行**（不存在「先跑再看」）。
+
+```python
+from sdl_m12.sandbox import check_code, run_code
+
+v = check_code("import os\ndef main():\n    return os.getcwd()\n")
+print(v.allowed, v.violations)           # False，命中「禁止模块与名字」
+run = run_code("def main(xs):\n    return {'n': len(xs), 's': sum(xs)}\n",
+               entry="main", inputs={"xs": [1, 2, 3]})
+print(run.status, run.value)             # ok {'n': 3, 's': 6}
+```
+
+隔离措施：白名单导入（纯计算模块）、受限内置、`sys.settrace` 指令数与墙钟限额、无 M1 访问、
+无网络、无文件系统、无子进程。状态码 `ok` / `rejected` / `failed` / `timeout`。
+M12 与 M10/M11 一样**不新增算法、不授予证据等级**。当 M11 以 `allow_code_submission=True`
+启用时，M12 作为 `m12.run_code` 工具暴露给 LLM（**默认关闭**）。
+

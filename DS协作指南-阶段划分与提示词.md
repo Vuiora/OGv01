@@ -4,7 +4,7 @@
 
 ## 0. 定位与适用边界
 
-本文规定**如何用 ds 推进 SDL 后续模块（M2–M10）的实现**。它不描述算法本身，而是约束人与 ds 之间的协作方式。
+本文规定**如何用 ds 推进 SDL 后续模块（M2–M12）的实现**。它不描述算法本身，而是约束人与 ds 之间的协作方式。
 
 三条基本判断构成本文档的前提：
 
@@ -16,7 +16,7 @@
 
 | 概念 | 记法 | 含义 |
 |---|---|---|
-| **对话轮次** | 阶段编号 `P00`–`P18` | 人与 ds 的一次增量协作单元。本文的「一轮一个增量」指此。 |
+| **对话轮次** | 阶段编号 `P00`–`P20` | 人与 ds 的一次增量协作单元。本文的「一轮一个增量」指此。 |
 | **研究轮次** | $t=1,2,\dots$ | SDL 主循环的确证轮次，决定误差预算 $\alpha_t=\alpha/2^{t}$。**只由 P11–P13 的产物推进，与对话轮次无关。** |
 
 混淆这两者是本项目最容易犯的设计错误：一次对话轮次不得递增研究轮次 $t$，也不得消耗 α 预算。
@@ -48,6 +48,8 @@
 | P16 | 端到端主循环集成 | 全 | P14, P15 | `sdl_pipeline/loop.py` + 集成 demo |
 | P17 | 自主取数执行器 | M9 | P16 | `sdl_m09/collection.py` |
 | P18 | 分析决策层与工具调度 | M10 | P17 | `sdl_m10/toolbox.py` |
+| P19 | LLM 驱动层 | M11 | P18 | `sdl_m11/driver.py` |
+| P20 | 隔离代码执行环境 | M12 | P19 | `sdl_m12/sandbox.py` |
 
 **横向贯穿项**（不单列阶段，但每个阶段都必须满足）：数据访问策略、资源预算计数、审计日志、单元测试、中文文档同步。
 
@@ -507,12 +509,73 @@ P18 恢复设计意图，同时**不放松任何证据闸门**——LLM 获得�
 
 ---
 
+### P19 · LLM 驱动层
+
+| 项 | 内容 |
+|---|---|
+| 目标 | **补上「真的去调 LLM」这一环**：读 M10 工具目录 → 组装工具 schema → 调 endpoint → 解析并执行 LLM 的工具调用 → 结果回喂 → 循环 |
+| 输入 | P18（`sdl_m10/toolbox.py` 的工具目录与 `Toolbox.call()`）；框架说明 §7（LLM 职责与停止条件） |
+| 输出 | `sdl_m11/driver.py`：`EndpointConfig`、`ToolCall`、`LLMReply`、`LLMClient`、`DriverStep`、`DriverSession`、`DriverLimits`、`HttpLLMClient`、`tool_schema`、`build_system_prompt`、`run_driver`、`self_check` |
+| 验收 | ① 不替 LLM 决策（`DRIVER_DECIDES_FOR_LLM=False`）、不新增算法、不跑统计、不授予证据等级；② **一切工具调用必须经 `Toolbox.call()`**（`DRIVER_BYPASSES_TOOLBOX=False`），不得绕过 M10 直调算法层；③ 凭据只从环境变量/显式注入读取，`api_key` 不入 `to_dict`/`canonical_json`/`content_digest`/提示词；④ 可选代码沙箱工具（`m12.run_code`）**默认关闭**；⑤ 离线可测：对话抽象为 `LLMClient` 协议，测试注入脚本化假 client |
+
+```text
+完成阶段 P19：LLM 驱动层。
+输出 sdl_m11/driver.py，提供 EndpointConfig / ToolCall / LLMReply / LLMClient /
+DriverStep / DriverSession / DriverLimits / HttpLLMClient / tool_schema /
+build_system_prompt / run_driver / self_check。
+把 P18 的工具目录交给 LLM：由 LLM 决定调用哪个工具、以什么顺序、传什么参数，
+本层只负责执行其工具调用并把结果回喂，循环至 LLM 收手或触达预算。
+验收：不替 LLM 决策、不新增算法、不跑统计、不授予证据等级；一切工具调用必须经
+Toolbox.call()（不得绕过 M10 直接调用算法层）；endpoint 凭据只从环境变量或显式注入
+读取，绝不落盘/入日志/入提示词，且不参与 content_digest；可选代码沙箱工具默认关闭。
+离线可测：把对话抽象为 LLMClient 协议，测试注入脚本化假 client，无需真实网络。
+不得修改 sdl_m01/；不得实现 P20 及以后的内容。
+上下文：<CP-P19>
+```
+
+**设计要点**：M10 是「给 LLM 用的接口」，M11 是「真的去用它」的驱动层——二者缺一则框架 §7
+落空。M11 与 M10 的边界可机检：`DRIVER_BYPASSES_TOOLBOX=False` 要求工具调用经
+`Toolbox.call()`，从而完整继承 M10 的四类护栏与封存泄漏检查。凭据纪律是本层特有约束：
+`api_key` 只存在于内存，`to_dict()` 掩码、`content_digest()` 剔除。依赖倒置使本层离线可测——
+与 M9「采样源由调用方注入」、M10「explorer 由调用方注入」同法。
+
+---
+
+### P20 · 隔离代码执行环境
+
+| 项 | 内容 |
+|---|---|
+| 目标 | **让 LLM 能安全地提交代码草案**：对代码先做 AST 静态检查，只有完全通过者才在受限运行时执行 |
+| 输入 | 框架说明 §2 末段（「LLM 生成的代码须经检查并在隔离执行环境运行」）；P19（`run_driver` 的 `allow_code_submission` 开关） |
+| 输出 | `sdl_m12/sandbox.py`：`SandboxVerdict`、`SandboxRun`、`check_code`、`run_code`、`self_check` |
+| 验收 | ① 不新增算法、不授予证据等级；② 不访问 M1 数据与令牌（`SANDBOX_ACCESSES_M1=False`）、不触网（`SANDBOX_ALLOWS_NETWORK=False`）、不碰文件系统与进程（`SANDBOX_ALLOWS_FILESYSTEM=False`）；③ **静态检查未过的代码绝不执行**（`SANDBOX_RUNS_UNCHECKED_CODE=False`，无「先跑再看」路径）；④ 资源受限（指令数 / 墙钟 / 递归 / 输出长度）；⑤ 越狱尝试（导入 os/子进程/socket、open/eval/exec、下划线属性、dunder 名字、异步/生成器等）一律被拦 |
+
+```text
+完成阶段 P20：隔离代码执行环境。
+输出 sdl_m12/sandbox.py，提供 SandboxVerdict / SandboxRun / check_code / run_code / self_check。
+接收一段 LLM 提交的分析代码，先做 AST 静态检查，只有完全通过检查的代码才允许在受限
+运行时里执行。
+验收：不新增算法、不授予证据等级、不访问 M1 数据与令牌、不触网、不碰文件系统与进程；
+静态检查未通过的代码绝不执行（不存在「先跑再看」的路径）；资源受限（指令数/墙钟/递归/输出长度）。
+不得修改 sdl_m01/；本阶段为当前循环的末阶段。
+上下文：<CP-P20>
+```
+
+**设计要点**：M12 是框架 §2 末段那句「须经检查并在隔离执行环境运行」的直接落地。隔离策略是
+**纵深防御**：AST 静态检查挡在执行之前（最重要一道）+ 受限内置白名单 + 白名单导入 +
+`sys.settrace` 指令数与墙钟限额。之所以不走子进程/容器：项目纪律要求 M2–M12 仅依赖标准库，
+且 `subprocess` 本身就在禁用清单里。**同进程沙箱是逻辑边界，不是内核级安全域**——这一点与冻结的
+`sdl_m01` 理念一致。
+
+
+---
+
 ## 4. 对话迭代规则
 
 ### 4.1 主流程
 
 ```text
-对 阶段 P00 → P18 依次执行：
+对 阶段 P00 → P20 依次执行：
   A. 组包：按 §2.1 组装上下文包 CP-<编号>（含上一轮交接块）
   B. 提问：填入 §3 对应提示词模板，单轮只提交一个阶段
   C. 评审：逐条核对验收标准；运行验证命令并亲自复现，不采信自述
@@ -583,3 +646,5 @@ P18 恢复设计意图，同时**不放松任何证据闸门**——LLM 获得�
 | P16 | §5 主循环伪代码；§8 MVP 示例 |
 | P17 | §2 末段主动取证（执行侧）；§5 主循环伪代码（数据供应） |
 | P18 | §7 LLM 辅助提出表示/候选解释/竞争假说/取证建议；§2 末段（LLM 生成代码须经检查并隔离执行） |
+| P19 | §7 LLM 职责与停止条件（LLM 编排工具调用；统计执行器算指标、符号/数值工具检查公式；LLM 不能凭文本授予证据等级） |
+| P20 | §2 末段「LLM 生成的代码须经检查并在隔离执行环境运行」 |

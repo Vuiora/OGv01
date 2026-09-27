@@ -1,13 +1,13 @@
-# 模块间接口契约（M2–M10）
+# 模块间接口契约（M2–M12）
 
-版本：v0.3｜状态：草案（P00 交付物，P17 补充 M9，P18 补充 M10）
+版本：v0.4｜状态：草案（P00 交付物，P17 补 M9，P18 补 M10，P19/P20 补 M11/M12）
 
 ## 0. 总则
 
-1. 本文档定义 M2–M10 之间的数据对象与调用方向。**所有模块均不得修改 `sdl_m01/`**，只调用其公开接口。
-2. M2–M9 一律使用 Python 3.11+ 标准库，不引入第三方依赖。
+1. 本文档定义 M2–M12 之间的数据对象与调用方向。**所有模块均不得修改 `sdl_m01/`**，只调用其公开接口。
+2. M2–M10 与 M12 一律使用 Python 3.11+ 标准库，不引入第三方依赖。**M11（LLM 驱动层）是唯一允许做网络调用的模块**，且仅通过标准库 `urllib` 或以鸭子类型注入的 HTTP 客户端；它不引入任何第三方 SDK 依赖。
 3. 数据访问必须经由 M1 的令牌角色：探索侧仅使用 `explorer`，确证侧仅使用 `confirmer`，保管侧使用 `custodian`。
-4. 任何模块都不得读取、打印或持久化角色令牌正文。
+4. 任何模块都不得读取、打印或持久化角色令牌正文。**LLM endpoint 的凭据（密钥）同样不得进入模型上下文、日志、提示词或版本库。**
 
 ## 1. 调用方向
 
@@ -20,7 +20,19 @@ M2 表示构造 ──> M3 模式搜索 ──> M4 假说构造 ──> M5 评�
                                           M9 自主取数 <── M7（建议）
                                                     │
                                           M10 分析决策 <── 编排以上全部（工具调用）
+                                                    │
+                                          M11 LLM 驱动 <── 喂工具目录、收工具调用
+                                                    │
+                                          M12 隔离执行 <── 运行 LLM 提交的分析代码
 ```
+
+**M11 是「设计意图的最后一环」**：《SDL算法框架说明》§7 要求「LLM 辅助提出表示、候选解释、
+竞争假说、可执行代码草案以及取证建议」。P18 交付的 M10 只是**给 LLM 用的接口**
+（工具目录 + 句柄 + 护栏），**其本身不包含 LLM**；M11 才是真正去调 LLM、把工具目录喂过去、
+解析其工具调用意图、经 `tb.call()` 执行、再把结果回喂的那一层。没有 M11，M10 是一座**没有访客的桥**。
+
+**M12 是「代码草案」的安全前提**：框架 §2 末段明确「**LLM 生成的代码须经检查并在隔离执行环境运行**」。
+M12 提供这一隔离环境——AST 静态检查 + 受限内置 + 资源限额 + **无 M1 访问**。
 
 M7 服务于下一轮取证，M8 保存历史并把可用信息送回探索。
 
@@ -186,6 +198,69 @@ M9 原样采信 M7 的启发式排序（不重算、不重排），且**不授�
 | `m03.baseline_linear` | 以为自动选特征 | 必填 **`feature`**（如 `"X1"`） |
 | `m05.novelty` | 以为要 M8 的 `KnowledgeVersion` | 需 **M5 的 `KnowledgeBase`**（新颖度口径），两者不可互换 |
 
+### 2.9 EndpointConfig / DriverTrace（LLM 驱动层，M11 产出）
+
+**EndpointConfig**（LLM 连接配置，**只从环境变量或显式注入读取，绝不落盘、绝不入日志**）：
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `base_url` | str | 是 | OpenAI 兼容接口的基地址（如 `https://.../v1`） |
+| `model` | str | 是 | 模型名 |
+| `api_key` | str | 否 | 密钥。**只存在于内存**；`to_dict()` 中一律以 `"***"` 掩码，且不参与 `content_digest()` |
+| `timeout` | float | 否 | 单次请求超时秒数，缺省 60 |
+| `max_retries` | int | 否 | 网络失败重试次数，缺省 2 |
+
+**ToolCall**（LLM 请求执行一次工具调用）：
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `name` | str | 工具名（须在 M10 目录内，否则 `unknown_tool`） |
+| `arguments` | dict | 传给工具的具名参数；句柄以 `h_<hex>` 字符串形式给出 |
+
+**DriverStep**（一轮「LLM 提议 → 工具执行 → 结果回喂」的记录）：
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `round_index` | int | 从 1 开始的轮次 |
+| `assistant_text` | str \| None | LLM 本轮的自然语言说明（**不作为证据**） |
+| `tool_calls` | tuple[ToolCall] | 本轮请求的工具调用 |
+| `results` | tuple | 每个调用的 `ToolResult` |
+| `stop_reason` | str \| None | 触发停止的原因码（见下） |
+
+**停止原因码**（`DriverStopReason`）：`budget_exhausted`（轮次/调用预算用尽）｜`no_tool_call`（LLM 不再请求工具，视为完成）｜`llm_error`（endpoint 报错且重试耗尽）｜`max_rounds`（达到轮次上限）｜`fatal`（不可恢复错误）。
+
+**DriverSession**（一次完整驱动会话结果）：`to_dict()` / `canonical_json()` / `content_digest()`；含 `steps`、`final_text`、`stop_reason`、`toolbox_digest`（所用工具目录的内容指纹，保证可追溯）。**DriverSession 不含任何证据等级字段。**
+
+### 2.10 SandboxVerdict / SandboxRun（隔离代码执行，M12 产出）
+
+**代码检查的判定层次**（框架 §2「须经检查」）：静态检查（AST）→ 若通过则隔离执行。
+
+**SandboxVerdict**（静态检查结论）：
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `allowed` | bool | 是否允许执行 |
+| `violations` | tuple[dict] | 每条含 `rule`（规则名）、`detail`、`lineno` |
+| `checked_rules` | tuple[str] | 本次实际启用的规则名，便于审计 |
+
+**SandboxRun**（隔离执行结果）：
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `status` | `ok` / `rejected` / `failed` / `timeout` | `rejected` = 静态检查未过；`failed` = 运行期报错 |
+| `verdict` | SandboxVerdict | 静态检查结论 |
+| `value` | Any | 受限序列化后的返回值（仅允许 JSON 基础类型） |
+| `stdout` | str | 捕获的输出（长度受限） |
+| `error` | str \| None | 异常类型与消息（截断） |
+| `duration_ms` | float | 实际耗时 |
+
+**隔离手段（全部必须齐备，缺一不可）**：
+
+1. **AST 白名单**：只允许 `math`、`statistics`、`json`、`itertools`、`functools`、`collections`、`operator`、`decimal`、`fractions`、`random`（确定性种子）等纯计算模块；**禁止** `os`、`sys`、`subprocess`、`socket`、`urllib`、`importlib`、`ctypes`、`pickle`、`shutil`、`pathlib`、`open`、`eval`、`exec`、`compile`、`__import__`、`globals`、`locals`、`getattr`（对 dunder）、`vars` 等。
+2. **受限内置命名空间**：不提供 `open`/`__import__`/`eval`/`exec`/`compile`/`input`/`breakpoint`。
+3. **资源限额**：最大指令数（trace 计数）、墙钟超时、递归深度、输出长度。
+4. **无 M1 访问**：M12 **不导入** `sdl_m01`，**不接受**任何 M1 令牌或数据引用；它只做纯计算，输入输出均为 JSON 基础类型。
+
 ## 3. 与 M1 的对接点
 
 | 用途 | M1 接口 | 角色 |
@@ -212,3 +287,5 @@ M9 原样采信 M7 的启发式排序（不重算、不重排），且**不授�
 5. 不得用 LLM 文本合理性替代统计证据、授予证据等级。
 6. M9 不得替 M7 重排建议顺序、不得授予证据等级、不得执行统计检验；不得用「0 条记录」冒充「已经取过」。
 7. **M10 不得替 LLM 决策、不得新增统计能力、不得授予证据等级。** 它只登记与派发 M2–M9 的既有公开接口；LLM 经 M10 产出的一切仍须通过各层机械闸门。M10 不得让 LLM 直接构造算法层内部对象（必须经会话句柄）；不得把确证分区内容带出（`_reject_sealed_leak`）。
+8. **M11 不得授予证据等级、不得新增算法、不得绕过 M10 直接调用算法层。** LLM 的一切工具调用必须经 `Toolbox.call()`（从而受四类护栏与封存泄漏检查约束）；M11 不得把 LLM 的自然语言当证据；不得让 endpoint 凭据进入日志、提示词或版本库；不得让 LLM 看到确证分区内容。M11 自身不做统计裁决。
+9. **M12 不得访问 M1、不得触网、不得触碰文件系统与进程。** 它只做纯计算；不得导入 `sdl_m01`；不得接受令牌或数据引用；静态检查失败的代码**一律不得执行**（不得「先试跑再说」）；不得因 `try/except` 而放行违规代码。

@@ -65,8 +65,34 @@
 - 原因码：`unknown_tool`/`forbidden_argument`/`bad_handle`/`missing_argument`/`unexpected_argument`/`sealed_leak`/`tool_raised`。`FORBIDDEN_TOOL_ARGUMENTS` 14 个（`grade`/`p_value`/`conclusion`/`causal`/`supported`…），LLM 不能传这些参数名。
 - **封装层参数名必须查 `describe()`，不可凭直觉**：`m03.fit_relation` 的拟合形式参数叫 **`relationship`**（不是 `ast`）；`m03.prepare_sample` 必填 `variables`+`target`；`m03.baseline_linear` 必填 `feature`；`m05.novelty` 要 M5 的 `KnowledgeBase`。写调用/示例/文档前一律先跑 `tb.describe(name).to_dict()` 核对。
 
+## M11 LLM 驱动层语义（P19 起复用，写驱动/断言前必读）
+- **M10 是「接口」，M11 是「真的去用它」**：M10 只交付工具目录 + 句柄 + 护栏，**不含 LLM**；M11 才读目录、组装工具 schema、调 endpoint、解析并执行工具调用、结果回喂。二者缺一则框架 §7 落空。
+- **六常量全 False**：`DRIVER_DECIDES_FOR_LLM`（不替 LLM 决策）/`ADDS_ALGORITHMS`/`RUNS_STATISTICS`/`GRANTS_EVIDENCE_GRADE`/`BYPASSES_TOOLBOX`/`REQUIRES_FREE_CODE`。**一切工具调用经 `Toolbox.call()`**，继承 M10 四类护栏与封存泄漏检查。
+- **凭据纪律**：仅从 `SDL_LLM_BASE_URL`/`SDL_LLM_API_KEY`/`SDL_LLM_MODEL`/`SDL_LLM_TIMEOUT` 环境变量读；`api_key` 在 `to_dict()` 掩码、**不进 `canonical_json()`/`content_digest()`/提示词**（指纹只反映「连哪、用哪个模型」）。测试断言：换密钥不改变 `content_digest()`。
+- **离线可测靠依赖倒置**：对话抽象为 `LLMClient` Protocol（仅 `complete(messages, tools)->LLMReply`），测试注入脚本化假 client。同 M9 注入 source、M10 注入 explorer 的手法。
+- **M12 的 `status` 不能直接塞进 M10 `ToolResult`**：M10 只认自己那套原因码，否则 `__post_init__` 抛 `ToolboxInputError`。须显式映射：`ok→(OK,None)`｜`rejected→(REJECTED,forbidden_argument)`｜其余→`(FAILED,tool_raised)`，原始状态留 `summary["sandbox_status"]`。
+- **预算账实相符**：`DriverStep.tool_calls` 只记**真正执行过**的调用——预算用尽时被跳过的调用不得计入 `tool_call_count`。
+
+## M12 隔离执行语义（P20 起复用，写沙箱/断言前必读）
+- **硬顺序：先静态检查、不过绝不执行**。`run_code` 在 `check_code` 失败时**直接 return**，不进编译/执行分支（`SANDBOX_RUNS_UNCHECKED_CODE=False`，无「先跑再看」路径）。六常量全 False：`ADDS_ALGORITHMS`/`GRANTS_EVIDENCE_GRADE`/`ACCESSES_M1`/`ALLOWS_NETWORK`/`ALLOWS_FILESYSTEM`/`RUNS_UNCHECKED_CODE`。
+- **dunder 名字须专门拦**：`return __builtins__` 是**裸 Name**、不在 `FORBIDDEN_NAMES` → 枚举法会漏。用「形如 `__x__` 一律禁」（`_is_dunder`）兜底（覆盖 `__builtins__`/`__loader__`/`__spec__`/`__package__`/`__name__`）。
+- **导入靠白名单 + 受控 `__import__`**：`Import`/`ImportFrom` **不在** `FORBIDDEN_NODE_TYPES`（否则正常 `import math` 被拒）；由 `ALLOWED_MODULES` 白名单单独管。但 `exec` 执行 `import X` 需 `__import__` 内置 → 注入 `_make_importer`，只放行白名单、其余抛 `ImportError`。
+- **限额用 `sys.settrace`**：`signal`/`threading`/`subprocess` 本身在禁表，故用纯 Python 的 trace 钩子做指令计数 + 墙钟判定。
+- **`canonical_json()` 必须剔除 `duration_ms`**：墙钟耗时是运行期测量、非内容身份，否则同代码两次执行指纹不同、无法比对去重。补反向断言：结果不同→指纹必不同。
+- **测试夹具勿用被禁的东西**：探针别用 `dir()`/`object()`（都在禁表）。测命名空间隔离改用「裸名引用」——第二段引用第一段定义的变量，正规行为是 `NameError`。
+
+## 变异测试脚本的还原纪律（元层，09-27 踩坑）
+- **症状**：变异「去掉超时判定」使墙钟用例真死循环 → 后台任务被强杀 → `finally` 还原**没跑** → 源码残留变异（`grep` 锚点为空即证据）→ 下一轮基线返回 124。
+- **修法（通用）**：① 变异前把原文写**磁盘备份**（`.mutation-backup`），启动时检测不一致即自动还原；② `subprocess.run(..., timeout=60)` 加硬超时（超时=捕获）；③ `try/except BaseException` 内也还原。**任何「改文件→跑测试→还原」的脚本，还原必须落磁盘备份 + 对子进程设硬超时，不能只靠 finally。**
+- **变异漏网 = 测试盲区**（非变异冗余）：M12 首轮 6 变异漏 2——「禁用名不拦」暴露越狱清单每条都是 call/import/dunder、缺**裸非法非-dunder 名字引用**；「去掉超时判定」暴露 `test_infinite_loop_times_out` 的指令计数先触发、**墙钟分支从未单独测到**。补用例后 6/6。
+
+## 新阶段登记补充（09-27 二次踩坑）
+- 推进逻辑在阶段通过后会**自动把下一阶段的 `output_fingerprints` 快照为真实指纹**（见 `ds_stage_loop.py` 第 888 行附近）。故「新增**末阶段**并让既有交付物参与本轮验收」时，必须在跑门禁**前**手工把该阶段指纹重置为 `MISSING`，否则交付物被判「未变」→ 报 `nochange`。
+- 流程：`stages.json` 追加配置 → `state.json` 置 `current_stage=<新阶段>`/`in_progress`/指纹 `MISSING` → `--force-run` → 通过后脚本推进 → **若推进到的是「待验收的既有交付物阶段」，须再手工重置其指纹为 `MISSING`** → 再 `--force-run`。
+
+
 ## 模块约定
-- 依赖方向：M2 → M3 → M4 → M5 → M6/M7 → M8 → M9 → **M10（封装以上全部，不反向依赖）**（M9 在模块层不导入 `sdl_m01`，端到端编排函数体内惰性导入），`sdl_m01/` 是**冻结目录**（mtime 应恒为 09-19），任何阶段不得修改或导入它。
+- 依赖方向：M2 → M3 → M4 → M5 → M6/M7 → M8 → M9 → **M10（封装以上全部，不反向依赖）** → **M11（驱动 M10，不反向依赖）** / **M12（被 M11 可选调用，独立沙箱）**（M9 在模块层不导入 `sdl_m01`，端到端编排函数体内惰性导入），`sdl_m01/` 是**冻结目录**（mtime 应恒为 09-19），任何阶段不得修改或导入它。**M11 是唯一允许网络调用的模块**（仅 stdlib `urllib` 或注入客户端）。
 - 每个模块自带「本层不做什么」的机检常量（`NOT_PROVIDED_BY_Pxx`）+ 边界说明 note，随结果对象输出。
 - 口径一致性优先：下游**原样采信**上游口径（如 C 采信 P04 的复杂度映射），不一致时只记录差异、不推翻。
 - **「没算」与「算出来是 0」必须可区分**：证据缺失记 `None` 并列入 `missing_*`，**不插补、不填默认值、不因此扣分**。

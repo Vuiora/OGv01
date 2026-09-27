@@ -10,3 +10,6 @@ dist/
 *.token
 demo-output/
 credentials/
+
+# 变异测试的临时还原备份（异常中断时可能残留）
+*.mutation-backup

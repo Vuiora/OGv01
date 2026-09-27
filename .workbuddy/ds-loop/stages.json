@@ -446,6 +446,51 @@
       "tests": [
         "tests/test_toolbox.py"
       ]
+    },
+    {
+      "id": "P19",
+      "name": "LLM 驱动层",
+      "module": "M11",
+      "deps": [
+        "P18"
+      ],
+      "outputs": [
+        "sdl_m11/driver.py"
+      ],
+      "guide_section": "§7",
+      "prompt_lines": [
+        "完成阶段 P19：LLM 驱动层。",
+        "输出 sdl_m11/driver.py，提供 EndpointConfig / ToolCall / LLMReply / LLMClient / DriverStep / DriverSession / DriverLimits / HttpLLMClient / tool_schema / build_system_prompt / run_driver / self_check。",
+        "把 P18 的工具目录交给 LLM：由 LLM 决定调用哪个工具、以什么顺序、传什么参数，本层只负责执行其工具调用并把结果回喂，循环至 LLM 收手或触达预算。",
+        "验收：不替 LLM 决策、不新增算法、不跑统计、不授予证据等级；一切工具调用必须经 Toolbox.call()（不得绕过 M10 直接调用算法层）；endpoint 凭据只从环境变量或显式注入读取，绝不落盘/入日志/入提示词，且不参与 content_digest；可选代码沙箱工具默认关闭。",
+        "离线可测：把对话抽象为 LLMClient 协议，测试注入脚本化假 client，无需真实网络。",
+        "不得修改 sdl_m01/；不得实现 P20 及以后的内容。"
+      ],
+      "tests": [
+        "tests/test_driver.py"
+      ]
+    },
+    {
+      "id": "P20",
+      "name": "隔离代码执行环境",
+      "module": "M12",
+      "deps": [
+        "P19"
+      ],
+      "outputs": [
+        "sdl_m12/sandbox.py"
+      ],
+      "guide_section": "§2 末段（LLM 生成的代码须经检查并在隔离执行环境运行）",
+      "prompt_lines": [
+        "完成阶段 P20：隔离代码执行环境。",
+        "输出 sdl_m12/sandbox.py，提供 SandboxVerdict / SandboxRun / check_code / run_code / self_check。",
+        "接收一段 LLM 提交的分析代码，先做 AST 静态检查，只有完全通过检查的代码才允许在受限运行时里执行。",
+        "验收：不新增算法、不授予证据等级、不访问 M1 数据与令牌、不触网、不碰文件系统与进程；静态检查未通过的代码绝不执行（不存在「先跑再看」的路径）；资源受限（指令数/墙钟/递归/输出长度）。",
+        "不得修改 sdl_m01/；本阶段为当前循环的末阶段。"
+      ],
+      "tests": [
+        "tests/test_sandbox.py"
+      ]
     }
   ]
 }

@@ -1,17 +1,17 @@
 {
-  "current_stage": "P18",
+  "current_stage": "P20",
   "stage_status": "done",
-  "last_check": "2026-09-27T20:43:45+08:00",
-  "last_stage_update": "2026-09-23T07:13:58+08:00",
+  "last_check": "2026-09-27T21:56:05+08:00",
+  "last_stage_update": "2026-09-27T21:53:33+08:00",
   "no_change_count": 0,
   "blocked_reason": null,
-  "baseline_started_at": "2026-09-27T20:41:59+08:00",
-  "baseline_epoch": 1790512919.473456,
+  "baseline_started_at": "2026-09-27T21:51:15+08:00",
+  "baseline_epoch": 1790517213.963698,
   "output_fingerprints": {
-    "sdl_m10/toolbox.py": "71746cbe0d06"
+    "sdl_m12/sandbox.py": "94668307adca"
   },
   "outputs_snapshot_epoch": {
-    "sdl_m10/toolbox.py": 1790512714.90055
+    "sdl_m12/sandbox.py": 1790516655.7632506
   },
   "history": [
     {
@@ -133,6 +133,18 @@
       "name": "分析决策层与工具调度",
       "status": "done",
       "at": "2026-09-27T20:43:45+08:00"
+    },
+    {
+      "stage": "P19",
+      "name": "LLM 驱动层",
+      "status": "done",
+      "at": "2026-09-27T21:53:33+08:00"
+    },
+    {
+      "stage": "P20",
+      "name": "隔离代码执行环境",
+      "status": "done",
+      "at": "2026-09-27T21:56:05+08:00"
     }
   ],
   "baseline": {
@@ -141,6 +153,6 @@
   },
   "prev_handoff": null,
   "test_fingerprints": {
-    "tests/test_toolbox.py": "94d8b750f81a"
+    "tests/test_sandbox.py": "27763209eee7"
   }
 }
