@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sdl-module01"
+version = "0.1.0"
+description = "SDL data and evidence protocol: immutable snapshots, evidence access, and confirmation lifecycle"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+sdl-m01 = "sdl_m01.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["sdl_m01*"]
