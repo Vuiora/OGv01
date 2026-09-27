@@ -63,6 +63,7 @@
 - **两种知识对象不可混用**：M8 `KnowledgeVersion`（证据等级）≠ M5 `KnowledgeBase`（新颖度）。`m05.novelty` 要后者；误传前者被**类型守卫**拦为 `rejected`/`bad_handle`（比 `failed` 更准确）。
 - **`fit_relation` 要同时接受 `Candidate` 与 `Ast` 句柄**（预拟合链用 Ast）；`gain_against` 需 `_as_fit_result()` 拆 `RelationFit.candidate`（`RelationFit` 是包装层）。
 - 原因码：`unknown_tool`/`forbidden_argument`/`bad_handle`/`missing_argument`/`unexpected_argument`/`sealed_leak`/`tool_raised`。`FORBIDDEN_TOOL_ARGUMENTS` 14 个（`grade`/`p_value`/`conclusion`/`causal`/`supported`…），LLM 不能传这些参数名。
+- **封装层参数名必须查 `describe()`，不可凭直觉**：`m03.fit_relation` 的拟合形式参数叫 **`relationship`**（不是 `ast`）；`m03.prepare_sample` 必填 `variables`+`target`；`m03.baseline_linear` 必填 `feature`；`m05.novelty` 要 M5 的 `KnowledgeBase`。写调用/示例/文档前一律先跑 `tb.describe(name).to_dict()` 核对。
 
 ## 模块约定
 - 依赖方向：M2 → M3 → M4 → M5 → M6/M7 → M8 → M9 → **M10（封装以上全部，不反向依赖）**（M9 在模块层不导入 `sdl_m01`，端到端编排函数体内惰性导入），`sdl_m01/` 是**冻结目录**（mtime 应恒为 09-19），任何阶段不得修改或导入它。

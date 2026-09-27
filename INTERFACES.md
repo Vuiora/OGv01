@@ -177,6 +177,15 @@ M9 原样采信 M7 的启发式排序（不重算、不重排），且**不授�
 
 **约束**：M10 只做「登记 + 派发 + 边界守卫」，**不替 LLM 决定调用顺序**（`TOOLBOX_DECIDES_NOT_LLM = False`），不新增统计能力，不授予证据等级。
 
+**调用者须知（参数名以真实签名为准，不得凭直觉推断）**：工具参数名由被封装函数的 `inspect.signature` 派生，个别名字与直觉不同，写调用前应先 `describe(name)` 查 schema。已知易错点：
+
+| 工具 | 易错 | 正确 |
+|---|---|---|
+| `m03.fit_relation` | 以为拟合形式的参数叫 `ast` | 参数名是 **`relationship`**，可传 Ast 句柄或表达式文本 |
+| `m03.prepare_sample` | 只传 `protocol_id` | 必填 **`variables`（列表）与 `target`**，否则被 `missing_argument` 拒 |
+| `m03.baseline_linear` | 以为自动选特征 | 必填 **`feature`**（如 `"X1"`） |
+| `m05.novelty` | 以为要 M8 的 `KnowledgeVersion` | 需 **M5 的 `KnowledgeBase`**（新颖度口径），两者不可互换 |
+
 ## 3. 与 M1 的对接点
 
 | 用途 | M1 接口 | 角色 |

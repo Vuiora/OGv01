@@ -177,14 +177,23 @@ M10 **不放松任何证据闸门**：不新增统计能力（`TOOLBOX_ADDS_ALGO
 
 ```python
 from sdl_m10.toolbox import build_default_toolbox
-tb = build_default_toolbox()
-print(tb.names())                     # 15 个工具，覆盖表达式/候选/拟合/稳定性/假说/评估/取证建议
-print(tb.describe("m03.fit_relation").to_dict())   # 参数 schema 由 inspect.signature 派生
-r = tb.call("m02.parse_expression", text="X1 / X2")  # ToolResult，成功时带句柄 h_<hex>
-print(r.status, r.handle)             # ok h_...
+
+tb = build_default_toolbox(explorer=explorer)   # explorer 来自 M1，用于读探索分区 E
+print(tb.names())                               # 15 个工具（m02.–m09.）
+print(tb.describe("m03.fit_relation").to_dict())  # 参数 schema 由 inspect.signature 派生
+
+# 一条完整分析链：LLM 逐步决定「调用哪个算法、传什么参数」，算法负责执行与校验
+ast  = tb.call("m02.parse_expression", text="X1 / X2")                            # 提出比例结构
+samp = tb.call("m03.prepare_sample", protocol_id=pid,
+               variables=["X1", "X2"], target="Y")                                # 读 E 分区
+fit  = tb.call("m03.fit_relation", sample=samp.handle, relationship=ast.handle)   # 拟合
+base = tb.call("m03.baseline_linear", sample=samp.handle, feature="X1")           # 线性基线
+gain = tb.call("m03.gain_against", candidate=fit.handle, baseline=base.handle)
+print(gain.summary["candidate_better"], gain.summary["relative_reduction"])
 ```
 
 工具名统一带模块前缀（`m02.`–`m09.`），便于 LLM 从目录中辨认算法归属。
+链路上的中间产物（Ast、样本、拟合结果）都以句柄（`h_<hex>`）在各调用间传递。
 
 **句柄机制**：M2–M9 的算法接收富对象（`Candidate`、`ExplorationSample`、`KnowledgeBase` 等），
 无法经 JSON 传递。M10 为其分配不透明句柄（形如 `h_<hex>`），LLM **只能引用上游真实产出**，
