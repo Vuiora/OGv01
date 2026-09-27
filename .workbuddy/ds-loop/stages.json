@@ -402,6 +402,28 @@
       "tests": [
         "tests/test_loop.py"
       ]
+    },
+    {
+      "id": "P17",
+      "name": "自主取数执行器",
+      "module": "M9",
+      "deps": [
+        "P16"
+      ],
+      "outputs": [
+        "sdl_m09/collection.py"
+      ],
+      "guide_section": "§3 P17",
+      "prompt_lines": [
+        "完成阶段 P17：自主取数执行器。",
+        "输出 sdl_m09/collection.py，提供 SamplingCatalogue / plan_to_requests / collect / AutonomousCollector / extract_discovered_regularities / run_autonomous_discovery。",
+        "验收：M7 建议 → 采样设计的闭环成立（本轮采样的观测必须来自上一轮建议，且可溯源）；采样请求严格保持 M7 顺序不重排；「没采」与「采了为空」用不同原因码分列；取数不授予任何证据等级、不执行统计检验；采样目录由调用方提供，缺失时如实记为没采而不臆造设计。",
+        "取数只能经注入的 source 与 registrar，本模块自身不直连存储；端到端编排复用 P16 的公开主循环入口（acquisition_sink 钩子），不自行实现主循环。",
+        "不得修改 sdl_m01/；不得实现 P18 及以后的内容。"
+      ],
+      "tests": [
+        "tests/test_collection.py"
+      ]
     }
   ]
 }

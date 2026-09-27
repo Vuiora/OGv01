@@ -1,17 +1,17 @@
 {
-  "current_stage": "P16",
+  "current_stage": "P17",
   "stage_status": "done",
-  "last_check": "2026-09-27T18:32:50+08:00",
+  "last_check": "2026-09-27T19:58:53+08:00",
   "last_stage_update": "2026-09-23T07:13:58+08:00",
-  "no_change_count": 3,
+  "no_change_count": 0,
   "blocked_reason": null,
   "baseline_started_at": "2026-09-22T20:16:22+08:00",
   "baseline_epoch": 1790118838.42247,
   "output_fingerprints": {
-    "sdl_pipeline/loop.py": "6d74a8597d62"
+    "sdl_m09/collection.py": "abd35b366a09"
   },
   "outputs_snapshot_epoch": {
-    "sdl_pipeline/loop.py": 1790502258.5853028
+    "sdl_m09/collection.py": 1790510168.0403268
   },
   "history": [
     {
@@ -121,6 +121,12 @@
       "name": "端到端主循环集成",
       "status": "done",
       "at": "2026-09-27T18:32:50+08:00"
+    },
+    {
+      "stage": "P17",
+      "name": "自主取数执行器",
+      "status": "done",
+      "at": "2026-09-27T19:58:53+08:00"
     }
   ],
   "baseline": {
@@ -129,6 +135,6 @@
   },
   "prev_handoff": null,
   "test_fingerprints": {
-    "tests/test_loop.py": "24737535736b"
+    "tests/test_collection.py": "b9f12b988d65"
   }
 }

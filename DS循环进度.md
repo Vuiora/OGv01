@@ -6,8 +6,8 @@
 ## 循环参数
 
 - check_interval_minutes: 30
-- stage_total: 17
-- stage_sequence: P00 → P01 → P02 → P03 → P04 → P05 → P06 → P07 → P08 → P09 → P10 → P11 → P12 → P13 → P14 → P15 → P16
+- stage_total: 18
+- stage_sequence: P00 → P01 → P02 → P03 → P04 → P05 → P06 → P07 → P08 → P09 → P10 → P11 → P12 → P13 → P14 → P15 → P16 → P17
 
 ### 调度器配置
 
@@ -28,12 +28,15 @@
 
 ## 运行状态（快照 · 以 state.json 为准）
 
-- current_stage: P01
-- stage_status: in_progress
-- last_check: 2026-09-22T21:22+08:00
-- last_stage_update: —
+- current_stage: P17
+- stage_status: done
+- last_check: 2026-09-27T19:58+08:00
+- last_stage_update: 2026-09-27T19:58+08:00
 - consecutive_no_change: 0
 - blocked_reason: —
+
+> 快照更新于 2026-09-27：P00–P17 全部通过。门禁结果：1588 项测试、2 项既有 M01 失败（放行）、新增失败 0 项；
+> 交付物齐全、阶段测试已补充、冻结目录未改动、无新增 skip/xfail。终态幂等短路生效（复跑 0.14s 秒退）。
 
 ## 两段式调度（自 2026-09-22 起）
 
@@ -83,6 +86,7 @@
 | P14 | 主动取证与反例搜索 | pending | — | — |
 | P15 | 知识归档与假说更新 | pending | — | — |
 | P16 | 端到端主循环集成 | pending | — | — |
+| P17 | 自主取数执行器 | pending | — | — |
 
 ## 调度输出存档
 

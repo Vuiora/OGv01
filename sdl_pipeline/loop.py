@@ -2026,6 +2026,7 @@ def run_loop(
     confirmation_evaluator: Callable[..., Mapping[str, Any]] | None = None,
     recorded_at: str | None = None,
     knowledge: KnowledgeVersion | None = None,
+    acquisition_sink: Callable[[int, Mapping[str, Any]], Any] | None = None,
     **_rejected: Any,
 ) -> DiscoveryArchive:
     """按《SDL算法框架说明》§5 的伪代码执行端到端主循环。
@@ -2067,6 +2068,11 @@ def run_loop(
         **本层不自行计算 p 值。**
     :param recorded_at: 归档时间戳（确定性复现用）；缺省由 M8 取系统时间。
     :param knowledge: 起始知识库版本；缺省为 ``K0``（空知识库）。
+    :param acquisition_sink: ``acquisition_sink(round_index, plan_dict)``，在每轮
+        生成 M7 取证计划后被回调一次，把「本轮建议去看什么」交给调用方
+        （例如自主取数执行器 M9）作为**下一轮采样的依据**。这是**只读**钩子：
+        本层照常把计划记入本轮记录，回调的返回值被忽略，钩子抛出的异常被
+        如实降级为一条说明、绝不打断循环。缺省 ``None`` 时行为与之前完全一致。
     :return: :class:`DiscoveryArchive`，**必然含「仍缺证据的问题清单」**。
     :raises LoopPolicyError: 传入了等级 / 统计结论 / 令牌类参数。
     :raises LoopStateError: 冻结不变量被破坏。
@@ -2087,6 +2093,7 @@ def run_loop(
         raise LoopInputError("budget 必须是 LoopBudget 实例")
     _require_callable_or_none(data_supplier, "data_supplier")
     _require_callable_or_none(confirmation_evaluator, "confirmation_evaluator")
+    _require_callable_or_none(acquisition_sink, "acquisition_sink")
     evaluator = confirmation_evaluator or unavailable_evaluator
     _require_nonempty_str(target_field, "target_field")
 
@@ -2197,6 +2204,7 @@ def run_loop(
                 purpose=PURPOSE_EXPLORATION,
                 max_items=budget.freeze_cap,
             )
+            sink_note = _notify_acquisition(acquisition_sink, round_index, acquisition)
             round_records.append(
                 RoundRecord(
                     round_index=round_index,
@@ -2209,7 +2217,8 @@ def run_loop(
                         f"{budget.max_empty_rounds}）。",
                         "按 §5 伪代码：记录本轮搜索失败及消耗；"
                         "无合格候选不等于其余假说为假。",
-                    ),
+                    )
+                    + ((sink_note,) if sink_note else ()),
                 )
             )
             round_index += 1
@@ -2335,6 +2344,8 @@ def run_loop(
                         "计划必须来自 M7 的公开入口。"
                     ),
                 }
+        # 把本轮取证建议交给可选钩子（供下一轮自主采样）；失败降级为说明。
+        sink_note = _notify_acquisition(acquisition_sink, round_index, acquisition)
 
         round_records.append(
             RoundRecord(
@@ -2354,7 +2365,8 @@ def run_loop(
                     f"（检验族 {len(execution.results)} 条，"
                     f"不可得 {len(execution.unavailable_test_ids)} 条）。",
                     "冻结不变量复算通过：执行与归档之后，预处理与候选逐字节未变。",
-                ),
+                )
+                + ((sink_note,) if sink_note else ()),
             )
         )
 
@@ -2458,6 +2470,28 @@ class _EntryWrapper:
 
     def __setattr__(self, name: str, value: Any) -> None:  # pragma: no cover
         raise AttributeError("_EntryWrapper 是只读视图")
+
+
+def _notify_acquisition(
+    sink: Callable[[int, Mapping[str, Any]], Any] | None,
+    round_index: int,
+    plan: Mapping[str, Any] | None,
+) -> str | None:
+    """把本轮 M7 取证计划交给可选的只读钩子（供下一轮自主采样使用）。
+
+    钩子**只读**：本层不采信其返回值，也不因它改变控制流。钩子异常被降级为
+    一条说明并返回，绝不打断主循环——取证建议是建议，不是循环的必要产物。
+    ``plan`` 为 ``None``（M7 未出计划）时同样回调，使调用方知道「本轮没有建议」。
+
+    :return: 异常说明文本；正常时为 ``None``。
+    """
+    if sink is None:
+        return None
+    try:
+        sink(round_index, plan if plan is not None else {})
+    except Exception as exc:  # 钩子是外部代码，失败不得影响主循环
+        return f"取证建议钩子失败（{type(exc).__name__}）：{str(exc)[:160]}"
+    return None
 
 
 def _next_confirmation_ref(refs: Sequence[str], round_index: int) -> str | None:

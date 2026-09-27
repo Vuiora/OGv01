@@ -25,10 +25,11 @@
 
 ## 测试与断言规则（踩坑最多的两条）
 1. **守护「不做 X」一律用 AST，绝不用源码文本匹配。** 已累计踩坑 **7 次**：docstring 与 `NOT_PROVIDED_BY_*` 常量里**必须**写出被禁名字（「本层不做 bind_confirmation」），文本匹配会把边界声明当违规。文本匹配只适用于检查「必须存在的声明」（如 `assertIn("不修改", text)`）。
-2. **夹具必须先打印真实输出再写断言。** 两个具体教训：
+2. **夹具必须先打印真实输出再写断言。** 三个具体教训：
    - **配额类测试**（上限/裁剪/k 个预留）夹具必须是**反链**——候选两两不可比。用单调链（后一个全面支配前一个）会让前沿恒为 1，测的是前沿规模而非配额。
    - **簇/变点类测试**要先用诊断脚本确认检测器的真实输出（k 是多少、分数多少），且簇内点云须各向同性，不留单调方向。
-3. 写测试后建议做**定向变异测试**（故意反转方向、放宽定义、改默认值），确认断言能捕获——防止空洞断言。
+   - **夹具方法名不得撞 `unittest.TestCase` 的内部属性**（`_outcome` / `_feedErrorsToResult` 等）。命名为 `self._outcome` 会遮蔽 `TestCase._outcome`，报 `'_Outcome' object is not callable`，且报错点远离真因。
+3. 写测试后建议做**定向变异测试**（故意反转方向、放宽定义、改默认值），确认断言能捕获——防止空洞断言。P17 实测 6/6 全部捕获。
 
 ## 跨层集成语义（P16 起复用，写集成/断言前必读）
 - **M6 `execute_family` 内部 `replay=False` 是硬编码的。** 同一绑定第一次消费后分区迁 `used`；再消费必被 M1 以 `StateError`（「explicit replay is required」）拒绝。要在**同一次执行内**用外部评估器的产物重跑，必须在注入的 confirmer 转接器里把第二遍的 `replay` 提升为 `True`——这是 M1 的公开复核语义（`new_evidence=False`，不产生新证据、不改账本）。
@@ -42,8 +43,18 @@
 - `evaluate_hypothesis` 可能因 `gain=inf` 抛 `MetricsInputError`：集成层须逐条 try/except 降级并入 `fit_skips`，**不得**让单个候选打断整轮。
 - **AST 边界自检的假阳性来源**：本地变量名撞黑名单（如 `ledger = BudgetLedger()` 撞 M1 的账本入口名）。写 `self_check` 要收集本地绑定名（参数/赋值/自身定义）并剔除，仅比对真正的访问与 import。
 
+## M9 自主取数语义（P17 起复用，写断言前必读）
+- **M7/M9 是「建议层 / 执行层」补集**：`ACQUISITION_PLAN_EXECUTES_COLLECTION=False`（M7 只出建议）对 `COLLECTION_EXECUTES_COLLECTION=True`（M9 真取数）。M9 不授予等级、不跑统计。
+- **闭环靠「上一轮」计划**：`AutonomousCollector.observe(round_index, plan)` 收当轮计划，`__call__(round_index, protocol_id)` 采的是 `round_index-1` 那一轮的计划。故**首轮必无建议**（如实记 `no_plan`），`trace()` 里 `driven_by_plan_round = round_index-1`。同轮 observe 的计划不影响同轮采样（不向后泄漏）。
+- **六原因码必须分列**：`collected`｜`source_empty`（**采了为空**：设计齐备、真驱动了源、返回空）｜`no_mapping`/`no_plan`/`budget_exhausted`/`source_failed`（**没采**）。`NOT_COLLECTED_REASONS` 与「采了为空」互补。绝不用 0 条记录冒充「取过了」。
+- **采样目录由调用方提供**：解析顺序 精确 `by_observation` → 按目的 `by_purpose` → 兜底 `default_design` → None（记 `no_mapping`）。M9 无法推断「某观测现实里怎么采」，绝不臆造设计。
+- **`SyntheticSource` 每批用新号段**（`_allocate_start` 递增游标），否则重放同一批内容会被 M1 的内容级数据身份闸门拒绝。
+- **`run_loop` 的 `acquisition_sink` 钩子**：只读、返回值被忽略、异常降级为一条 note 不打断循环；缺省 `None` 时行为与 P16 完全一致。**务必只调用一次**（放在 `round_records.append` 之前）。
+- **`freeze_cap` 不能取 1**：M7 的 `divergence` 至少需要 2 个竞争假说，`freeze_cap=1` 时只冻结 1 个会抛 `AcquisitionInputError`。端到端最小可用预算：`max_candidates=60, freeze_cap=2, n_resamples=2`（两轮约 3.2s）。
+- **测「规律提取」用轻量假对象**（只需 `version`/`entries` 与条目上的 `hypothesis_id`/`grade`/`status`/`round_index`/`evidence_identity` 等）；不要走 M8 构造器——其不变量极严（E2 须有先行确证、绑定与数据身份须与归档一致、等级与凭据须匹配）。
+
 ## 模块约定
-- 依赖方向：M2 → M3 → M4 → M5 → M6/M7 → M8，`sdl_m01/` 是**冻结目录**（mtime 应恒为 09-19），任何阶段不得修改或导入它。
+- 依赖方向：M2 → M3 → M4 → M5 → M6/M7 → M8 → M9（M9 在模块层不导入 `sdl_m01`，端到端编排函数体内惰性导入），`sdl_m01/` 是**冻结目录**（mtime 应恒为 09-19），任何阶段不得修改或导入它。
 - 每个模块自带「本层不做什么」的机检常量（`NOT_PROVIDED_BY_Pxx`）+ 边界说明 note，随结果对象输出。
 - 口径一致性优先：下游**原样采信**上游口径（如 C 采信 P04 的复杂度映射），不一致时只记录差异、不推翻。
 - **「没算」与「算出来是 0」必须可区分**：证据缺失记 `None` 并列入 `missing_*`，**不插补、不填默认值、不因此扣分**。
