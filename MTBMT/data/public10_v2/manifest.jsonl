@@ -1,0 +1,10 @@
+{"source": "openml:iris", "csv": "D:\\desk\\paper\\data\\public10_v2\\iris.csv", "target": "label"}
+{"source": "openml:wine", "csv": "D:\\desk\\paper\\data\\public10_v2\\wine.csv", "target": "label"}
+{"source": "openml:sonar", "csv": "D:\\desk\\paper\\data\\public10_v2\\sonar.csv", "target": "label"}
+{"source": "openml:ionosphere", "csv": "D:\\desk\\paper\\data\\public10_v2\\ionosphere.csv", "target": "label"}
+{"source": "openml:diabetes", "csv": "D:\\desk\\paper\\data\\public10_v2\\diabetes.csv", "target": "label"}
+{"source": "openml:banknote-authentication", "csv": "D:\\desk\\paper\\data\\public10_v2\\banknote_authentication.csv", "target": "label"}
+{"source": "openml:spambase", "csv": "D:\\desk\\paper\\data\\public10_v2\\spambase.csv", "target": "label"}
+{"source": "openml:heart-statlog", "csv": "D:\\desk\\paper\\data\\public10_v2\\heart_statlog.csv", "target": "label"}
+{"source": "openml:glass", "csv": "D:\\desk\\paper\\data\\public10_v2\\glass.csv", "target": "label"}
+{"source": "sklearn:breast_cancer", "csv": "D:\\desk\\paper\\data\\public10_v2\\sklearn_breast_cancer.csv", "target": "label"}

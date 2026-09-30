@@ -1,0 +1,23 @@
+# Optional RL dependencies (NOT required for core MTBMT functionality).
+#
+# Install:
+#   py -3 -m pip install -r requirements-rl.txt
+#
+# Notes:
+# - On Windows with very new Python (e.g. 3.13/3.14), `ale-py` may not have prebuilt wheels yet.
+#   In that case pip will try to build from source and require system deps (notably ZLIB) via CMake.
+# - To keep installs smooth, we only install Atari/ALE extras when wheels are commonly available.
+# - If you need Atari on newer Python, either:
+#   - use Python 3.11/3.12, or
+#   - install ZLIB dev libs and build tools so `ale-py` can compile.
+
+gymnasium>=0.29
+gymnasium[atari]>=0.29; python_version < "3.13"
+ale-py>=0.9; python_version < "3.13"
+
+# Optional for Atari DQN training (Breakout)
+# - Recommended: Python 3.11/3.12 for wheels
+torch; python_version < "3.13"
+autorom[accept-rom-license]; python_version < "3.13"
+
+

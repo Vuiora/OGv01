@@ -1,0 +1,23 @@
+ [build-system]
+ requires = ["setuptools>=70", "wheel"]
+ build-backend = "setuptools.build_meta"
+ 
+ [project]
+ name = "mtbmt"
+version = "0.1.1"
+ description = "Mentor-Trajectory Based Model Trainer: feature relevance quantification + meta-learning algorithm selection."
+ readme = "README.md"
+ requires-python = ">=3.10"
+ license = {text = "MIT"}
+ authors = [{name = "MoonL"}]
+ dependencies = [
+   "numpy>=2.0",
+   "pandas>=2.2",
+   "scikit-learn>=1.5",
+ ]
+ 
+ [tool.setuptools]
+ package-dir = {"" = "src"}
+ 
+ [tool.setuptools.packages.find]
+ where = ["src"]

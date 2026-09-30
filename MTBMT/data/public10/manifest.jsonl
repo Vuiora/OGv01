@@ -1,0 +1,10 @@
+{"source": "openml:iris", "csv": "D:\\desk\\paper\\data\\public10\\iris.csv", "target": "label"}
+{"source": "openml:wine", "csv": "D:\\desk\\paper\\data\\public10\\wine.csv", "target": "label"}
+{"source": "openml:sonar", "csv": "D:\\desk\\paper\\data\\public10\\sonar.csv", "target": "label"}
+{"source": "openml:ionosphere", "csv": "D:\\desk\\paper\\data\\public10\\ionosphere.csv", "target": "label"}
+{"source": "openml:diabetes", "csv": "D:\\desk\\paper\\data\\public10\\diabetes.csv", "target": "label"}
+{"source": "openml:banknote-authentication", "csv": "D:\\desk\\paper\\data\\public10\\banknote_authentication.csv", "target": "label"}
+{"source": "openml:spambase", "csv": "D:\\desk\\paper\\data\\public10\\spambase.csv", "target": "label"}
+{"source": "openml:heart-statlog", "csv": "D:\\desk\\paper\\data\\public10\\heart_statlog.csv", "target": "label"}
+{"source": "openml:glass", "csv": "D:\\desk\\paper\\data\\public10\\glass.csv", "target": "label"}
+{"source": "sklearn:iris", "csv": "D:\\desk\\paper\\data\\public10\\sklearn_iris.csv", "target": "label"}

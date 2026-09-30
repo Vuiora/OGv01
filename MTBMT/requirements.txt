@@ -1,0 +1,12 @@
+# Core runtime dependencies (kept in sync with pyproject.toml)
+#
+# Install:
+#   python3 -m pip install -r requirements.txt
+#
+# Optional extras:
+# - RL scripts:  python3 -m pip install -r requirements-rl.txt
+# - Dev/tests:   python3 -m pip install -r requirements-dev.txt
+
+numpy>=2.0
+pandas>=2.2
+scikit-learn>=1.5

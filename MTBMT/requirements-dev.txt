@@ -1,0 +1,13 @@
+# Dev / test dependencies (optional)
+#
+# Install:
+#   python3 -m pip install -r requirements-dev.txt
+#
+# Notes:
+# - The project tests are pytest-based.
+# - Some scripts can use tqdm for nicer progress bars, but they have a stdlib fallback.
+
+pytest>=8.0
+tqdm>=4.66
+
+
