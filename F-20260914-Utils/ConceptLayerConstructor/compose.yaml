@@ -1,0 +1,58 @@
+services:
+  api:
+    build: .
+    image: clc:local
+    pull_policy: build
+    env_file: .env
+    environment:
+      CLC_DATA_DIR: /data
+      CLC_API_KEY: ${CLC_API_KEY:?Run scripts/init_env.py first}
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - clc_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+  worker:
+    image: clc:local
+    pull_policy: never
+    command: ["clc-worker"]
+    env_file: .env
+    environment:
+      CLC_DATA_DIR: /data
+    volumes:
+      - clc_data:/data
+      - docling_models:/models
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    stop_grace_period: 20s
+  n8n:
+    image: ${N8N_IMAGE:-docker.n8n.io/n8nio/n8n:stable}
+    ports:
+      - "127.0.0.1:5678:5678"
+    environment:
+      GENERIC_TIMEZONE: Asia/Shanghai
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:?Run scripts/init_env.py first}
+      N8N_SECURE_COOKIE: "false"
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_DEFAULT_BINARY_DATA_MODE: filesystem
+      EXECUTIONS_TIMEOUT: 7200
+      EXECUTIONS_DATA_PRUNE: "true"
+      EXECUTIONS_DATA_MAX_AGE: 168
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n:/workflows:ro
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  clc_data:
+  docling_models:
+  n8n_data:

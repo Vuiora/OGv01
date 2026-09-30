@@ -1,0 +1,186 @@
+{
+  "book": "Linux 内核开发（第三版）",
+  "destination": "D:\\Obsidian\\ob\\OG-blog\\Linux 内核开发（第三版）",
+  "staging": "C:\\Users\\Lenovo\\Documents\\Codex\\2026-09-12\\shi\\work\\n8n-docling\\chapter-rework\\staged",
+  "chapters": [
+    {
+      "chapter": 1,
+      "name": "Linux 内核简介.md",
+      "sourceChapter": "Introduction to the Linux Kernel",
+      "characters": 10493,
+      "codeBlocks": 0,
+      "sha256": "adc09c4fa30538598daea6a5a002c267ad6537c384b323d8c565b34596864876"
+    },
+    {
+      "chapter": 2,
+      "name": "内核入门.md",
+      "sourceChapter": "Getting Started with the Kernel",
+      "characters": 11768,
+      "codeBlocks": 14,
+      "sha256": "3b2493dbaf0542005c96ac44e7e4ff04640fc976dc900875380ed5728b63d9f9"
+    },
+    {
+      "chapter": 3,
+      "name": "进程管理.md",
+      "sourceChapter": "Process Management",
+      "characters": 18935,
+      "codeBlocks": 21,
+      "sha256": "81e557866fe963198b04bd0b68a9e4e754360309e1e244870ded73e24c1fdfd5"
+    },
+    {
+      "chapter": 4,
+      "name": "进程调度.md",
+      "sourceChapter": "Process Scheduling",
+      "characters": 29615,
+      "codeBlocks": 11,
+      "sha256": "7955622df306c12db3f2fd0d130be9ca1980230c9e84914ff1bb6587e9d76831"
+    },
+    {
+      "chapter": 5,
+      "name": "系统调用.md",
+      "sourceChapter": "System Calls",
+      "characters": 14325,
+      "codeBlocks": 9,
+      "sha256": "13f9ebbb8ecb4e79796f67c039befa80aba7cdb34bcb03f380b62014d419fd10"
+    },
+    {
+      "chapter": 6,
+      "name": "内核数据结构.md",
+      "sourceChapter": "Kernel Data Structures",
+      "characters": 26609,
+      "codeBlocks": 53,
+      "sha256": "5188ab08515d5a29bffc6db015764ff6dafdd3f949807940566c44f8dca24298"
+    },
+    {
+      "chapter": 7,
+      "name": "中断与中断处理程序.md",
+      "sourceChapter": "Interrupts and Interrupt Handlers",
+      "characters": 20893,
+      "codeBlocks": 12,
+      "sha256": "10de1333962e25b53ec226554fb73267c94ce2fe64b9f5492764b85129cb3ca8"
+    },
+    {
+      "chapter": 8,
+      "name": "下半部与推迟工作.md",
+      "sourceChapter": "Bottom Halves and Deferring Work",
+      "characters": 27997,
+      "codeBlocks": 29,
+      "sha256": "33b3641abc30f438cd5d1104f24b3a7e33b99df3e71bc2e89f4a1913a16e9210"
+    },
+    {
+      "chapter": 9,
+      "name": "内核同步简介.md",
+      "sourceChapter": "An Introduction to Kernel Synchronization",
+      "characters": 12329,
+      "codeBlocks": 4,
+      "sha256": "1677ce91246712d2f971a83a1c12243ed39915c7ee4a2a367f008bb95fa03094"
+    },
+    {
+      "chapter": 10,
+      "name": "内核同步方法.md",
+      "sourceChapter": "Kernel Synchronization Methods",
+      "characters": 38786,
+      "codeBlocks": 35,
+      "sha256": "cfe65aad998ea1a57cfb83e0016684e79316b0cfdacbf60b573b222937f5814c"
+    },
+    {
+      "chapter": 11,
+      "name": "定时器与时间管理.md",
+      "sourceChapter": "Timers and Time Management",
+      "characters": 25612,
+      "codeBlocks": 37,
+      "sha256": "86e3cd3814d3090207db39124396a4f06737bd374b9034908b11ac3376cb814a"
+    },
+    {
+      "chapter": 12,
+      "name": "内存管理.md",
+      "sourceChapter": "Memory Management",
+      "characters": 34514,
+      "codeBlocks": 44,
+      "sha256": "e947e8d08bd1a215c9aa69a5d45c1125cb065645c555e3c5046620aed5414027"
+    },
+    {
+      "chapter": 13,
+      "name": "虚拟文件系统.md",
+      "sourceChapter": "The  Virtual Filesystem",
+      "characters": 38542,
+      "codeBlocks": 30,
+      "sha256": "147ab35f64fe75ba754901db77db02ce54b2b37991b48d9e16c32f489363ad51"
+    },
+    {
+      "chapter": 14,
+      "name": "块 I／O 层.md",
+      "sourceChapter": "The Block I/O Layer",
+      "characters": 18312,
+      "codeBlocks": 5,
+      "sha256": "3152f3e384bf4f388f8efb348222cb68229ae2f6582a9c8b18d5912e2f29a6c1"
+    },
+    {
+      "chapter": 15,
+      "name": "进程地址空间.md",
+      "sourceChapter": "The Process Address Space",
+      "characters": 21977,
+      "codeBlocks": 15,
+      "sha256": "e1ebc4a96bdea92478383f69f15c2dd1ee9307d43cc5b1df731074e5b06b36b3"
+    },
+    {
+      "chapter": 16,
+      "name": "页高速缓存与页回写.md",
+      "sourceChapter": "The Page Cache and Page Writeback",
+      "characters": 14988,
+      "codeBlocks": 6,
+      "sha256": "1884eb0c9edc715424313023459e9df00c7543c767bd3a93bb81ac73820a5fd7"
+    },
+    {
+      "chapter": 17,
+      "name": "设备与模块.md",
+      "sourceChapter": "Devices and Modules",
+      "characters": 28678,
+      "codeBlocks": 49,
+      "sha256": "197c2478e8bd85afc608caf57885e0da877db76a9f0c641ba58d7f53407b404c"
+    },
+    {
+      "chapter": 18,
+      "name": "调试.md",
+      "sourceChapter": "Debugging",
+      "characters": 17078,
+      "codeBlocks": 19,
+      "sha256": "a28cd7419393222e56d8e1526ab248ecc931793872a2b782c35dcb83b78dd638"
+    },
+    {
+      "chapter": 19,
+      "name": "可移植性.md",
+      "sourceChapter": "Portability",
+      "characters": 16402,
+      "codeBlocks": 10,
+      "sha256": "4a4c5ea0f91e103105697cc543087ddf306f3ee030ff072bad69f74a8b5dbbfc"
+    },
+    {
+      "chapter": 20,
+      "name": "补丁、黑客与社区.md",
+      "sourceChapter": "Patches, Hacking, and the Community",
+      "characters": 11228,
+      "codeBlocks": 29,
+      "sha256": "5e7aae9037782a55eab4ec12ae7a82e9448c356b448c2549a29a3705508e0596"
+    }
+  ],
+  "images": 30,
+  "statistics": {
+    "blocks": 432,
+    "addedFences": 16,
+    "languages": {
+      "bash": 34,
+      "c": 374,
+      "asm": 1,
+      "text": 13,
+      "makefile": 9,
+      "kconfig": 1
+    }
+  },
+  "excluded": "封面、版权页、目录、前言、致谢、作者介绍、参考书目、索引；正文中的章节结论保留。",
+  "consumedParts": 190,
+  "oldPrefix": "Linux Kernel Development (3rd Edition) (Robert Love) (z-library.sk, 1l-20260913T104159Z-6",
+  "verifiedAt": "2026-09-14T03:04:48.617Z",
+  "backupDirectory": "C:\\Users\\Lenovo\\Documents\\Codex\\2026-09-12\\shi\\work\\n8n-docling\\backups\\before-chapter-notes-20260914-110755",
+  "migratedAt": "2026-09-14T03:07:56.1018437Z"
+}

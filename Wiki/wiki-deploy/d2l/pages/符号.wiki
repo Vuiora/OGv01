@@ -1,0 +1,76 @@
+== 符号 ==
+<span id="chap_notation"></span>
+
+本书中使用的符号概述如下。
+
+=== 数字 ===
+
+* <math>x</math>：标量
+* <math>\mathbf{x}</math>：向量
+* <math>\mathbf{X}</math>：矩阵
+* <math>\mathsf{X}</math>：张量
+* <math>\mathbf{I}</math>：单位矩阵
+* <math>x_i</math>, <math>[\mathbf{x}]_i</math>：向量<math>\mathbf{x}</math>第<math>i</math>个元素
+* <math>x_{ij}</math>, <math>[\mathbf{X}]_{ij}</math>：矩阵<math>\mathbf{X}</math>第<math>i</math>行第<math>j</math>列的元素
+
+=== 集合论 ===
+
+* <math>\mathcal{X}</math>: 集合
+* <math>\mathbb{Z}</math>: 整数集合
+* <math>\mathbb{R}</math>: 实数集合
+* <math>\mathbb{R}^n</math>: <math>n</math>维实数向量集合
+* <math>\mathbb{R}^{a\times b}</math>: 包含<math>a</math>行和<math>b</math>列的实数矩阵集合
+* <math>\mathcal{A}\cup\mathcal{B}</math>: 集合<math>\mathcal{A}</math>和<math>\mathcal{B}</math>的并集
+* <math>\mathcal{A}\cap\mathcal{B}</math>：集合<math>\mathcal{A}</math>和<math>\mathcal{B}</math>的交集
+* <math>\mathcal{A}\setminus\mathcal{B}</math>：集合<math>\mathcal{A}</math>与集合<math>\mathcal{B}</math>相减，<math>\mathcal{B}</math>关于<math>\mathcal{A}</math>的相对补集
+
+=== 函数和运算符 ===
+
+* <math>f(\cdot)</math>：函数
+* <math>\log(\cdot)</math>：自然对数
+* <math>\exp(\cdot)</math>: 指数函数
+* <math>\mathbf{1}_\mathcal{X}</math>: 指示函数
+* <math>\mathbf{(\cdot)}^\top</math>: 向量或矩阵的转置
+* <math>\mathbf{X}^{-1}</math>: 矩阵的逆
+* <math>\odot</math>: 按元素相乘
+* <math>[\cdot, \cdot]</math>：连结
+* <math>\lvert \mathcal{X} \rvert</math>：集合的基数
+* <math>\|\cdot\|_p</math>: ：<math>L_p</math> 正则
+* <math>\|\cdot\|</math>: <math>L_2</math> 正则
+* <math>\langle \mathbf{x}, \mathbf{y} \rangle</math>：向量<math>\mathbf{x}</math>和<math>\mathbf{y}</math>的点积
+* <math>\sum</math>: 连加
+* <math>\prod</math>: 连乘
+* <math>\stackrel{\mathrm{def}}{=}</math>：定义
+
+=== 微积分 ===
+
+* <math>\frac{dy}{dx}</math>：<math>y</math>关于<math>x</math>的导数
+* <math>\frac{\partial y}{\partial x}</math>：<math>y</math>关于<math>x</math>的偏导数
+* <math>\nabla_{\mathbf{x}} y</math>：<math>y</math>关于<math>\mathbf{x}</math>的梯度
+* <math>\int_a^b f(x) \;dx</math>: <math>f</math>在<math>a</math>到<math>b</math>区间上关于<math>x</math>的定积分
+* <math>\int f(x) \;dx</math>: <math>f</math>关于<math>x</math>的不定积分
+
+=== 概率与信息论 ===
+
+* <math>P(\cdot)</math>：概率分布
+* <math>z \sim P</math>: 随机变量<math>z</math>具有概率分布<math>P</math>
+* <math>P(X \mid Y)</math>：<math>X\mid Y</math>的条件概率
+* <math>p(x)</math>: 概率密度函数
+* <math>{E}_{x} [f(x)]</math>: 函数<math>f</math>对<math>x</math>的数学期望
+* <math>X \perp Y</math>: 随机变量<math>X</math>和<math>Y</math>是独立的
+* <math>X \perp Y \mid Z</math>: 随机变量<math>X</math>和<math>Y</math>在给定随机变量<math>Z</math>的条件下是独立的
+* <math>\mathrm{Var}(X)</math>: 随机变量<math>X</math>的方差
+* <math>\sigma_X</math>: 随机变量<math>X</math>的标准差
+* <math>\mathrm{Cov}(X, Y)</math>: 随机变量<math>X</math>和<math>Y</math>的协方差
+* <math>\rho(X, Y)</math>: 随机变量<math>X</math>和<math>Y</math>的相关性
+* <math>H(X)</math>: 随机变量<math>X</math>的熵
+* <math>D_{\mathrm{KL}}(P\|Q)</math>: <math>P</math>和<math>Q</math>的KL-散度
+
+=== 复杂度 ===
+
+* <math>\mathcal{O}</math>：大O标记
+
+[https://discuss.d2l.ai/t/2089 Discussions]
+
+[[Category:动手学深度学习]]
+[[Category:前言与总览]]

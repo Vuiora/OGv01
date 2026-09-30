@@ -1,0 +1,1390 @@
+{
+  "time_utc": "2026-09-14T14:28:17.955740+00:00",
+  "python": "3.14.7",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "packages": {
+    "numpy": "2.5.3",
+    "cupy-cuda13x": "14.2.0",
+    "openvino": "2026.3.1",
+    "cuda-toolkit": "13.1.2.0"
+  },
+  "diagnostics": [
+    "Excluded non-Intel OpenVINO GPU GPU.1: NVIDIA GeForce RTX 5060 Laptop GPU (dGPU); use its native adapter"
+  ],
+  "devices": [
+    {
+      "device": {
+        "id": "cpu:0",
+        "kind": "CPU",
+        "backend": "cpu",
+        "target": "host",
+        "slots": 4,
+        "memory_bytes": 1073741824,
+        "bandwidth_bytes_per_s": 5000000000.0,
+        "launch_ms": 100.0,
+        "name": ""
+      },
+      "passed": true,
+      "state": "SUCCEEDED",
+      "elapsed_s": 0.6297458999906667,
+      "checks": {
+        "add": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "multiply": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "scale": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "relu": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "identity": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "matmul": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "sum": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": []
+        }
+      },
+      "errors": {},
+      "events": [
+        {
+          "time_s": 7.90000194683671e-06,
+          "kind": "JOB_STARTED",
+          "task": null,
+          "device": null,
+          "detail": {}
+        },
+        {
+          "time_s": 0.0011810999712906778,
+          "kind": "RESERVED",
+          "task": "add",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 98304,
+            "used_slots": 1,
+            "used_bytes": 98304,
+            "estimated_ms": 101.0098304,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 0.056095600011758506,
+          "kind": "RESERVED",
+          "task": "multiply",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 98304,
+            "used_slots": 2,
+            "used_bytes": 196608,
+            "estimated_ms": 101.0098304,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 0.10916100000031292,
+          "kind": "RESERVED",
+          "task": "scale",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 65536,
+            "used_slots": 3,
+            "used_bytes": 262144,
+            "estimated_ms": 101.0065536,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 0.16302460001315922,
+          "kind": "RESERVED",
+          "task": "relu",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 65536,
+            "used_slots": 4,
+            "used_bytes": 327680,
+            "estimated_ms": 101.0065536,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 0.23816139996051788,
+          "kind": "RELEASE",
+          "task": "add",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 98304
+          }
+        },
+        {
+          "time_s": 0.2482381999725476,
+          "kind": "COMMITTED",
+          "task": "add",
+          "device": "cpu:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "numpy-native",
+            "finished_at": 265340.1335006,
+            "elapsed_ms": 56.96930002886802,
+            "input_bytes": 32768,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 0.24853669997537509,
+          "kind": "RESERVED",
+          "task": "identity",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 65536,
+            "used_slots": 4,
+            "used_bytes": 294912,
+            "estimated_ms": 101.0065536,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 0.3290292999590747,
+          "kind": "RELEASE",
+          "task": "multiply",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 98304
+          }
+        },
+        {
+          "time_s": 0.33940130000701174,
+          "kind": "COMMITTED",
+          "task": "multiply",
+          "device": "cpu:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "numpy-native",
+            "finished_at": 265340.1939774,
+            "elapsed_ms": 59.52500004786998,
+            "input_bytes": 32768,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 0.3394257999607362,
+          "kind": "RELEASE",
+          "task": "scale",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 65536
+          }
+        },
+        {
+          "time_s": 0.3502823999733664,
+          "kind": "COMMITTED",
+          "task": "scale",
+          "device": "cpu:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "numpy-native",
+            "finished_at": 265340.2532637,
+            "elapsed_ms": 55.47459999797866,
+            "input_bytes": 16384,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 0.35056200000690296,
+          "kind": "RESERVED",
+          "task": "matmul",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 98304,
+            "used_slots": 3,
+            "used_bytes": 229376,
+            "estimated_ms": 101.0098304,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 0.40543699997942895,
+          "kind": "RESERVED",
+          "task": "sum",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 32776,
+            "used_slots": 4,
+            "used_bytes": 262152,
+            "estimated_ms": 101.0032776,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 0.4834065999602899,
+          "kind": "RELEASE",
+          "task": "relu",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 65536
+          }
+        },
+        {
+          "time_s": 0.49246899998979643,
+          "kind": "COMMITTED",
+          "task": "relu",
+          "device": "cpu:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "numpy-native",
+            "finished_at": 265340.310171,
+            "elapsed_ms": 54.16430003242567,
+            "input_bytes": 16384,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 0.492487599956803,
+          "kind": "RELEASE",
+          "task": "identity",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 65536
+          }
+        },
+        {
+          "time_s": 0.503325900004711,
+          "kind": "COMMITTED",
+          "task": "identity",
+          "device": "cpu:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "numpy-native",
+            "finished_at": 265340.387129,
+            "elapsed_ms": 55.614299955777824,
+            "input_bytes": 16384,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 0.5765572999953292,
+          "kind": "RELEASE",
+          "task": "matmul",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 98304
+          }
+        },
+        {
+          "time_s": 0.593908199982252,
+          "kind": "COMMITTED",
+          "task": "matmul",
+          "device": "cpu:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "numpy-native",
+            "finished_at": 265340.4813454,
+            "elapsed_ms": 50.963599991519004,
+            "input_bytes": 32768,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 0.6236124999704771,
+          "kind": "RELEASE",
+          "task": "sum",
+          "device": "cpu:0",
+          "detail": {
+            "reserved_bytes": 32776
+          }
+        },
+        {
+          "time_s": 0.6279312999686226,
+          "kind": "COMMITTED",
+          "task": "sum",
+          "device": "cpu:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "numpy-native",
+            "finished_at": 265340.5326828,
+            "elapsed_ms": 49.689400009810925,
+            "input_bytes": 16384,
+            "output_bytes": 4
+          }
+        },
+        {
+          "time_s": 0.6297392999986187,
+          "kind": "JOB_FINISHED",
+          "task": null,
+          "device": null,
+          "detail": {
+            "state": "SUCCEEDED"
+          }
+        }
+      ]
+    },
+    {
+      "device": {
+        "id": "cuda:0",
+        "kind": "GPU",
+        "backend": "cupy",
+        "target": "0",
+        "slots": 1,
+        "memory_bytes": 3687317504,
+        "bandwidth_bytes_per_s": 5000000000.0,
+        "launch_ms": 500,
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU"
+      },
+      "passed": true,
+      "state": "SUCCEEDED",
+      "elapsed_s": 4.709225600003265,
+      "checks": {
+        "add": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "multiply": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "scale": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "relu": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "identity": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "matmul": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "sum": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": []
+        }
+      },
+      "errors": {},
+      "events": [
+        {
+          "time_s": 7.399998139590025e-06,
+          "kind": "JOB_STARTED",
+          "task": null,
+          "device": null,
+          "detail": {}
+        },
+        {
+          "time_s": 0.0004894000012427568,
+          "kind": "RESERVED",
+          "task": "add",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 98304,
+            "used_slots": 1,
+            "used_bytes": 98304,
+            "estimated_ms": 501.0098304,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 0.6811483000055887,
+          "kind": "RELEASE",
+          "task": "add",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 98304
+          }
+        },
+        {
+          "time_s": 0.6909115000162274,
+          "kind": "COMMITTED",
+          "task": "add",
+          "device": "cuda:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "cupy-cuda",
+            "finished_at": 265341.2027581,
+            "elapsed_ms": 491.7520000017248,
+            "input_bytes": 32768,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 0.6920375999761745,
+          "kind": "RESERVED",
+          "task": "multiply",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 98304,
+            "used_slots": 1,
+            "used_bytes": 98304,
+            "estimated_ms": 501.0098304,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 1.344410500023514,
+          "kind": "RELEASE",
+          "task": "multiply",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 98304
+          }
+        },
+        {
+          "time_s": 1.3518995000049472,
+          "kind": "COMMITTED",
+          "task": "multiply",
+          "device": "cuda:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "cupy-cuda",
+            "finished_at": 265341.8616157,
+            "elapsed_ms": 445.3689000220038,
+            "input_bytes": 32768,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 1.3521602000109851,
+          "kind": "RESERVED",
+          "task": "scale",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 65536,
+            "used_slots": 1,
+            "used_bytes": 65536,
+            "estimated_ms": 501.0065536,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 1.9153496000217274,
+          "kind": "RELEASE",
+          "task": "scale",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 65536
+          }
+        },
+        {
+          "time_s": 1.9263244000030681,
+          "kind": "COMMITTED",
+          "task": "scale",
+          "device": "cuda:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "cupy-cuda",
+            "finished_at": 265342.4386533,
+            "elapsed_ms": 374.84579998999834,
+            "input_bytes": 16384,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 1.9270195999997668,
+          "kind": "RESERVED",
+          "task": "relu",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 65536,
+            "used_slots": 1,
+            "used_bytes": 65536,
+            "estimated_ms": 501.0065536,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 2.659220599976834,
+          "kind": "RELEASE",
+          "task": "relu",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 65536
+          }
+        },
+        {
+          "time_s": 2.6703826999873854,
+          "kind": "COMMITTED",
+          "task": "relu",
+          "device": "cuda:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "cupy-cuda",
+            "finished_at": 265343.178306,
+            "elapsed_ms": 542.0116999885067,
+            "input_bytes": 16384,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 2.6707425999920815,
+          "kind": "RESERVED",
+          "task": "identity",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 65536,
+            "used_slots": 1,
+            "used_bytes": 65536,
+            "estimated_ms": 501.0065536,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 3.303534300008323,
+          "kind": "RELEASE",
+          "task": "identity",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 65536
+          }
+        },
+        {
+          "time_s": 3.316105699981563,
+          "kind": "COMMITTED",
+          "task": "identity",
+          "device": "cuda:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "cupy-cuda",
+            "finished_at": 265343.8206626,
+            "elapsed_ms": 437.70730000687763,
+            "input_bytes": 16384,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 3.3164742999942973,
+          "kind": "RESERVED",
+          "task": "matmul",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 98304,
+            "used_slots": 1,
+            "used_bytes": 98304,
+            "estimated_ms": 501.0098304,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 4.119986900012009,
+          "kind": "RELEASE",
+          "task": "matmul",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 98304
+          }
+        },
+        {
+          "time_s": 4.1438731999951415,
+          "kind": "COMMITTED",
+          "task": "matmul",
+          "device": "cuda:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "cupy-cuda",
+            "finished_at": 265344.624627,
+            "elapsed_ms": 595.5085000023246,
+            "input_bytes": 32768,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 4.144281900022179,
+          "kind": "RESERVED",
+          "task": "sum",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 32776,
+            "used_slots": 1,
+            "used_bytes": 32776,
+            "estimated_ms": 501.0032776,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 4.6987510999897495,
+          "kind": "RELEASE",
+          "task": "sum",
+          "device": "cuda:0",
+          "detail": {
+            "reserved_bytes": 32776
+          }
+        },
+        {
+          "time_s": 4.705554199987091,
+          "kind": "COMMITTED",
+          "task": "sum",
+          "device": "cuda:0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "cupy-cuda",
+            "finished_at": 265345.214549,
+            "elapsed_ms": 349.8771999729797,
+            "input_bytes": 16384,
+            "output_bytes": 4
+          }
+        },
+        {
+          "time_s": 4.709216199989896,
+          "kind": "JOB_FINISHED",
+          "task": null,
+          "device": null,
+          "detail": {
+            "state": "SUCCEEDED"
+          }
+        }
+      ]
+    },
+    {
+      "device": {
+        "id": "ov:GPU.0",
+        "kind": "GPU",
+        "backend": "openvino",
+        "target": "GPU.0",
+        "slots": 1,
+        "memory_bytes": 536870912,
+        "bandwidth_bytes_per_s": 5000000000.0,
+        "launch_ms": 1000,
+        "name": "Intel(R) Graphics (iGPU)"
+      },
+      "passed": true,
+      "state": "SUCCEEDED",
+      "elapsed_s": 45.104330999951344,
+      "checks": {
+        "add": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "multiply": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "scale": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "relu": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "identity": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "matmul": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "sum": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": []
+        }
+      },
+      "errors": {},
+      "events": [
+        {
+          "time_s": 1.179997343569994e-05,
+          "kind": "JOB_STARTED",
+          "task": null,
+          "device": null,
+          "detail": {}
+        },
+        {
+          "time_s": 0.0008468999876640737,
+          "kind": "RESERVED",
+          "task": "add",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 98304,
+            "used_slots": 1,
+            "used_bytes": 98304,
+            "estimated_ms": 1001.0098304,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 4.165195799956564,
+          "kind": "RELEASE",
+          "task": "add",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 98304
+          }
+        },
+        {
+          "time_s": 4.176176599983592,
+          "kind": "COMMITTED",
+          "task": "add",
+          "device": "ov:GPU.0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:GPU.0",
+            "finished_at": 265347.0264198,
+            "elapsed_ms": 1552.0870999898762,
+            "input_bytes": 32768,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 4.1769592999480665,
+          "kind": "RESERVED",
+          "task": "multiply",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 98304,
+            "used_slots": 1,
+            "used_bytes": 98304,
+            "estimated_ms": 1001.0098304,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 6.190459199948236,
+          "kind": "RELEASE",
+          "task": "multiply",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 98304
+          }
+        },
+        {
+          "time_s": 6.201052799995523,
+          "kind": "COMMITTED",
+          "task": "multiply",
+          "device": "ov:GPU.0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:GPU.0",
+            "finished_at": 265350.3483975,
+            "elapsed_ms": 709.1221999726258,
+            "input_bytes": 32768,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 6.20134709996637,
+          "kind": "RESERVED",
+          "task": "scale",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 65536,
+            "used_slots": 1,
+            "used_bytes": 65536,
+            "estimated_ms": 1001.0065536,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 9.301389899977949,
+          "kind": "RELEASE",
+          "task": "scale",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 65536
+          }
+        },
+        {
+          "time_s": 9.312357199960388,
+          "kind": "COMMITTED",
+          "task": "scale",
+          "device": "ov:GPU.0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:GPU.0",
+            "finished_at": 265352.3647497,
+            "elapsed_ms": 706.3863000366837,
+            "input_bytes": 16384,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 9.312747799966019,
+          "kind": "RESERVED",
+          "task": "relu",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 65536,
+            "used_slots": 1,
+            "used_bytes": 65536,
+            "estimated_ms": 1001.0065536,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 26.563696199969854,
+          "kind": "RELEASE",
+          "task": "relu",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 65536
+          }
+        },
+        {
+          "time_s": 26.57540259999223,
+          "kind": "COMMITTED",
+          "task": "relu",
+          "device": "ov:GPU.0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:GPU.0",
+            "finished_at": 265355.4620369,
+            "elapsed_ms": 695.0856000185013,
+            "input_bytes": 16384,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 26.575748200004455,
+          "kind": "RESERVED",
+          "task": "identity",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 65536,
+            "used_slots": 1,
+            "used_bytes": 65536,
+            "estimated_ms": 1001.0065536,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 27.682889099989552,
+          "kind": "RELEASE",
+          "task": "identity",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 65536
+          }
+        },
+        {
+          "time_s": 27.694143899949268,
+          "kind": "COMMITTED",
+          "task": "identity",
+          "device": "ov:GPU.0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:GPU.0",
+            "finished_at": 265372.7249716,
+            "elapsed_ms": 686.4193999790587,
+            "input_bytes": 16384,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 27.694535099959467,
+          "kind": "RESERVED",
+          "task": "matmul",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 98304,
+            "used_slots": 1,
+            "used_bytes": 98304,
+            "estimated_ms": 1001.0098304,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 28.91113729996141,
+          "kind": "RELEASE",
+          "task": "matmul",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 98304
+          }
+        },
+        {
+          "time_s": 28.928971399960574,
+          "kind": "COMMITTED",
+          "task": "matmul",
+          "device": "ov:GPU.0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:GPU.0",
+            "finished_at": 265374.1252315,
+            "elapsed_ms": 970.7124000415206,
+            "input_bytes": 32768,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 28.92937929998152,
+          "kind": "RESERVED",
+          "task": "sum",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 32776,
+            "used_slots": 1,
+            "used_bytes": 32776,
+            "estimated_ms": 1001.0032776,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 45.09251079999376,
+          "kind": "RELEASE",
+          "task": "sum",
+          "device": "ov:GPU.0",
+          "detail": {
+            "reserved_bytes": 32776
+          }
+        },
+        {
+          "time_s": 45.10204679996241,
+          "kind": "COMMITTED",
+          "task": "sum",
+          "device": "ov:GPU.0",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:GPU.0",
+            "finished_at": 265375.1680254,
+            "elapsed_ms": 781.7371000419371,
+            "input_bytes": 16384,
+            "output_bytes": 4
+          }
+        },
+        {
+          "time_s": 45.104325099964626,
+          "kind": "JOB_FINISHED",
+          "task": null,
+          "device": null,
+          "detail": {
+            "state": "SUCCEEDED"
+          }
+        }
+      ]
+    },
+    {
+      "device": {
+        "id": "ov:NPU",
+        "kind": "NPU",
+        "backend": "openvino",
+        "target": "NPU",
+        "slots": 1,
+        "memory_bytes": 536870912,
+        "bandwidth_bytes_per_s": 5000000000.0,
+        "launch_ms": 1000,
+        "name": "Intel(R) AI Boost"
+      },
+      "passed": true,
+      "state": "SUCCEEDED",
+      "elapsed_s": 38.28675349999685,
+      "checks": {
+        "add": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "multiply": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "scale": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "relu": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "identity": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "matmul": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": [
+            64,
+            64
+          ]
+        },
+        "sum": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "shape": []
+        }
+      },
+      "errors": {},
+      "events": [
+        {
+          "time_s": 9.400013368576765e-06,
+          "kind": "JOB_STARTED",
+          "task": null,
+          "device": null,
+          "detail": {}
+        },
+        {
+          "time_s": 0.0007893000147305429,
+          "kind": "RESERVED",
+          "task": "add",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 98304,
+            "used_slots": 1,
+            "used_bytes": 98304,
+            "estimated_ms": 1001.0098304,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 11.34759890002897,
+          "kind": "RELEASE",
+          "task": "add",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 98304
+          }
+        },
+        {
+          "time_s": 11.35941090004053,
+          "kind": "COMMITTED",
+          "task": "add",
+          "device": "ov:NPU",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:NPU",
+            "finished_at": 265391.565718,
+            "elapsed_ms": 981.2648000079207,
+            "input_bytes": 32768,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 11.361413300037384,
+          "kind": "RESERVED",
+          "task": "multiply",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 98304,
+            "used_slots": 1,
+            "used_bytes": 98304,
+            "estimated_ms": 1001.0098304,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 12.46733499999391,
+          "kind": "RELEASE",
+          "task": "multiply",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 98304
+          }
+        },
+        {
+          "time_s": 12.477778000000399,
+          "kind": "COMMITTED",
+          "task": "multiply",
+          "device": "ov:NPU",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:NPU",
+            "finished_at": 265402.865921,
+            "elapsed_ms": 918.309600034263,
+            "input_bytes": 32768,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 12.478119800041895,
+          "kind": "RESERVED",
+          "task": "scale",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 65536,
+            "used_slots": 1,
+            "used_bytes": 65536,
+            "estimated_ms": 1001.0065536,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 13.910425400012173,
+          "kind": "RELEASE",
+          "task": "scale",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 65536
+          }
+        },
+        {
+          "time_s": 13.920508000010159,
+          "kind": "COMMITTED",
+          "task": "scale",
+          "device": "ov:NPU",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:NPU",
+            "finished_at": 265403.9787869,
+            "elapsed_ms": 919.8565999977291,
+            "input_bytes": 16384,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 13.920848500041757,
+          "kind": "RESERVED",
+          "task": "relu",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 65536,
+            "used_slots": 1,
+            "used_bytes": 65536,
+            "estimated_ms": 1001.0065536,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 16.468277500011027,
+          "kind": "RELEASE",
+          "task": "relu",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 65536
+          }
+        },
+        {
+          "time_s": 16.4778551000054,
+          "kind": "COMMITTED",
+          "task": "relu",
+          "device": "ov:NPU",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:NPU",
+            "finished_at": 265405.4143249,
+            "elapsed_ms": 911.7079999996349,
+            "input_bytes": 16384,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 16.478168900008313,
+          "kind": "RESERVED",
+          "task": "identity",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 65536,
+            "used_slots": 1,
+            "used_bytes": 65536,
+            "estimated_ms": 1001.0065536,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 18.329738300002646,
+          "kind": "RELEASE",
+          "task": "identity",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 65536
+          }
+        },
+        {
+          "time_s": 18.339799600013066,
+          "kind": "COMMITTED",
+          "task": "identity",
+          "device": "ov:NPU",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:NPU",
+            "finished_at": 265407.9904552,
+            "elapsed_ms": 931.7254000343382,
+            "input_bytes": 16384,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 18.340116400038823,
+          "kind": "RESERVED",
+          "task": "matmul",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 98304,
+            "used_slots": 1,
+            "used_bytes": 98304,
+            "estimated_ms": 1001.0098304,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 27.04110370000126,
+          "kind": "RELEASE",
+          "task": "matmul",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 98304
+          }
+        },
+        {
+          "time_s": 27.063511100015603,
+          "kind": "COMMITTED",
+          "task": "matmul",
+          "device": "ov:NPU",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:NPU",
+            "finished_at": 265409.8348893,
+            "elapsed_ms": 911.6813999717124,
+            "input_bytes": 32768,
+            "output_bytes": 16384
+          }
+        },
+        {
+          "time_s": 27.063865400035866,
+          "kind": "RESERVED",
+          "task": "sum",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 32776,
+            "used_slots": 1,
+            "used_bytes": 32776,
+            "estimated_ms": 1001.0032776,
+            "attempt": 1
+          }
+        },
+        {
+          "time_s": 38.27586809999775,
+          "kind": "RELEASE",
+          "task": "sum",
+          "device": "ov:NPU",
+          "detail": {
+            "reserved_bytes": 32776
+          }
+        },
+        {
+          "time_s": 38.28460670000641,
+          "kind": "COMMITTED",
+          "task": "sum",
+          "device": "ov:NPU",
+          "detail": {
+            "ok": true,
+            "execution_mode": "openvino:NPU",
+            "finished_at": 265418.559216,
+            "elapsed_ms": 919.7411000495777,
+            "input_bytes": 16384,
+            "output_bytes": 4
+          }
+        },
+        {
+          "time_s": 38.28674830001546,
+          "kind": "JOB_FINISHED",
+          "task": null,
+          "device": null,
+          "detail": {
+            "state": "SUCCEEDED"
+          }
+        }
+      ]
+    }
+  ],
+  "all_discovered_devices_passed": true,
+  "tested_kinds": [
+    "CPU",
+    "GPU",
+    "NPU"
+  ]
+}

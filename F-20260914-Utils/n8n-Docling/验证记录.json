@@ -1,0 +1,31 @@
+{
+  "verifiedAt": "2026-09-13T10:33:51.532Z",
+  "realApi": "https://api.deepseek.com",
+  "models": [
+    "deepseek-flash"
+  ],
+  "calls": 6,
+  "totalTokens": 1655,
+  "parts": 2,
+  "checks": [
+    "n8n engine",
+    "real Docling DOCX and PDF page range",
+    "real DeepSeek translation, review, emphasis",
+    "numeric text retained",
+    "image exported and linked",
+    "formatted text identical after removing inserted emphasis"
+  ],
+  "formRegression": {
+    "httpStatus": 200,
+    "submittedEndPage": "",
+    "actualOutputRange": "1–末页",
+    "translationNotes": 1,
+    "verifiedFiles": [
+      "CodexFormRegression1aa217944279-20260913T104025Z-5-001.md",
+      "CodexFormRegression1aa217944279-20260913T104025Z-5-原文.md",
+      "CodexFormRegression1aa217944279-20260913T104025Z-5-复核译文.md",
+      "CodexFormRegression1aa217944279-20260913T104025Z-5-索引.md"
+    ],
+    "sampleRemovedFromVault": true
+  }
+}

@@ -1,0 +1,1004 @@
+{
+  "time_utc": "2026-09-14T14:49:50.285314+00:00",
+  "python": "3.14.7",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "size": 2048,
+  "dtype": "float32",
+  "seed": 20260914,
+  "input_bytes": 33554432,
+  "output_bytes_per_op": 16777216,
+  "matmul_flops": 17179869184,
+  "reference": "NumPy binary64, BLAS threads limited to 1",
+  "reference_seconds": 0.3415732000139542,
+  "repeats": 7,
+  "warmup": 2,
+  "diagnostics": [
+    "Excluded non-Intel OpenVINO GPU GPU.1: NVIDIA GeForce RTX 5060 Laptop GPU (dGPU); use its native adapter"
+  ],
+  "devices": [
+    {
+      "device": {
+        "id": "cpu:0",
+        "kind": "CPU",
+        "backend": "cpu",
+        "target": "host",
+        "slots": 1,
+        "memory_bytes": 1073741824,
+        "bandwidth_bytes_per_s": 5000000000.0,
+        "launch_ms": 100.0,
+        "name": ""
+      },
+      "plda": {
+        "state": "SUCCEEDED",
+        "elapsed_s": 0.6670712999766693,
+        "checks": {
+          "matmul": {
+            "passed": true,
+            "finite": true,
+            "max_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "violating_elements": 0,
+            "elements": 4194304,
+            "atol": 1e-05,
+            "rtol": 0.0001
+          },
+          "add": {
+            "passed": true,
+            "finite": true,
+            "max_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "violating_elements": 0,
+            "elements": 4194304,
+            "atol": 1e-05,
+            "rtol": 0.0001
+          }
+        },
+        "errors": {},
+        "events": [
+          {
+            "time_s": 1.6300007700920105e-05,
+            "kind": "JOB_STARTED",
+            "task": null,
+            "device": null,
+            "detail": {}
+          },
+          {
+            "time_s": 0.0010240999981760979,
+            "kind": "RESERVED",
+            "task": "matmul",
+            "device": "cpu:0",
+            "detail": {
+              "reserved_bytes": 167772160,
+              "used_slots": 1,
+              "used_bytes": 167772160,
+              "estimated_ms": 111.0663296,
+              "attempt": 1
+            }
+          },
+          {
+            "time_s": 0.38446219998877496,
+            "kind": "RELEASE",
+            "task": "matmul",
+            "device": "cpu:0",
+            "detail": {
+              "reserved_bytes": 167772160
+            }
+          },
+          {
+            "time_s": 0.39979729999322444,
+            "kind": "COMMITTED",
+            "task": "matmul",
+            "device": "cpu:0",
+            "detail": {
+              "ok": true,
+              "execution_mode": "numpy-native",
+              "finished_at": 266632.6821108,
+              "elapsed_ms": 191.6831000125967,
+              "input_bytes": 33554432,
+              "output_bytes": 16777216
+            }
+          },
+          {
+            "time_s": 0.4004939000005834,
+            "kind": "RESERVED",
+            "task": "add",
+            "device": "cpu:0",
+            "detail": {
+              "reserved_bytes": 167772160,
+              "used_slots": 1,
+              "used_bytes": 167772160,
+              "estimated_ms": 111.0663296,
+              "attempt": 1
+            }
+          },
+          {
+            "time_s": 0.6472842000075616,
+            "kind": "RELEASE",
+            "task": "add",
+            "device": "cpu:0",
+            "detail": {
+              "reserved_bytes": 167772160
+            }
+          },
+          {
+            "time_s": 0.6623362000100315,
+            "kind": "COMMITTED",
+            "task": "add",
+            "device": "cpu:0",
+            "detail": {
+              "ok": true,
+              "execution_mode": "numpy-native",
+              "finished_at": 266632.9460914,
+              "elapsed_ms": 64.09689999418333,
+              "input_bytes": 33554432,
+              "output_bytes": 16777216
+            }
+          },
+          {
+            "time_s": 0.6670584999956191,
+            "kind": "JOB_FINISHED",
+            "task": null,
+            "device": null,
+            "detail": {
+              "state": "SUCCEEDED"
+            }
+          }
+        ],
+        "task_end_to_end_ms": {
+          "matmul": 398.77319999504834,
+          "add": 261.8423000094481
+        },
+        "passed": true
+      },
+      "reuse": {
+        "device": {
+          "id": "cpu:0",
+          "kind": "CPU",
+          "backend": "cpu",
+          "target": "host",
+          "slots": 1,
+          "memory_bytes": 1073741824,
+          "bandwidth_bytes_per_s": 5000000000.0,
+          "launch_ms": 100.0,
+          "name": ""
+        },
+        "operations": {
+          "matmul": {
+            "setup_ms": 0.001400010660290718,
+            "first_host_to_host_ms": 123.94829996628687,
+            "warm_host_to_host": {
+              "median_ms": 125.11100003030151,
+              "min_ms": 123.52039996767417,
+              "max_ms": 128.3623999916017,
+              "samples_ms": [
+                124.08350000623614,
+                125.11100003030151,
+                125.7569000008516,
+                123.52039996767417,
+                124.367100012023,
+                127.88500002352521,
+                128.3623999916017
+              ]
+            },
+            "execution_targets": [
+              "host"
+            ],
+            "first_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            },
+            "last_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            }
+          },
+          "add": {
+            "setup_ms": 0.008999952115118504,
+            "first_host_to_host_ms": 5.770999996457249,
+            "warm_host_to_host": {
+              "median_ms": 5.410699988715351,
+              "min_ms": 5.096999986562878,
+              "max_ms": 5.860499979462475,
+              "samples_ms": [
+                5.410699988715351,
+                5.860499979462475,
+                5.553000024519861,
+                5.377000023145229,
+                5.472899996675551,
+                5.096999986562878,
+                5.238999961875379
+              ]
+            },
+            "execution_targets": [
+              "host"
+            ],
+            "first_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            },
+            "last_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            }
+          }
+        },
+        "passed": true,
+        "backend_initialization_ms": 0.001800013706088066,
+        "experiment_process_s": 1.9856059000012465
+      }
+    },
+    {
+      "device": {
+        "id": "cuda:0",
+        "kind": "GPU",
+        "backend": "cupy",
+        "target": "0",
+        "slots": 1,
+        "memory_bytes": 3687317504,
+        "bandwidth_bytes_per_s": 5000000000.0,
+        "launch_ms": 500,
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU"
+      },
+      "plda": {
+        "state": "SUCCEEDED",
+        "elapsed_s": 1.4682978999917395,
+        "checks": {
+          "matmul": {
+            "passed": true,
+            "finite": true,
+            "max_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "violating_elements": 0,
+            "elements": 4194304,
+            "atol": 1e-05,
+            "rtol": 0.0001
+          },
+          "add": {
+            "passed": true,
+            "finite": true,
+            "max_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "violating_elements": 0,
+            "elements": 4194304,
+            "atol": 1e-05,
+            "rtol": 0.0001
+          }
+        },
+        "errors": {},
+        "events": [
+          {
+            "time_s": 1.3200042303651571e-05,
+            "kind": "JOB_STARTED",
+            "task": null,
+            "device": null,
+            "detail": {}
+          },
+          {
+            "time_s": 0.0006441000150516629,
+            "kind": "RESERVED",
+            "task": "matmul",
+            "device": "cuda:0",
+            "detail": {
+              "reserved_bytes": 167772160,
+              "used_slots": 1,
+              "used_bytes": 167772160,
+              "estimated_ms": 511.0663296,
+              "attempt": 1
+            }
+          },
+          {
+            "time_s": 0.7587525999988429,
+            "kind": "RELEASE",
+            "task": "matmul",
+            "device": "cuda:0",
+            "detail": {
+              "reserved_bytes": 167772160
+            }
+          },
+          {
+            "time_s": 0.7795169000164606,
+            "kind": "COMMITTED",
+            "task": "matmul",
+            "device": "cuda:0",
+            "detail": {
+              "ok": true,
+              "execution_mode": "cupy-cuda",
+              "finished_at": 266635.79873,
+              "elapsed_ms": 491.4146999944933,
+              "input_bytes": 33554432,
+              "output_bytes": 16777216
+            }
+          },
+          {
+            "time_s": 0.7803301000385545,
+            "kind": "RESERVED",
+            "task": "add",
+            "device": "cuda:0",
+            "detail": {
+              "reserved_bytes": 167772160,
+              "used_slots": 1,
+              "used_bytes": 167772160,
+              "estimated_ms": 511.0663296,
+              "attempt": 1
+            }
+          },
+          {
+            "time_s": 1.450126400042791,
+            "kind": "RELEASE",
+            "task": "add",
+            "device": "cuda:0",
+            "detail": {
+              "reserved_bytes": 167772160
+            }
+          },
+          {
+            "time_s": 1.4634112000348978,
+            "kind": "COMMITTED",
+            "task": "add",
+            "device": "cuda:0",
+            "detail": {
+              "ok": true,
+              "execution_mode": "cupy-cuda",
+              "finished_at": 266636.5072399,
+              "elapsed_ms": 416.7094000149518,
+              "input_bytes": 33554432,
+              "output_bytes": 16777216
+            }
+          },
+          {
+            "time_s": 1.468289700045716,
+            "kind": "JOB_FINISHED",
+            "task": null,
+            "device": null,
+            "detail": {
+              "state": "SUCCEEDED"
+            }
+          }
+        ],
+        "task_end_to_end_ms": {
+          "matmul": 778.8728000014089,
+          "add": 683.0810999963433
+        },
+        "passed": true
+      },
+      "reuse": {
+        "device": {
+          "id": "cuda:0",
+          "kind": "GPU",
+          "backend": "cupy",
+          "target": "0",
+          "slots": 1,
+          "memory_bytes": 3687317504,
+          "bandwidth_bytes_per_s": 5000000000.0,
+          "launch_ms": 500,
+          "name": "NVIDIA GeForce RTX 5060 Laptop GPU"
+        },
+        "operations": {
+          "matmul": {
+            "setup_ms": 0.00589998671784997,
+            "first_host_to_host_ms": 84.50029999949038,
+            "warm_host_to_host": {
+              "median_ms": 11.202499968931079,
+              "min_ms": 11.003499967046082,
+              "max_ms": 11.984200042206794,
+              "samples_ms": [
+                11.385700025130063,
+                11.003499967046082,
+                11.179100023582578,
+                11.984200042206794,
+                11.202499968931079,
+                11.01279997965321,
+                11.258899990934879
+              ]
+            },
+            "execution_targets": [
+              "0"
+            ],
+            "first_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            },
+            "last_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            },
+            "resident_cuda_event": {
+              "median_ms": 1.5407999753952026,
+              "min_ms": 1.5339200496673584,
+              "max_ms": 1.56278395652771,
+              "samples_ms": [
+                1.56278395652771,
+                1.5491199493408203,
+                1.5407999753952026,
+                1.5357760190963745,
+                1.5421439409255981,
+                1.5339200496673584,
+                1.539520025253296
+              ]
+            }
+          },
+          "add": {
+            "setup_ms": 0.00300002284348011,
+            "first_host_to_host_ms": 44.41550001502037,
+            "warm_host_to_host": {
+              "median_ms": 9.126199991442263,
+              "min_ms": 8.674499986227602,
+              "max_ms": 9.733500017318875,
+              "samples_ms": [
+                8.89250001637265,
+                9.15469997562468,
+                9.155899984762073,
+                8.674499986227602,
+                9.126199991442263,
+                8.97860003169626,
+                9.733500017318875
+              ]
+            },
+            "execution_targets": [
+              "0"
+            ],
+            "first_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            },
+            "last_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            },
+            "resident_cuda_event": {
+              "median_ms": 0.17241600155830383,
+              "min_ms": 0.16857600212097168,
+              "max_ms": 0.18537600338459015,
+              "samples_ms": [
+                0.18537600338459015,
+                0.17241600155830383,
+                0.17414399981498718,
+                0.17401599884033203,
+                0.16966399550437927,
+                0.16976000368595123,
+                0.16857600212097168
+              ]
+            }
+          }
+        },
+        "passed": true,
+        "backend_initialization_ms": 290.48409999813884,
+        "experiment_process_s": 1.3239019999746233
+      }
+    },
+    {
+      "device": {
+        "id": "ov:GPU.0",
+        "kind": "GPU",
+        "backend": "openvino",
+        "target": "GPU.0",
+        "slots": 1,
+        "memory_bytes": 536870912,
+        "bandwidth_bytes_per_s": 5000000000.0,
+        "launch_ms": 1000,
+        "name": "Intel(R) Graphics (iGPU)"
+      },
+      "plda": {
+        "state": "SUCCEEDED",
+        "elapsed_s": 13.78182419994846,
+        "checks": {
+          "matmul": {
+            "passed": true,
+            "finite": true,
+            "max_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "violating_elements": 0,
+            "elements": 4194304,
+            "atol": 1e-05,
+            "rtol": 0.0001
+          },
+          "add": {
+            "passed": true,
+            "finite": true,
+            "max_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "violating_elements": 0,
+            "elements": 4194304,
+            "atol": 1e-05,
+            "rtol": 0.0001
+          }
+        },
+        "errors": {},
+        "events": [
+          {
+            "time_s": 1.629994949325919e-05,
+            "kind": "JOB_STARTED",
+            "task": null,
+            "device": null,
+            "detail": {}
+          },
+          {
+            "time_s": 0.0007368999649770558,
+            "kind": "RESERVED",
+            "task": "matmul",
+            "device": "ov:GPU.0",
+            "detail": {
+              "reserved_bytes": 167772160,
+              "used_slots": 1,
+              "used_bytes": 167772160,
+              "estimated_ms": 1011.0663296,
+              "attempt": 1
+            }
+          },
+          {
+            "time_s": 8.304923899995629,
+            "kind": "RELEASE",
+            "task": "matmul",
+            "device": "ov:GPU.0",
+            "detail": {
+              "reserved_bytes": 167772160
+            }
+          },
+          {
+            "time_s": 8.3232611999847,
+            "kind": "COMMITTED",
+            "task": "matmul",
+            "device": "ov:GPU.0",
+            "detail": {
+              "ok": true,
+              "execution_mode": "openvino:GPU.0",
+              "finished_at": 266639.4317507,
+              "elapsed_ms": 1191.5213000029325,
+              "input_bytes": 33554432,
+              "output_bytes": 16777216
+            }
+          },
+          {
+            "time_s": 8.324537199980114,
+            "kind": "RESERVED",
+            "task": "add",
+            "device": "ov:GPU.0",
+            "detail": {
+              "reserved_bytes": 167772160,
+              "used_slots": 1,
+              "used_bytes": 167772160,
+              "estimated_ms": 1011.0663296,
+              "attempt": 1
+            }
+          },
+          {
+            "time_s": 13.758014199964236,
+            "kind": "RELEASE",
+            "task": "add",
+            "device": "ov:GPU.0",
+            "detail": {
+              "reserved_bytes": 167772160
+            }
+          },
+          {
+            "time_s": 13.778512599994428,
+            "kind": "COMMITTED",
+            "task": "add",
+            "device": "ov:GPU.0",
+            "detail": {
+              "ok": true,
+              "execution_mode": "openvino:GPU.0",
+              "finished_at": 266647.2858871,
+              "elapsed_ms": 722.3660000017844,
+              "input_bytes": 33554432,
+              "output_bytes": 16777216
+            }
+          },
+          {
+            "time_s": 13.78181949997088,
+            "kind": "JOB_FINISHED",
+            "task": null,
+            "device": null,
+            "detail": {
+              "state": "SUCCEEDED"
+            }
+          }
+        ],
+        "task_end_to_end_ms": {
+          "matmul": 8322.524300019722,
+          "add": 5453.975400014315
+        },
+        "passed": true
+      },
+      "reuse": {
+        "device": {
+          "id": "ov:GPU.0",
+          "kind": "GPU",
+          "backend": "openvino",
+          "target": "GPU.0",
+          "slots": 1,
+          "memory_bytes": 536870912,
+          "bandwidth_bytes_per_s": 5000000000.0,
+          "launch_ms": 1000,
+          "name": "Intel(R) Graphics (iGPU)"
+        },
+        "operations": {
+          "matmul": {
+            "setup_ms": 362.5190000166185,
+            "first_host_to_host_ms": 26.69269999023527,
+            "warm_host_to_host": {
+              "median_ms": 28.43960002064705,
+              "min_ms": 27.016300009563565,
+              "max_ms": 28.561500017531216,
+              "samples_ms": [
+                28.561500017531216,
+                28.482900001108646,
+                28.43960002064705,
+                27.633200050331652,
+                27.761999983340502,
+                28.532399970572442,
+                27.016300009563565
+              ]
+            },
+            "execution_targets": [
+              "GPU.0"
+            ],
+            "first_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            },
+            "last_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            }
+          },
+          "add": {
+            "setup_ms": 34.73590000066906,
+            "first_host_to_host_ms": 17.84590003080666,
+            "warm_host_to_host": {
+              "median_ms": 17.79109996277839,
+              "min_ms": 17.27700000628829,
+              "max_ms": 18.05770001374185,
+              "samples_ms": [
+                17.50840002205223,
+                17.403699981514364,
+                18.05770001374185,
+                17.79109996277839,
+                17.27700000628829,
+                18.00290000392124,
+                17.82949996413663
+              ]
+            },
+            "execution_targets": [
+              "GPU.0"
+            ],
+            "first_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            },
+            "last_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            }
+          }
+        },
+        "passed": true,
+        "backend_initialization_ms": 137.01040000887588,
+        "experiment_process_s": 3.248715100053232
+      }
+    },
+    {
+      "device": {
+        "id": "ov:NPU",
+        "kind": "NPU",
+        "backend": "openvino",
+        "target": "NPU",
+        "slots": 1,
+        "memory_bytes": 536870912,
+        "bandwidth_bytes_per_s": 5000000000.0,
+        "launch_ms": 1000,
+        "name": "Intel(R) AI Boost"
+      },
+      "plda": {
+        "state": "SUCCEEDED",
+        "elapsed_s": 6.388362700003199,
+        "checks": {
+          "matmul": {
+            "passed": true,
+            "finite": true,
+            "max_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "violating_elements": 0,
+            "elements": 4194304,
+            "atol": 1e-05,
+            "rtol": 0.0001
+          },
+          "add": {
+            "passed": true,
+            "finite": true,
+            "max_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "violating_elements": 0,
+            "elements": 4194304,
+            "atol": 1e-05,
+            "rtol": 0.0001
+          }
+        },
+        "errors": {},
+        "events": [
+          {
+            "time_s": 5.700043402612209e-06,
+            "kind": "JOB_STARTED",
+            "task": null,
+            "device": null,
+            "detail": {}
+          },
+          {
+            "time_s": 0.0005358000053092837,
+            "kind": "RESERVED",
+            "task": "matmul",
+            "device": "ov:NPU",
+            "detail": {
+              "reserved_bytes": 167772160,
+              "used_slots": 1,
+              "used_bytes": 167772160,
+              "estimated_ms": 1011.0663296,
+              "attempt": 1
+            }
+          },
+          {
+            "time_s": 1.2267072000540793,
+            "kind": "RELEASE",
+            "task": "matmul",
+            "device": "ov:NPU",
+            "detail": {
+              "reserved_bytes": 167772160
+            }
+          },
+          {
+            "time_s": 1.2437224000459537,
+            "kind": "COMMITTED",
+            "task": "matmul",
+            "device": "ov:NPU",
+            "detail": {
+              "ok": true,
+              "execution_mode": "openvino:NPU",
+              "finished_at": 266656.4647495,
+              "elapsed_ms": 1019.1419000038877,
+              "input_bytes": 33554432,
+              "output_bytes": 16777216
+            }
+          },
+          {
+            "time_s": 1.2449393999995664,
+            "kind": "RESERVED",
+            "task": "add",
+            "device": "ov:NPU",
+            "detail": {
+              "reserved_bytes": 167772160,
+              "used_slots": 1,
+              "used_bytes": 167772160,
+              "estimated_ms": 1011.0663296,
+              "attempt": 1
+            }
+          },
+          {
+            "time_s": 6.370159700047225,
+            "kind": "RELEASE",
+            "task": "add",
+            "device": "ov:NPU",
+            "detail": {
+              "reserved_bytes": 167772160
+            }
+          },
+          {
+            "time_s": 6.385156300035305,
+            "kind": "COMMITTED",
+            "task": "add",
+            "device": "ov:NPU",
+            "detail": {
+              "ok": true,
+              "execution_mode": "openvino:NPU",
+              "finished_at": 266657.6541605,
+              "elapsed_ms": 966.0779999685474,
+              "input_bytes": 33554432,
+              "output_bytes": 16777216
+            }
+          },
+          {
+            "time_s": 6.388357500021812,
+            "kind": "JOB_FINISHED",
+            "task": null,
+            "device": null,
+            "detail": {
+              "state": "SUCCEEDED"
+            }
+          }
+        ],
+        "task_end_to_end_ms": {
+          "matmul": 1243.1866000406444,
+          "add": 5140.216900035739
+        },
+        "passed": true
+      },
+      "reuse": {
+        "device": {
+          "id": "ov:NPU",
+          "kind": "NPU",
+          "backend": "openvino",
+          "target": "NPU",
+          "slots": 1,
+          "memory_bytes": 536870912,
+          "bandwidth_bytes_per_s": 5000000000.0,
+          "launch_ms": 1000,
+          "name": "Intel(R) AI Boost"
+        },
+        "operations": {
+          "matmul": {
+            "setup_ms": 613.606599974446,
+            "first_host_to_host_ms": 48.71229996206239,
+            "warm_host_to_host": {
+              "median_ms": 29.870100028347224,
+              "min_ms": 27.884199982509017,
+              "max_ms": 36.14969999762252,
+              "samples_ms": [
+                36.14969999762252,
+                32.99400000832975,
+                30.967800004873425,
+                29.870100028347224,
+                29.699600010644644,
+                28.54590001516044,
+                27.884199982509017
+              ]
+            },
+            "execution_targets": [
+              "N",
+              "P",
+              "U"
+            ],
+            "first_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            },
+            "last_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            }
+          },
+          "add": {
+            "setup_ms": 89.57939996616915,
+            "first_host_to_host_ms": 23.470799962524325,
+            "warm_host_to_host": {
+              "median_ms": 18.473900039680302,
+              "min_ms": 17.81059999484569,
+              "max_ms": 19.772399973589927,
+              "samples_ms": [
+                18.619799986481667,
+                17.81059999484569,
+                18.125500006135553,
+                18.771299975924194,
+                19.772399973589927,
+                18.473900039680302,
+                18.413999991025776
+              ]
+            },
+            "execution_targets": [
+              "N",
+              "P",
+              "U"
+            ],
+            "first_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            },
+            "last_check": {
+              "passed": true,
+              "finite": true,
+              "max_absolute_error": 0.0,
+              "rms_error": 0.0,
+              "violating_elements": 0,
+              "elements": 4194304,
+              "atol": 1e-05,
+              "rtol": 0.0001
+            }
+          }
+        },
+        "passed": true,
+        "backend_initialization_ms": 128.85699997423217,
+        "experiment_process_s": 1.997181900020223
+      }
+    }
+  ],
+  "packages": {
+    "numpy": "2.5.3",
+    "cupy-cuda13x": "14.2.0",
+    "openvino": "2026.3.1"
+  },
+  "scope": "PLDA one-shot end-to-end plus separate host-to-host context-reuse experiment; no runtime optimization applied",
+  "tested_kinds": [
+    "CPU",
+    "GPU",
+    "NPU"
+  ],
+  "passed": true
+}

@@ -1,0 +1,142 @@
+== 子词嵌入 ==
+<span id="sec_fasttext"></span>
+
+在英语中，“helps”“helped”和“helping”等单词都是同一个词“help”的变形形式。“dog”和“dogs”之间的关系与“cat”和“cats”之间的关系相同，“boy”和“boyfriend”之间的关系与“girl”和“girlfriend”之间的关系相同。在法语和西班牙语等其他语言中，许多动词有40多种变形形式，而在芬兰语中，名词最多可能有15种变形。在语言学中，形态学研究单词形成和词汇关系。但是，word2vec和GloVe都没有对词的内部结构进行探讨。
+
+=== fastText模型 ===
+
+回想一下词在word2vec中是如何表示的。在跳元模型和连续词袋模型中，同一词的不同变形形式直接由不同的向量表示，不需要共享参数。为了使用形态信息，''fastText模型''提出了一种''子词嵌入''方法，其中子词是一个字符<math>n</math>-gram <sup>[Bojanowski.Grave.Joulin.ea.2017]</sup>。fastText可以被认为是子词级跳元模型，而非学习词级向量表示，其中每个''中心词''由其子词级向量之和表示。
+
+让我们来说明如何以单词“where”为例获得fastText中每个中心词的子词。首先，在词的开头和末尾添加特殊字符“&lt;”和“&gt;”，以将前缀和后缀与其他子词区分开来。
+然后，从词中提取字符<math>n</math>-gram。
+例如，值<math>n=3</math>时，我们将获得长度为3的所有子词：
+“&lt;wh”“whe”“her”“ere”“re&gt;”和特殊子词“&lt;where&gt;”。
+
+在fastText中，对于任意词<math>w</math>，用<math>\mathcal{G}_w</math>表示其长度在3和6之间的所有子词与其特殊子词的并集。词表是所有词的子词的集合。假设<math>\mathbf{z}_g</math>是词典中的子词<math>g</math>的向量，则跳元模型中作为中心词的词<math>w</math>的向量<math>\mathbf{v}_w</math>是其子词向量的和：
+
+<math display="block">\mathbf{v}_w = \sum_{g\in\mathcal{G}_w} \mathbf{z}_g.</math>
+
+fastText的其余部分与跳元模型相同。与跳元模型相比，fastText的词量更大，模型参数也更多。此外，为了计算一个词的表示，它的所有子词向量都必须求和，这导致了更高的计算复杂度。然而，由于具有相似结构的词之间共享来自子词的参数，罕见词甚至词表外的词在fastText中可能获得更好的向量表示。
+
+=== 字节对编码（Byte Pair Encoding） ===
+<span id="subsec_Byte_Pair_Encoding"></span>
+
+在fastText中，所有提取的子词都必须是指定的长度，例如<math>3</math>到<math>6</math>，因此词表大小不能预定义。为了在固定大小的词表中允许可变长度的子词，我们可以应用一种称为''字节对编码''（Byte Pair Encoding，BPE）的压缩算法来提取子词 <sup>[Sennrich.Haddow.Birch.2015]</sup>。
+
+字节对编码执行训练数据集的统计分析，以发现单词内的公共符号，诸如任意长度的连续字符。从长度为1的符号开始，字节对编码迭代地合并最频繁的连续符号对以产生新的更长的符号。请注意，为提高效率，不考虑跨越单词边界的对。最后，我们可以使用像子词这样的符号来切分单词。字节对编码及其变体已经用于诸如GPT-2 <sup>[Radford.Wu.Child.ea.2019]</sup>和RoBERTa <sup>[Liu.Ott.Goyal.ea.2019]</sup>等自然语言处理预训练模型中的输入表示。在下面，我们将说明字节对编码是如何工作的。
+
+首先，我们将符号词表初始化为所有英文小写字符、特殊的词尾符号<code>'_'</code>和特殊的未知符号<code>'[UNK]'</code>。
+
+<syntaxhighlight lang="python">
+import collections
+
+symbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+           'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+           '_', '[UNK]']
+
+</syntaxhighlight>
+
+因为我们不考虑跨越词边界的符号对，所以我们只需要一个字典<code>raw_token_freqs</code>将词映射到数据集中的频率（出现次数）。注意，特殊符号<code>'_'</code>被附加到每个词的尾部，以便我们可以容易地从输出符号序列（例如，“a_all er_man”）恢复单词序列（例如，“a_all er_man”）。由于我们仅从单个字符和特殊符号的词开始合并处理，所以在每个词（词典<code>token_freqs</code>的键）内的每对连续字符之间插入空格。换句话说，空格是词中符号之间的分隔符。
+
+<syntaxhighlight lang="python">
+raw_token_freqs = {'fast_': 4, 'faster_': 3, 'tall_': 5, 'taller_': 4}
+token_freqs = {}
+for token, freq in raw_token_freqs.items():
+    token_freqs[' '.join(list(token))] = raw_token_freqs[token]
+token_freqs
+</syntaxhighlight>
+
+我们定义以下<code>get_max_freq_pair</code>函数，其返回词内最频繁的连续符号对，其中词来自输入词典<code>token_freqs</code>的键。
+
+<syntaxhighlight lang="python">
+def get_max_freq_pair(token_freqs):
+    pairs = collections.defaultdict(int)
+    for token, freq in token_freqs.items():
+        symbols = token.split()
+        for i in range(len(symbols) - 1):
+            # “pairs”的键是两个连续符号的元组
+            pairs[symbols[i], symbols[i + 1]] += freq
+    return max(pairs, key=pairs.get)  # 具有最大值的“pairs”键
+</syntaxhighlight>
+
+作为基于连续符号频率的贪心方法，字节对编码将使用以下<code>merge_symbols</code>函数来合并最频繁的连续符号对以产生新符号。
+
+<syntaxhighlight lang="python">
+def merge_symbols(max_freq_pair, token_freqs, symbols):
+    symbols.append(''.join(max_freq_pair))
+    new_token_freqs = dict()
+    for token, freq in token_freqs.items():
+        new_token = token.replace(' '.join(max_freq_pair),
+                                  ''.join(max_freq_pair))
+        new_token_freqs[new_token] = token_freqs[token]
+    return new_token_freqs
+</syntaxhighlight>
+
+现在，我们对词典<code>token_freqs</code>的键迭代地执行字节对编码算法。在第一次迭代中，最频繁的连续符号对是<code>'t'</code>和<code>'a'</code>，因此字节对编码将它们合并以产生新符号<code>'ta'</code>。在第二次迭代中，字节对编码继续合并<code>'ta'</code>和<code>'l'</code>以产生另一个新符号<code>'tal'</code>。
+
+<syntaxhighlight lang="python">
+num_merges = 10
+for i in range(num_merges):
+    max_freq_pair = get_max_freq_pair(token_freqs)
+    token_freqs = merge_symbols(max_freq_pair, token_freqs, symbols)
+    print(f'合并# {i+1}:',max_freq_pair)
+</syntaxhighlight>
+
+在字节对编码的10次迭代之后，我们可以看到列表<code>symbols</code>现在又包含10个从其他符号迭代合并而来的符号。
+
+<syntaxhighlight lang="python">
+print(symbols)
+</syntaxhighlight>
+
+对于在词典<code>raw_token_freqs</code>的键中指定的同一数据集，作为字节对编码算法的结果，数据集中的每个词现在被子词“fast_”“fast”“er_”“tall_”和“tall”分割。例如，单词“fast er_”和“tall er_”分别被分割为“fast er_”和“tall er_”。
+
+<syntaxhighlight lang="python">
+print(list(token_freqs.keys()))
+</syntaxhighlight>
+
+请注意，字节对编码的结果取决于正在使用的数据集。我们还可以使用从一个数据集学习的子词来切分另一个数据集的单词。作为一种贪心方法，下面的<code>segment_BPE</code>函数尝试将单词从输入参数<code>symbols</code>分成可能最长的子词。
+
+<syntaxhighlight lang="python">
+def segment_BPE(tokens, symbols):
+    outputs = []
+    for token in tokens:
+        start, end = 0, len(token)
+        cur_output = []
+        # 具有符号中可能最长子字的词元段
+        while start < len(token) and start < end:
+            if token[start: end] in symbols:
+                cur_output.append(token[start: end])
+                start = end
+                end = len(token)
+            else:
+                end -= 1
+        if start < len(token):
+            cur_output.append('[UNK]')
+        outputs.append(' '.join(cur_output))
+    return outputs
+</syntaxhighlight>
+
+我们使用列表<code>symbols</code>中的子词（从前面提到的数据集学习）来表示另一个数据集的<code>tokens</code>。
+
+<syntaxhighlight lang="python">
+tokens = ['tallest_', 'fatter_']
+print(segment_BPE(tokens, symbols))
+</syntaxhighlight>
+
+=== 小结 ===
+
+* fastText模型提出了一种子词嵌入方法：基于word2vec中的跳元模型，它将中心词表示为其子词向量之和。
+* 字节对编码执行训练数据集的统计分析，以发现词内的公共符号。作为一种贪心方法，字节对编码迭代地合并最频繁的连续符号对。
+* 子词嵌入可以提高稀有词和词典外词的表示质量。
+
+=== 练习 ===
+
+# 例如，英语中大约有<math>3\times 10^8</math>种可能的<math>6</math>-元组。子词太多会有什么问题呢？如何解决这个问题？提示:请参阅fastText论文第3.2节末尾 <sup>[Bojanowski.Grave.Joulin.ea.2017]</sup>。
+# 如何在连续词袋模型的基础上设计一个子词嵌入模型？
+# 要获得大小为<math>m</math>的词表，当初始符号词表大小为<math>n</math>时，需要多少合并操作？
+# 如何扩展字节对编码的思想来提取短语？
+
+[https://discuss.d2l.ai/t/5748 Discussions]
+
+[[Category:动手学深度学习]]
+[[Category:自然语言处理：预训练]]

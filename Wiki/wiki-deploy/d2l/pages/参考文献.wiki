@@ -1,0 +1,4 @@
+:bibliography:<code>../d2l.bib</code>
+
+[[Category:动手学深度学习]]
+[[Category:参考文献]]

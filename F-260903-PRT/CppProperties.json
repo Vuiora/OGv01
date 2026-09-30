@@ -1,0 +1,65 @@
+{
+  "configurations": [
+    {
+      "name": "Debug-Linux-GCC",
+      "inheritEnvironments": [ "linux_x64" ],
+      "intelliSenseMode": "linux-gcc-x64",
+
+      "includePath": [
+        "${workspaceRoot}/**",
+        "${workspaceRoot}/include",
+        "/usr/include",
+        "/usr/local/include",
+        "/usr/include/x86_64-linux-gnu"
+      ],
+
+      "defines": [ "DEBUG", "_DEBUG" ],
+
+      "compilerSwitches": "-fPIC -Wall",
+
+      "compilers": {
+        "c": {
+          "path": "/usr/bin/gcc",
+          "standard": "gnu17",
+          "args": "-fPIC -Wall"
+        },
+        "cpp": {
+          "path": "/usr/bin/g++",
+          "standard": "gnu++17",
+          "args": "-fPIC -Wall"
+        }
+      }
+    },
+
+    {
+      "name": "Release-Linux-GCC",
+      "inheritEnvironments": [ "linux_x64" ],
+      "intelliSenseMode": "linux-gcc-x64",
+
+      "includePath": [
+        "${workspaceRoot}/**",
+        "${workspaceRoot}/include",
+        "/usr/include",
+        "/usr/local/include",
+        "/usr/include/x86_64-linux-gnu"
+      ],
+
+      "defines": [ "NDEBUG" ],
+
+      "compilerSwitches": "-fPIC -O2",
+
+      "compilers": {
+        "c": {
+          "path": "/usr/bin/gcc",
+          "standard": "gnu17",
+          "args": "-fPIC -O2"
+        },
+        "cpp": {
+          "path": "/usr/bin/g++",
+          "standard": "gnu++17",
+          "args": "-fPIC -O2"
+        }
+      }
+    }
+  ]
+}

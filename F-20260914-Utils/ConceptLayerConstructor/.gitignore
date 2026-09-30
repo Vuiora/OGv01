@@ -1,0 +1,9 @@
+.venv/
+.env
+data/
+tmp/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+docker-build.log

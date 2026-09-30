@@ -1,0 +1,66 @@
+{{课程信息
+| 课程名称 = 范式
+| 英文名称 = Normal Form
+| 归属 = [[命题逻辑]]
+| 关键词 = 对偶公式、文字、简单析取式、析取范式、合取范式
+}}
+
+'''范式'''是[[命题逻辑]]中命题公式的标准形式，包括析取范式与合取范式两类。
+
+== 对偶公式 ==
+设命题公式 <math>A</math> 仅含有联结词 <math>\neg</math>、<math>\land</math>、<math>\lor</math>，在 <math>A</math> 中将 <math>\lor</math>、<math>\land</math>、<math>F</math>、<math>T</math> 分别换以 <math>\land</math>、<math>\lor</math>、<math>T</math>、<math>F</math> 得出公式 <math>A^*</math>，则 <math>A^*</math> 称为 <math>A</math> 的'''对偶公式'''，即 <math>(A^*)^* = A</math>。
+
+== 基本概念 ==
+* '''文字'''：命题变元及其否定统称为文字（如 <math>P</math>、<math>\neg P</math>）。
+* '''简单析取式'''：仅有有限个文字组成的析取式。<br />如：<math>P</math>，<math>\neg P \lor Q</math>，<math>P \lor \neg P</math>，<math>Q \lor P \lor \neg P</math>，<math>P \lor \neg Q \lor R \lor \neg S</math>。
+* '''简单合取式'''：仅有有限个文字组成的合取式。<br />如：<math>P</math>，<math>\neg Q</math>，<math>Q \land \neg P</math>，<math>P \land \neg P</math>，<math>Q \land P \land \neg P</math>，<math>P \land \neg Q \land R</math>。
+
+== 析取范式与合取范式 ==
+* '''析取范式'''：一个命题公式称为析取范式，当且仅当它具有形式：
+<math>A_1 \lor A_2 \lor \ldots \lor A_n \;(n \geq 1)</math>
+其中 <math>A_i \; (i = 1, 2, \ldots, n)</math> 为简单合取式。<br />如：<math>P \lor \neg Q</math>，<math>(P \land Q) \lor (P \land \neg Q \land R)</math>，<math>Q \lor \neg P</math>。
+
+* '''合取范式'''：一个命题公式称为合取范式，当且仅当它具有形式：
+<math>A_1 \land A_2 \land \ldots \land A_n \;(n \geq 1)</math>
+其中 <math>A_i \; (i = 1, 2, \ldots, n)</math> 为简单析取式。<br />如：<math>P \land \neg Q</math>，<math>(P \lor Q) \land (P \lor \neg Q \lor R)</math>，<math>Q \land \neg P</math>。
+
+* '''范式'''：析取范式与合取范式统称为范式。
+
+显然，任何合（析）取范式的对偶式是析（合）取范式。
+
+== 求范式的基本步骤 ==
+# 将公式中的联结词化归成 <math>\neg</math>、<math>\land</math> 及 <math>\lor</math>。
+# 将否定联结词消去或内移到各命题变元之前，利用下列等价式：
+#* <math>\neg \neg A \Leftrightarrow A</math>
+#* <math>\neg (A \lor B) \Leftrightarrow \neg A \land \neg B</math>
+#* <math>\neg (A \land B) \Leftrightarrow \neg A \lor \neg B</math>
+# 利用分配律、结合律将公式转化为合取范式或析取范式：
+#* <math>C \land (A \lor B) \Leftrightarrow (C \land A) \lor (C \land B)</math>
+#* <math>C \lor (A \land B) \Leftrightarrow (C \lor A) \land (C \lor B)</math>
+
+注意：一个命题公式的析（合）取范式不是唯一的。
+
+== 例题 ==
+'''求 <math>((P \lor Q) \to R) \to P</math> 的析取范式与合取范式。'''
+
+'''解'''：
+
+<math>
+\begin{aligned}
+\text{原式} &\Leftrightarrow \neg (\neg (P \lor Q) \lor R) \lor P \\
+&\Leftrightarrow ((P \lor Q) \land \neg R) \lor P \\
+&\Leftrightarrow (P \land \neg R) \lor (Q \land \neg R) \lor P \quad \text{（析取范式）} \\
+&\Leftrightarrow P \lor (P \land \neg R) \lor (Q \land \neg R) \\
+&\Leftrightarrow P \lor (Q \land \neg R) \quad \text{（析取范式）} \\
+&\Leftrightarrow (P \lor Q \lor P) \land (\neg R \lor P) \quad \text{（合取范式）} \\
+&\Leftrightarrow (P \lor Q) \land (\neg R \lor P) \quad \text{（合取范式）}
+\end{aligned}
+</math>
+
+== 参见 ==
+* [[命题逻辑]]
+* [[推理理论]]
+* [[数理逻辑]]
+
+[[Category:计算机数学基础]]
+[[Category:数理逻辑]]

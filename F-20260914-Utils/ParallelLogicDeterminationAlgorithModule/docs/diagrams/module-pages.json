@@ -1,0 +1,111 @@
+{
+  "file": "C:\\Users\\Lenovo\\Desktop\\OGv01\\F-20260914-Utils\\TheStructure.drawio",
+  "page_count": 5,
+  "module_count": 3,
+  "definition": "除背景板外，不被其他区域包含的最大区域",
+  "modules": [
+    {
+      "module": "DEVICE_1",
+      "page_id": "system-module-device-v1",
+      "page_index": 3,
+      "member_ids": [
+        "8rw-NWJHrkYK3E8QMIOX-53",
+        "8rw-NWJHrkYK3E8QMIOX-62",
+        "8rw-NWJHrkYK3E8QMIOX-66",
+        "8rw-NWJHrkYK3E8QMIOX-70",
+        "8rw-NWJHrkYK3E8QMIOX-74",
+        "8rw-NWJHrkYK3E8QMIOX-75"
+      ],
+      "internal_edge_ids": [],
+      "cross_boundary_edge_ids": [
+        "8rw-NWJHrkYK3E8QMIOX-79",
+        "8rw-NWJHrkYK3E8QMIOX-80",
+        "8rw-NWJHrkYK3E8QMIOX-81",
+        "8rw-NWJHrkYK3E8QMIOX-82"
+      ],
+      "interface_count": 1
+    },
+    {
+      "module": "通信基础设施",
+      "page_id": "system-module-communication-v1",
+      "page_index": 4,
+      "member_ids": [
+        "8rw-NWJHrkYK3E8QMIOX-14",
+        "8rw-NWJHrkYK3E8QMIOX-27",
+        "8rw-NWJHrkYK3E8QMIOX-3",
+        "8rw-NWJHrkYK3E8QMIOX-31",
+        "8rw-NWJHrkYK3E8QMIOX-44",
+        "8rw-NWJHrkYK3E8QMIOX-45",
+        "8rw-NWJHrkYK3E8QMIOX-46",
+        "8rw-NWJHrkYK3E8QMIOX-54",
+        "8rw-NWJHrkYK3E8QMIOX-83",
+        "8rw-NWJHrkYK3E8QMIOX-9",
+        "plda-overview-analysis",
+        "plda-overview-dispatch",
+        "plda-overview-input",
+        "plda-overview-page-note",
+        "plda-overview-results",
+        "plda-overview-schedule"
+      ],
+      "internal_edge_ids": [
+        "plda-overview-flow-0",
+        "plda-overview-flow-1",
+        "plda-overview-flow-2",
+        "8rw-NWJHrkYK3E8QMIOX-57",
+        "8rw-NWJHrkYK3E8QMIOX-56",
+        "8rw-NWJHrkYK3E8QMIOX-47",
+        "plda-overview-result-out"
+      ],
+      "cross_boundary_edge_ids": [
+        "8rw-NWJHrkYK3E8QMIOX-4",
+        "8rw-NWJHrkYK3E8QMIOX-7",
+        "8rw-NWJHrkYK3E8QMIOX-26",
+        "8rw-NWJHrkYK3E8QMIOX-36",
+        "8rw-NWJHrkYK3E8QMIOX-58",
+        "8rw-NWJHrkYK3E8QMIOX-42",
+        "8rw-NWJHrkYK3E8QMIOX-43",
+        "8rw-NWJHrkYK3E8QMIOX-79",
+        "8rw-NWJHrkYK3E8QMIOX-80",
+        "8rw-NWJHrkYK3E8QMIOX-81",
+        "8rw-NWJHrkYK3E8QMIOX-82",
+        "plda-overview-result-channel"
+      ],
+      "interface_count": 9
+    },
+    {
+      "module": "数据处理模块",
+      "page_id": "system-module-data-processing-v1",
+      "page_index": 5,
+      "member_ids": [
+        "8rw-NWJHrkYK3E8QMIOX-1",
+        "8rw-NWJHrkYK3E8QMIOX-12",
+        "8rw-NWJHrkYK3E8QMIOX-17",
+        "8rw-NWJHrkYK3E8QMIOX-19",
+        "8rw-NWJHrkYK3E8QMIOX-2",
+        "8rw-NWJHrkYK3E8QMIOX-35"
+      ],
+      "internal_edge_ids": [
+        "8rw-NWJHrkYK3E8QMIOX-21",
+        "8rw-NWJHrkYK3E8QMIOX-30",
+        "8rw-NWJHrkYK3E8QMIOX-22",
+        "8rw-NWJHrkYK3E8QMIOX-23",
+        "8rw-NWJHrkYK3E8QMIOX-24"
+      ],
+      "cross_boundary_edge_ids": [
+        "8rw-NWJHrkYK3E8QMIOX-4",
+        "8rw-NWJHrkYK3E8QMIOX-7",
+        "8rw-NWJHrkYK3E8QMIOX-26",
+        "8rw-NWJHrkYK3E8QMIOX-36",
+        "8rw-NWJHrkYK3E8QMIOX-58",
+        "8rw-NWJHrkYK3E8QMIOX-42",
+        "8rw-NWJHrkYK3E8QMIOX-43",
+        "plda-overview-result-channel"
+      ],
+      "interface_count": 6
+    }
+  ],
+  "native_page_links": 28,
+  "preserved_page2_sha256": "247e5461e056e6dc25949ccd5ef49e0fdeb516283b2ab69ac42ac0451ed5f77c",
+  "second_page_byte_identical": true,
+  "original_overview_cell_ids_preserved": true
+}

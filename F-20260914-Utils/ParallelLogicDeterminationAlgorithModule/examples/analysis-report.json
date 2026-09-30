@@ -1,0 +1,308 @@
+{
+  "version": 1,
+  "tlp": {
+    "order": [
+      "twice_x",
+      "triple_y",
+      "result"
+    ],
+    "edges": [
+      {
+        "source": "twice_x",
+        "target": "result",
+        "reasons": [
+          "RAW:twice_x:twice_x",
+          "explicit"
+        ]
+      },
+      {
+        "source": "triple_y",
+        "target": "result",
+        "reasons": [
+          "RAW:triple_y:triple_y",
+          "explicit"
+        ]
+      }
+    ],
+    "levels": [
+      [
+        "twice_x",
+        "triple_y"
+      ],
+      [
+        "result"
+      ]
+    ],
+    "work": 3.0,
+    "span": 2.0,
+    "parallelism_bound": 1.5,
+    "unknown_pairs": []
+  },
+  "ilp": {
+    "scope": "declared basic-block IR; conservative list scheduling; no machine-code emission",
+    "graph": {
+      "order": [
+        "load_x",
+        "load_y",
+        "sum"
+      ],
+      "edges": [
+        {
+          "source": "load_x",
+          "target": "sum",
+          "reasons": [
+            "RAW:register:r1:register:r1"
+          ]
+        },
+        {
+          "source": "load_y",
+          "target": "sum",
+          "reasons": [
+            "RAW:register:r2:register:r2"
+          ]
+        }
+      ],
+      "levels": [
+        [
+          "load_x",
+          "load_y"
+        ],
+        [
+          "sum"
+        ]
+      ],
+      "work": 7.0,
+      "span": 4.0,
+      "parallelism_bound": 1.75,
+      "unknown_pairs": []
+    },
+    "schedule": [
+      {
+        "id": "load_x",
+        "issue": 0,
+        "finish": 3,
+        "unit": "load",
+        "port": 0
+      },
+      {
+        "id": "load_y",
+        "issue": 1,
+        "finish": 4,
+        "unit": "load",
+        "port": 0
+      },
+      {
+        "id": "sum",
+        "issue": 4,
+        "finish": 5,
+        "unit": "alu",
+        "port": 0
+      }
+    ],
+    "cycles": 5,
+    "ipc": 0.6,
+    "same_cycle_groups": [
+      [
+        "load_x"
+      ],
+      [
+        "load_y"
+      ],
+      [
+        "sum"
+      ]
+    ],
+    "assumptions": [
+      "complete register/flag/memory effects and control barriers",
+      "declared latencies/units; no cache-miss, branch or ROB simulation",
+      "WAR/WAW retained; supply verified SSA names to express renaming"
+    ]
+  },
+  "simd": [
+    {
+      "id": "elementwise",
+      "verdict": "safe",
+      "reason": "equal-stride affine proof excludes all cross-iteration write conflicts",
+      "witness": null,
+      "vector_width": 4,
+      "vector_iterations": 1,
+      "scalar_tail": 1,
+      "profitable": null,
+      "scope": "ordinary loop widening with independent iterations"
+    },
+    {
+      "id": "recurrence",
+      "verdict": "unsafe",
+      "reason": "loop-carried affine dependence",
+      "witness": {
+        "resource": "a",
+        "byte": 4,
+        "iterations": [
+          1,
+          0
+        ],
+        "accesses": [
+          0,
+          1
+        ],
+        "modes": [
+          "read",
+          "write"
+        ]
+      },
+      "vector_width": 4,
+      "vector_iterations": 1,
+      "scalar_tail": 1,
+      "profitable": null,
+      "scope": "ordinary loop widening with independent iterations"
+    },
+    {
+      "id": "task:twice_x",
+      "verdict": "safe",
+      "reason": "equal-stride affine proof excludes all cross-iteration write conflicts",
+      "witness": null,
+      "vector_width": 4,
+      "vector_iterations": 1,
+      "scalar_tail": 1,
+      "profitable": null,
+      "scope": "ordinary loop widening with independent iterations",
+      "execution_note": "analysis only; runtime uses scalar CPU or a native array backend"
+    },
+    {
+      "id": "task:triple_y",
+      "verdict": "safe",
+      "reason": "equal-stride affine proof excludes all cross-iteration write conflicts",
+      "witness": null,
+      "vector_width": 4,
+      "vector_iterations": 1,
+      "scalar_tail": 1,
+      "profitable": null,
+      "scope": "ordinary loop widening with independent iterations",
+      "execution_note": "analysis only; runtime uses scalar CPU or a native array backend"
+    },
+    {
+      "id": "task:result",
+      "verdict": "safe",
+      "reason": "equal-stride affine proof excludes all cross-iteration write conflicts",
+      "witness": null,
+      "vector_width": 4,
+      "vector_iterations": 1,
+      "scalar_tail": 1,
+      "profitable": null,
+      "scope": "ordinary loop widening with independent iterations",
+      "execution_note": "analysis only; runtime uses scalar CPU or a native array backend"
+    }
+  ],
+  "priorities": {
+    "result": 1.0,
+    "triple_y": 2.0,
+    "twice_x": 2.0
+  },
+  "host_buffer_bytes": 100,
+  "placements": {
+    "twice_x": [
+      {
+        "device": "cpu:0",
+        "eligible": true,
+        "reason": "kernel/device contract compatible; driver execution still validates support",
+        "estimated_ms": 101.000008,
+        "reservation_bytes": 80,
+        "fits_budget": true
+      },
+      {
+        "device": "cuda:0",
+        "eligible": true,
+        "reason": "kernel/device contract compatible; driver execution still validates support",
+        "estimated_ms": 501.000008,
+        "reservation_bytes": 80,
+        "fits_budget": true
+      },
+      {
+        "device": "ov:GPU.0",
+        "eligible": true,
+        "reason": "kernel/device contract compatible; driver execution still validates support",
+        "estimated_ms": 1001.000008,
+        "reservation_bytes": 80,
+        "fits_budget": true
+      },
+      {
+        "device": "ov:NPU",
+        "eligible": true,
+        "reason": "kernel/device contract compatible; driver execution still validates support",
+        "estimated_ms": 1001.000008,
+        "reservation_bytes": 80,
+        "fits_budget": true
+      }
+    ],
+    "triple_y": [
+      {
+        "device": "cpu:0",
+        "eligible": true,
+        "reason": "kernel/device contract compatible; driver execution still validates support",
+        "estimated_ms": 101.000008,
+        "reservation_bytes": 80,
+        "fits_budget": true
+      },
+      {
+        "device": "cuda:0",
+        "eligible": true,
+        "reason": "kernel/device contract compatible; driver execution still validates support",
+        "estimated_ms": 501.000008,
+        "reservation_bytes": 80,
+        "fits_budget": true
+      },
+      {
+        "device": "ov:GPU.0",
+        "eligible": true,
+        "reason": "kernel/device contract compatible; driver execution still validates support",
+        "estimated_ms": 1001.000008,
+        "reservation_bytes": 80,
+        "fits_budget": true
+      },
+      {
+        "device": "ov:NPU",
+        "eligible": true,
+        "reason": "kernel/device contract compatible; driver execution still validates support",
+        "estimated_ms": 1001.000008,
+        "reservation_bytes": 80,
+        "fits_budget": true
+      }
+    ],
+    "result": [
+      {
+        "device": "cpu:0",
+        "eligible": true,
+        "reason": "kernel/device contract compatible; driver execution still validates support",
+        "estimated_ms": 101.000012,
+        "reservation_bytes": 120,
+        "fits_budget": true
+      },
+      {
+        "device": "cuda:0",
+        "eligible": true,
+        "reason": "kernel/device contract compatible; driver execution still validates support",
+        "estimated_ms": 501.000012,
+        "reservation_bytes": 120,
+        "fits_budget": true
+      },
+      {
+        "device": "ov:GPU.0",
+        "eligible": true,
+        "reason": "kernel/device contract compatible; driver execution still validates support",
+        "estimated_ms": 1001.000012,
+        "reservation_bytes": 120,
+        "fits_budget": true
+      },
+      {
+        "device": "ov:NPU",
+        "eligible": true,
+        "reason": "kernel/device contract compatible; driver execution still validates support",
+        "estimated_ms": 1001.000012,
+        "reservation_bytes": 120,
+        "fits_budget": true
+      }
+    ]
+  },
+  "correctness_scope": "complete declared IR and pure registered kernels; unknown effects are serialized",
+  "cost_scope": "estimates, not measured speedup or a hardware optimality guarantee"
+}

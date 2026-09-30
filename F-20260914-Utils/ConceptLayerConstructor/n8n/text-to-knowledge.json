@@ -1,0 +1,315 @@
+{
+  "name": "CLC text to knowledge",
+  "nodes": [
+    {
+      "id": "620cf817-d3b0-5115-9713-85879365f176",
+      "name": "Receive",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "clc-text",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "76588e3f-7b64-5942-a61b-9fd2935856d5"
+    },
+    {
+      "id": "4db369df-bd03-5886-862b-1097dec20819",
+      "name": "Submit",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "method": "POST",
+        "url": "http://api:8000/v1/jobs/text",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "options": {
+          "timeout": 60000
+        },
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({title: $json.body.title || '知识层级文档', text: $json.body.text, formats: $json.body.formats || ['md','docx','pdf']}) }}"
+      },
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "id": "b6bfe6e7-25f0-556b-8ce8-8309e33ad7c6",
+      "name": "Accepted",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "parameters": {
+        "respondWith": "firstIncomingItem",
+        "options": {
+          "responseCode": 202
+        }
+      },
+      "position": [
+        480,
+        0
+      ]
+    },
+    {
+      "id": "8d423431-7707-5044-be98-08c36d849a6d",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "parameters": {
+        "resume": "timeInterval",
+        "amount": 10,
+        "unit": "seconds"
+      },
+      "position": [
+        720,
+        0
+      ],
+      "webhookId": "194512e9-4a60-5eb5-8df5-5dcab83899c3"
+    },
+    {
+      "id": "a8513ed9-955f-5e3f-9f61-299a8e825cda",
+      "name": "Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ 'http://api:8000/v1/jobs/' + $('Submit').first().json.id }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "position": [
+        960,
+        0
+      ]
+    },
+    {
+      "id": "8fa5b62f-70f9-52f1-b14a-a2243a6303b1",
+      "name": "Terminal",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "check",
+              "leftValue": "={{ ['succeeded','failed'].includes($json.status) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "position": [
+        1200,
+        0
+      ]
+    },
+    {
+      "id": "18af3ee9-652f-50f1-ab07-6add6273c50d",
+      "name": "Succeeded",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "check",
+              "leftValue": "={{ $json.status === 'succeeded' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "position": [
+        1440,
+        -80
+      ]
+    },
+    {
+      "id": "dd72ba99-a11b-5880-b01e-5039e1eb47f0",
+      "name": "Download",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ 'http://api:8000/v1/jobs/' + $('Submit').first().json.id + '/bundle' }}",
+        "options": {
+          "timeout": 60000,
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          }
+        }
+      },
+      "position": [
+        1680,
+        -160
+      ]
+    },
+    {
+      "id": "913b7204-02ba-5cd2-ab3d-46f197f14fb8",
+      "name": "Failed",
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "parameters": {
+        "errorMessage": "={{ $json.error || 'CLC task failed' }}"
+      },
+      "position": [
+        1680,
+        80
+      ]
+    },
+    {
+      "id": "c59dd835-4efe-5f03-8d86-56bd5b9c7c35",
+      "name": "Setup notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "parameters": {
+        "content": "## 使用前配置\nReceive 选择 Header Auth 凭据保护入口。\nSubmit / Status / Download 选择同一份 Header Auth：X-API-Key = .env 中 CLC_API_KEY。\n默认 Docker 内网 api:8000；宿主机服务请改地址。\n入口立刻返回 202；任务结束后 Download 保存 ZIP 到执行记录。\n不自动发送消息，不携带任何真实密钥。",
+        "height": 290,
+        "width": 580
+      },
+      "position": [
+        0,
+        -360
+      ]
+    }
+  ],
+  "connections": {
+    "Receive": {
+      "main": [
+        [
+          {
+            "node": "Submit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submit": {
+      "main": [
+        [
+          {
+            "node": "Accepted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Accepted": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Status": {
+      "main": [
+        [
+          {
+            "node": "Terminal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Terminal": {
+      "main": [
+        [
+          {
+            "node": "Succeeded",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Succeeded": {
+      "main": [
+        [
+          {
+            "node": "Download",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "executionTimeout": 7200
+  },
+  "pinData": {},
+  "tags": []
+}

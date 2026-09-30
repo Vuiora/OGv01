@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "errors": [],
+  "page_count": 5,
+  "module_count": 4,
+  "warnings": [
+    "结构和样式校验不能证明大模型对代码语义的理解完全正确；observed / proposed / external 见 architecture.json。"
+  ]
+}

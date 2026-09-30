@@ -126,7 +126,21 @@ def excluded(path: Path, relative: Path) -> bool:
             or any(x in SKIP_DIRS or x.endswith(".egg-info") for x in relative.parts))
 
 
-def sanitize_wiki(relative: str, data: bytes, secrets: set[bytes]) -> tuple[bytes, bool]:
+def sanitize_source(relative: str, data: bytes, secrets: set[bytes]) -> tuple[bytes, bool]:
+    if relative == "F-260908-GPTSelf-renew/renew.validation.config.json":
+        config = json.loads(data.decode("utf-8-sig"))
+        if config.get("api_key"):
+            config["api_key"] = None
+            config.setdefault("api_key_env", "OPENAI_API_KEY")
+            return (json.dumps(config, ensure_ascii=False, indent=2) + "\n").encode("utf-8"), True
+        return data, False
+    if relative in {"F-260903-PRT/setup-codexzh-mac.sh", "F-260903-PRT/setup-codexzh.ps1"}:
+        text = data.decode("utf-8-sig")
+        for pattern in TOKEN_PATTERNS[:2]:
+            text = pattern.sub(b"__API_KEY__", text.encode("utf-8")).decode("utf-8")
+        if relative.endswith(".sh"):
+            text = text.replace('API_KEY="__API_KEY__"', 'API_KEY="${CODEXZH_API_KEY:-__API_KEY__}"')
+        return text.encode("utf-8"), True
     if not relative.startswith("Wiki/wiki-deploy/"):
         return data, False
     try:
@@ -135,6 +149,7 @@ def sanitize_wiki(relative: str, data: bytes, secrets: set[bytes]) -> tuple[byte
         return data, False
     original = text
     if relative == "Wiki/wiki-deploy/docker-compose.yml":
+        text = text.replace("\r\n", "\n")
         text = re.sub(r"(MARIADB_ROOT_PASSWORD:)\s*[^\n]+", r"\1 ${OGWIKI_DB_ROOT_PASSWORD:?Set OGWIKI_DB_ROOT_PASSWORD in .env}", text)
         text = re.sub(r"(MARIADB_PASSWORD:)\s*[^\n]+", r"\1 ${OGWIKI_DB_PASSWORD:?Set OGWIKI_DB_PASSWORD in .env}", text)
         text = text.replace("    depends_on:\n", "    environment:\n      OGWIKI_DB_PASSWORD: ${OGWIKI_DB_PASSWORD:?Set OGWIKI_DB_PASSWORD in .env}\n      OGWIKI_SECRET_KEY: ${OGWIKI_SECRET_KEY:?Set OGWIKI_SECRET_KEY in .env}\n      OGWIKI_UPGRADE_KEY: ${OGWIKI_UPGRADE_KEY:?Set OGWIKI_UPGRADE_KEY in .env}\n    depends_on:\n")
@@ -152,9 +167,10 @@ def sanitize_wiki(relative: str, data: bytes, secrets: set[bytes]) -> tuple[byte
     return data, False
 
 
-def import_all(source: Path, target: Path) -> None:
-    if source == target or (target / ".git").exists():
-        raise RuntimeError("Destination must be a separate directory without .git")
+def import_all(source: Path, target: Path, resume: bool = False) -> None:
+    existing = (target / ".git").exists()
+    if source == target or (existing and not resume):
+        raise RuntimeError("Destination must be separate; use --resume for an interrupted import")
     secrets = local_secret_values(source)
     records = []
     for name, relative in HISTORIES.items():
@@ -166,12 +182,20 @@ def import_all(source: Path, target: Path) -> None:
                         "commits": commits, "refs": git(repo, "show-ref").splitlines(),
                         "status_before": git(repo, "-c", "core.quotepath=false", "status", "--porcelain"),
                         "scanned_blobs": scan_history(repo, secrets)})
-    git(target, "init", "--initial-branch=main")
-    git(target, "config", "core.autocrlf", "false")
-    git(target, "add", ".")
-    git(target, "commit", "-m", "chore: initialize automated reasoning monorepo")
+    if not existing:
+        git(target, "init", "--initial-branch=main")
+        git(target, "config", "core.autocrlf", "false")
+        git(target, "add", ".")
+        git(target, "commit", "-m", "chore: initialize automated reasoning monorepo")
     for record in records:
         relative, name = record["path"], record["id"]
+        if existing:
+            if git(target, "rev-parse", "history/" + name + "/imported-head") != record["head"]:
+                raise RuntimeError("Resume source HEAD differs from imported history")
+            message = f"merge: preserve {name} original history under {relative}"
+            rows = git(target, "log", "--first-parent", "--format=%H%x09%s").splitlines()
+            record["merge_commit"] = next(row.split("\t")[0] for row in rows if row.endswith("\t" + message))
+            continue
         git(target, "fetch", "--no-tags", str(source / relative),
             f"+refs/heads/*:refs/heads/history/{name}/*",
             f"+refs/tags/*:refs/tags/history/{name}/*")
@@ -208,7 +232,7 @@ def import_all(source: Path, target: Path) -> None:
                 data = src.read_bytes()
                 if len(data) >= 100 * 1024 * 1024:
                     raise RuntimeError(f"File exceeds GitHub size limit: {relative.as_posix()}")
-                output, sanitized = sanitize_wiki(relative.as_posix(), data, secrets)
+                output, sanitized = sanitize_source(relative.as_posix(), data, secrets)
                 if scan(output, secrets):
                     raise RuntimeError(f"Credential match; source path only: {relative.as_posix()}")
                 dst = target / relative
@@ -270,12 +294,13 @@ def main() -> None:
     imp = sub.add_parser("import")
     imp.add_argument("--source", type=Path, required=True)
     imp.add_argument("--repo", type=Path, required=True)
+    imp.add_argument("--resume", action="store_true")
     check = sub.add_parser("verify")
     check.add_argument("--repo", type=Path, default=Path.cwd())
     check.add_argument("--source", type=Path)
     args = parser.parse_args()
     if args.action == "import":
-        import_all(args.source.resolve(), args.repo.resolve())
+        import_all(args.source.resolve(), args.repo.resolve(), args.resume)
     else:
         verify(args.repo.resolve(), args.source.resolve() if args.source else None)
 

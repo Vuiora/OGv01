@@ -1,0 +1,531 @@
+{
+  "schema_version": "1.0",
+  "job_id": "demo",
+  "title": "机器学习基础.md",
+  "created_at": "2026-09-16T00:00:00Z",
+  "demo": true,
+  "document": {
+    "filename": "机器学习基础.md",
+    "sha256": "350bcafabd9d26a9513ff9d525fbe9a9d132d0f6dd18ebc47c69b1e6dd3d632c",
+    "converter": "hand-authored-demo"
+  },
+  "sections": [
+    {
+      "id": "s1",
+      "title": "机器学习与任务类型",
+      "start": 0,
+      "end": 106
+    },
+    {
+      "id": "s2",
+      "title": "模型训练与优化",
+      "start": 106,
+      "end": 201
+    },
+    {
+      "id": "s3",
+      "title": "评估与泛化",
+      "start": 201,
+      "end": 389
+    }
+  ],
+  "concepts": [
+    {
+      "id": "c1",
+      "label": "机器学习",
+      "definition": "通过数据学习规律，用于预测。",
+      "evidence": [
+        {
+          "quote": "机器学习通过数据学习规律，并将这些规律用于预测。",
+          "start": 12,
+          "end": 36,
+          "line_start": 2,
+          "line_end": 2,
+          "section_id": "s1",
+          "section": "机器学习与任务类型"
+        }
+      ],
+      "section_ids": [
+        "s1"
+      ]
+    },
+    {
+      "id": "c2",
+      "label": "监督学习",
+      "definition": "使用带有标签的数据训练模型。",
+      "evidence": [
+        {
+          "quote": "监督学习属于机器学习，使用带有标签的数据训练模型。",
+          "start": 37,
+          "end": 62,
+          "line_start": 3,
+          "line_end": 3,
+          "section_id": "s1",
+          "section": "机器学习与任务类型"
+        }
+      ],
+      "section_ids": [
+        "s1"
+      ]
+    },
+    {
+      "id": "c3",
+      "label": "分类",
+      "definition": "预测离散类别的监督学习任务。",
+      "evidence": [
+        {
+          "quote": "分类属于监督学习，其预测目标是离散类别。",
+          "start": 63,
+          "end": 83,
+          "line_start": 4,
+          "line_end": 4,
+          "section_id": "s1",
+          "section": "机器学习与任务类型"
+        }
+      ],
+      "section_ids": [
+        "s1"
+      ]
+    },
+    {
+      "id": "c4",
+      "label": "回归",
+      "definition": "预测连续数值的监督学习任务。",
+      "evidence": [
+        {
+          "quote": "回归属于监督学习，其预测目标是连续数值。",
+          "start": 84,
+          "end": 104,
+          "line_start": 5,
+          "line_end": 5,
+          "section_id": "s1",
+          "section": "机器学习与任务类型"
+        }
+      ],
+      "section_ids": [
+        "s1"
+      ]
+    },
+    {
+      "id": "c5",
+      "label": "损失函数",
+      "definition": "度量预测与真实标签的差异。",
+      "evidence": [
+        {
+          "quote": "损失函数度量模型预测与真实标签之间的差异。",
+          "start": 116,
+          "end": 137,
+          "line_start": 8,
+          "line_end": 8,
+          "section_id": "s2",
+          "section": "模型训练与优化"
+        }
+      ],
+      "section_ids": [
+        "s2"
+      ]
+    },
+    {
+      "id": "c6",
+      "label": "梯度下降",
+      "definition": "按照损失函数的梯度方向更新参数。",
+      "evidence": [
+        {
+          "quote": "梯度下降通过损失函数的梯度方向更新模型参数，以降低损失。",
+          "start": 138,
+          "end": 166,
+          "line_start": 9,
+          "line_end": 9,
+          "section_id": "s2",
+          "section": "模型训练与优化"
+        }
+      ],
+      "section_ids": [
+        "s2"
+      ]
+    },
+    {
+      "id": "c7",
+      "label": "学习率",
+      "definition": "控制每次参数更新的步长。",
+      "evidence": [
+        {
+          "quote": "学习率控制梯度下降每次更新参数的步长。",
+          "start": 167,
+          "end": 186,
+          "line_start": 10,
+          "line_end": 10,
+          "section_id": "s2",
+          "section": "模型训练与优化"
+        }
+      ],
+      "section_ids": [
+        "s2"
+      ]
+    },
+    {
+      "id": "c8",
+      "label": "训练集",
+      "definition": "用于拟合模型参数的数据。",
+      "evidence": [
+        {
+          "quote": "训练集用于拟合模型参数。",
+          "start": 187,
+          "end": 199,
+          "line_start": 11,
+          "line_end": 11,
+          "section_id": "s2",
+          "section": "模型训练与优化"
+        }
+      ],
+      "section_ids": [
+        "s2"
+      ]
+    },
+    {
+      "id": "c9",
+      "label": "测试集",
+      "definition": "用于评估未参与训练的数据表现。",
+      "evidence": [
+        {
+          "quote": "测试集用于评估模型在未参与训练的数据上的表现。",
+          "start": 209,
+          "end": 232,
+          "line_start": 14,
+          "line_end": 14,
+          "section_id": "s3",
+          "section": "评估与泛化"
+        }
+      ],
+      "section_ids": [
+        "s3"
+      ]
+    },
+    {
+      "id": "c10",
+      "label": "泛化能力",
+      "definition": "对未见数据保持良好预测表现的能力。",
+      "evidence": [
+        {
+          "quote": "泛化能力指模型对未见数据保持良好预测表现的能力。",
+          "start": 233,
+          "end": 257,
+          "line_start": 15,
+          "line_end": 15,
+          "section_id": "s3",
+          "section": "评估与泛化"
+        }
+      ],
+      "section_ids": [
+        "s3"
+      ]
+    },
+    {
+      "id": "c11",
+      "label": "过拟合",
+      "definition": "过度适应训练集中的细节和噪声。",
+      "evidence": [
+        {
+          "quote": "过拟合指模型过度适应训练集中的细节和噪声，导致在未见数据上表现变差。",
+          "start": 258,
+          "end": 292,
+          "line_start": 16,
+          "line_end": 16,
+          "section_id": "s3",
+          "section": "评估与泛化"
+        }
+      ],
+      "section_ids": [
+        "s3"
+      ]
+    },
+    {
+      "id": "c12",
+      "label": "正则化",
+      "definition": "在损失函数中加入约束，抑制过拟合。",
+      "evidence": [
+        {
+          "quote": "正则化在损失函数中加入约束项，以抑制过拟合。",
+          "start": 308,
+          "end": 330,
+          "line_start": 18,
+          "line_end": 18,
+          "section_id": "s3",
+          "section": "评估与泛化"
+        }
+      ],
+      "section_ids": [
+        "s3"
+      ]
+    },
+    {
+      "id": "c13",
+      "label": "交叉验证",
+      "definition": "通过轮换训练与验证评估泛化能力。",
+      "evidence": [
+        {
+          "quote": "交叉验证将数据分成多份并轮换训练与验证，用于评估泛化能力。",
+          "start": 331,
+          "end": 360,
+          "line_start": 19,
+          "line_end": 19,
+          "section_id": "s3",
+          "section": "评估与泛化"
+        }
+      ],
+      "section_ids": [
+        "s3"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "id": "r1",
+      "source": "c2",
+      "target": "c1",
+      "type": "part_of",
+      "explanation": "监督学习属于机器学习。",
+      "evidence": [
+        {
+          "quote": "监督学习属于机器学习，使用带有标签的数据训练模型。",
+          "start": 37,
+          "end": 62,
+          "line_start": 3,
+          "line_end": 3,
+          "section_id": "s1",
+          "section": "机器学习与任务类型"
+        }
+      ],
+      "confidence": 0.94,
+      "review": "unreviewed",
+      "evidence_verified": true
+    },
+    {
+      "id": "r2",
+      "source": "c3",
+      "target": "c2",
+      "type": "part_of",
+      "explanation": "分类是监督学习的一种任务。",
+      "evidence": [
+        {
+          "quote": "分类属于监督学习，其预测目标是离散类别。",
+          "start": 63,
+          "end": 83,
+          "line_start": 4,
+          "line_end": 4,
+          "section_id": "s1",
+          "section": "机器学习与任务类型"
+        }
+      ],
+      "confidence": 0.94,
+      "review": "unreviewed",
+      "evidence_verified": true
+    },
+    {
+      "id": "r3",
+      "source": "c4",
+      "target": "c2",
+      "type": "part_of",
+      "explanation": "回归是监督学习的一种任务。",
+      "evidence": [
+        {
+          "quote": "回归属于监督学习，其预测目标是连续数值。",
+          "start": 84,
+          "end": 104,
+          "line_start": 5,
+          "line_end": 5,
+          "section_id": "s1",
+          "section": "机器学习与任务类型"
+        }
+      ],
+      "confidence": 0.94,
+      "review": "unreviewed",
+      "evidence_verified": true
+    },
+    {
+      "id": "r4",
+      "source": "c6",
+      "target": "c5",
+      "type": "depends_on",
+      "explanation": "梯度下降使用损失函数的梯度更新参数。",
+      "evidence": [
+        {
+          "quote": "梯度下降通过损失函数的梯度方向更新模型参数，以降低损失。",
+          "start": 138,
+          "end": 166,
+          "line_start": 9,
+          "line_end": 9,
+          "section_id": "s2",
+          "section": "模型训练与优化"
+        }
+      ],
+      "confidence": 0.94,
+      "review": "unreviewed",
+      "evidence_verified": true
+    },
+    {
+      "id": "r5",
+      "source": "c7",
+      "target": "c6",
+      "type": "applies_to",
+      "explanation": "学习率控制梯度下降的更新步长。",
+      "evidence": [
+        {
+          "quote": "学习率控制梯度下降每次更新参数的步长。",
+          "start": 167,
+          "end": 186,
+          "line_start": 10,
+          "line_end": 10,
+          "section_id": "s2",
+          "section": "模型训练与优化"
+        }
+      ],
+      "confidence": 0.94,
+      "review": "unreviewed",
+      "evidence_verified": true
+    },
+    {
+      "id": "r6",
+      "source": "c11",
+      "target": "c8",
+      "type": "related",
+      "explanation": "过拟合描述了模型过度适应训练集的状态。",
+      "evidence": [
+        {
+          "quote": "过拟合指模型过度适应训练集中的细节和噪声，导致在未见数据上表现变差。",
+          "start": 258,
+          "end": 292,
+          "line_start": 16,
+          "line_end": 16,
+          "section_id": "s3",
+          "section": "评估与泛化"
+        }
+      ],
+      "confidence": 0.94,
+      "review": "unreviewed",
+      "evidence_verified": true
+    },
+    {
+      "id": "r7",
+      "source": "c11",
+      "target": "c10",
+      "type": "related",
+      "explanation": "过拟合会损害泛化能力。",
+      "evidence": [
+        {
+          "quote": "过拟合会损害模型的泛化能力。",
+          "start": 293,
+          "end": 307,
+          "line_start": 17,
+          "line_end": 17,
+          "section_id": "s3",
+          "section": "评估与泛化"
+        }
+      ],
+      "confidence": 0.94,
+      "review": "unreviewed",
+      "evidence_verified": true
+    },
+    {
+      "id": "r8",
+      "source": "c12",
+      "target": "c11",
+      "type": "applies_to",
+      "explanation": "正则化用于抑制过拟合。",
+      "evidence": [
+        {
+          "quote": "正则化在损失函数中加入约束项，以抑制过拟合。",
+          "start": 308,
+          "end": 330,
+          "line_start": 18,
+          "line_end": 18,
+          "section_id": "s3",
+          "section": "评估与泛化"
+        }
+      ],
+      "confidence": 0.94,
+      "review": "unreviewed",
+      "evidence_verified": true
+    },
+    {
+      "id": "r9",
+      "source": "c12",
+      "target": "c5",
+      "type": "applies_to",
+      "explanation": "正则化在损失函数中加入约束项。",
+      "evidence": [
+        {
+          "quote": "正则化在损失函数中加入约束项，以抑制过拟合。",
+          "start": 308,
+          "end": 330,
+          "line_start": 18,
+          "line_end": 18,
+          "section_id": "s3",
+          "section": "评估与泛化"
+        }
+      ],
+      "confidence": 0.94,
+      "review": "unreviewed",
+      "evidence_verified": true
+    },
+    {
+      "id": "r10",
+      "source": "c13",
+      "target": "c10",
+      "type": "applies_to",
+      "explanation": "交叉验证用于评估泛化能力。",
+      "evidence": [
+        {
+          "quote": "交叉验证将数据分成多份并轮换训练与验证，用于评估泛化能力。",
+          "start": 331,
+          "end": 360,
+          "line_start": 19,
+          "line_end": 19,
+          "section_id": "s3",
+          "section": "评估与泛化"
+        }
+      ],
+      "confidence": 0.94,
+      "review": "unreviewed",
+      "evidence_verified": true
+    },
+    {
+      "id": "r11",
+      "source": "c9",
+      "target": "c8",
+      "type": "contrasts",
+      "explanation": "测试集与训练集应保持独立。",
+      "evidence": [
+        {
+          "quote": "测试集与训练集应相互独立，避免评估结果受训练信息污染。",
+          "start": 361,
+          "end": 388,
+          "line_start": 20,
+          "line_end": 20,
+          "section_id": "s3",
+          "section": "评估与泛化"
+        }
+      ],
+      "confidence": 0.94,
+      "review": "unreviewed",
+      "evidence_verified": true
+    }
+  ],
+  "relation_labels": {
+    "part_of": "属于",
+    "prerequisite": "是前提",
+    "explains": "解释",
+    "causes": "导致",
+    "contrasts": "对比",
+    "applies_to": "应用于",
+    "depends_on": "依赖",
+    "related": "关联"
+  },
+  "validation": {
+    "rejected": [],
+    "isolated_concepts": [],
+    "global_context": "hand_authored_demo",
+    "global_context_calls": 0,
+    "note": "人工整理的演示图谱，所有关系的 94% 数值仅用于演示，不代表实际模型调用。"
+  }
+}

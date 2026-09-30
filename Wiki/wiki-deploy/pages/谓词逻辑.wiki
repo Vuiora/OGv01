@@ -1,0 +1,145 @@
+{{课程信息
+| 课程名称 = 谓词逻辑
+| 英文名称 = Predicate Logic
+| 归属 = [[数理逻辑]]
+| 关键词 = 客体、谓词、命题函数、量词、谓词公式、约束变元、前束范式
+}}
+
+'''谓词逻辑'''是[[数理逻辑]]中比[[命题逻辑]]更精细的分支。命题逻辑不能将命题之间的内在联系和数量关系反映出来，解决办法是'''将命题进行分解'''。在谓词逻辑中，可将原子命题划分为客体和谓词两部分。
+
+== 谓词的概念与表示 ==
+* '''客体'''：可以独立存在的具体事物的或抽象的概念。例如，电子计算机、李明、玫瑰花、黑板、实数、中国思想、唯物主义等，客体也可称之为主语。
+* '''谓词'''：用来刻划客体的性质或客体之间的相互关系的词。
+
+例如在下面命题中：
+
+# 张明是个劳动模范。
+# 小李比小赵高 2cm。
+
+刻划一个客体性质的词称之为'''一元谓词'''，刻划 <math>n</math> 个客体之间关系的词称之为 '''<math>n</math> 元谓词'''。
+
+=== 说明 ===
+# 单独一个谓词并不是命题，在谓词字母后填上客体所得到的式子称之为'''谓词填式'''。
+# 在谓词填式中，若客体确定，则 <math>A(a_1, a_2, \ldots, a_n)</math> 就变成了命题。
+# 在多元谓词表达式中，客体字母出现的先后次序与事先约定有关，一般不可以随意交换位置。
+
+== 命题函数与量词 ==
+* 由一个谓词 <math>H</math> 和 <math>n</math> 个客体变元组成的表达式 <math>H(x_1, x_2, \ldots, x_n)</math> 称为 '''<math>n</math> 元简单命题函数'''。
+* 由定义可知，<math>n</math> 元谓词就是有 <math>n</math> 个客体变元的命题函数；当 <math>n = 0</math> 时，称为 0 元谓词；命题函数不是命题；特殊情况 0 元谓词就变成一个命题。
+* '''复合命题函数'''：由一个或几个简单命题函数以及逻辑联结词组合而成的表达式。
+* 在命题函数中，客体变元的取值范围称为'''个体域'''，又称之为'''论域'''。个体域可以是有限事物的集合，也可以是无限事物的集合。
+* '''全总个体域'''：宇宙间一切事物组成的个体域称为全总个体域。
+
+=== 全称量词 ===
+对日常语言中的"一切""所有""凡""每一个""任意"等词，用符号"<math>\forall</math>"表示，<math>\forall x</math> 表示对个体域里的所有个体，<math>\forall x F(x)</math> 表示个体域里的所有个体具有性质 <math>F</math>。符号"<math>\forall</math>"称为'''全称量词'''。
+
+'''例'''：凡是人都呼吸 —— <math>\forall x (I(x) \to H(x))</math>
+
+=== 存在量词 ===
+对日常语言中的"有一个""有的""存在着""至少有一个""存在一些"等词，用符号"<math>\exists</math>"表示，<math>\exists x</math> 表示存在个体域里的个体，<math>\exists x F(x)</math> 表示存在个体域里的个体具有性质 <math>F</math>。符号"<math>\exists</math>"称为'''存在量词'''。
+
+'''例'''：有些人活百岁以上 —— <math>\exists x (M(x) \land G(x))</math>
+
+有时需要同时使用多个量词。
+
+'''例'''：命题"对任意的 <math>x</math>，存在 <math>y</math>，使得 <math>x + y = 5</math>"，取个体域为实数集合，则该命题符号化为：
+
+<math>\forall x \exists y H(x, y)</math>
+
+其中 <math>H(x, y)</math>：<math>x + y = 5</math>。这是个真命题。
+
+== 谓词公式 ==
+<math>n</math> 元谓词 <math>A(x_1, x_2, \ldots, x_n)</math> 称为谓词演算的'''原子公式'''。谓词演算的合式公式，可由下述各条组成：
+
+# 原子公式是合式公式。
+# 若 <math>A</math> 是合式公式，则 <math>(A)</math> 也是合式公式。
+# 若 <math>A</math>、<math>B</math> 是合式公式，则 <math>(A \land B)</math>、<math>(A \lor B)</math>、<math>(A \to B)</math>、<math>(A \leftrightarrow B)</math> 也是合式公式。
+# 若 <math>A</math> 是合式公式，<math>x</math> 是 <math>A</math> 中出现的任何变元，则 <math>(\forall x)A</math>、<math>(\exists x)A</math> 也是合式公式。
+# 只有有限次应用 (1)~(4) 得到的公式是合式公式。
+
+'''例'''：凡正数都大于零。令 <math>F(x)</math>：<math>x</math> 是正数，<math>M(x)</math>：<math>x</math> 大于零，则 <math>(\forall x)(F(x) \to M(x))</math>。
+
+== 变元的约束 ==
+在谓词公式中，形如 <math>(\forall x)P(x)</math> 和 <math>(\exists x)P(x)</math> 的部分，称为谓词公式的 <math>x</math> '''约束部分'''。
+
+* <math>(\forall x)P(x)</math> 或 <math>(\exists x)P(x)</math> 中的 <math>x</math> 叫做量词的'''指导变元'''或作用变元；
+* <math>P(x)</math> 称为相应量词的'''作用域'''或'''辖域'''；
+* 在 <math>\forall x</math> 和 <math>\exists x</math> 的辖域中，<math>x</math> 的所有出现都称为'''约束出现'''，相应的 <math>x</math> 称为'''约束变元'''；
+* <math>P(x)</math> 中除约束变元以外出现的变元称为是'''自由变元'''。
+
+'''例'''：
+
+# <math>\forall x (H(x, y) \to \exists y (W(y) \land L(x, y, z)))</math>
+# <math>\forall x (H(x) \to W(y)) \to \exists y (F(x) \land L(x, y, z))</math>
+
+== 谓词演算的等价式与蕴含式 ==
+给定任意的谓词公式 <math>A</math>，其个体域为 <math>E</math>：
+
+* 对于 <math>A</math> 的所有赋值，公式 <math>A</math> 都为真，则称 <math>A</math> 在 <math>E</math> 上是'''永真的'''（或有效的）；
+* 若对于 <math>A</math> 的所有赋值，公式 <math>A</math> 都为假，则称 <math>A</math> 在 <math>E</math> 上是'''永假的'''（或不可满足的）；
+* 若至少存在着一种赋值使得公式 <math>A</math> 为真，则称 <math>A</math> 在 <math>E</math> 上是'''可满足的'''。
+
+给定任何两个谓词公式 <math>A</math>、<math>B</math>，设它们有共同的个体域 <math>E</math>，若对 <math>A</math> 和 <math>B</math> 的任一组变元进行赋值，所得命题的真值相同，则称谓词公式 <math>A</math> 和 <math>B</math> 在 <math>E</math> 上'''等价'''，并记为 <math>A \Leftrightarrow B</math>。
+
+== 前束范式 ==
+任何一个谓词公式 <math>A</math>，如果具有如下形式：
+
+<math>(\square x_1)(\square x_2) \ldots (\square x_n) B</math>
+
+其中 <math>\square</math> 可能是量词 <math>\forall</math> 或量词 <math>\exists</math>，<math>x_i (i = 1, \ldots, n)</math> 是客体变元，<math>B</math> 是不含量词的谓词公式，则称 <math>A</math> 是'''前束范式'''。
+
+'''说明'''：前束范式的量词均在全式的开头，它们的作用域延伸到整个公式的末尾。
+
+'''例'''：<math>\exists x \exists y ((F(x) \land G(y)) \land H(x, y))</math>
+
+=== 前束合取范式与前束析取范式 ===
+* '''前束合取范式'''：
+
+<math>(\square x_1)(\square x_2) \ldots (\square x_n) [(A_{11} \lor A_{12} \lor \ldots \lor A_{1k_1}) \land (A_{21} \lor A_{22} \lor \ldots \lor A_{2k_2}) \land \ldots \land (A_{m1} \lor A_{m2} \lor \ldots \lor A_{mk_m})]</math>
+
+其中 <math>n \geq 1</math>，<math>A_{ij}(j = 1, \ldots, k_i, \; i = 1, 2, 3, \ldots, m)</math> 为原子谓词公式或其否定，<math>\square</math> 为量词 <math>\forall</math> 或量词 <math>\exists</math>，<math>x_i (i = 1, \ldots, n)</math> 为客体变元。
+
+* '''前束析取范式'''：
+
+<math>(\square x_1)(\square x_2) \ldots (\square x_n) [(A_{11} \land A_{12} \land \ldots \land A_{1k_1}) \lor (A_{21} \land A_{22} \land \ldots \land A_{2k_2}) \lor \ldots \lor (A_{m1} \land A_{m2} \land \ldots \land A_{mk_m})]</math>
+
+其中符号含义同上。
+
+每一个谓词公式都可以转化为与其等价的前束析（合）取范式。
+
+== 谓词演算的推理理论 ==
+在谓词演算中，推理的形式结构仍为
+
+<math>H_1 \land H_2 \land H_3 \land \ldots \land H_n \Rightarrow C</math>
+
+若 <math>H_1 \land H_2 \land H_3 \land \ldots \land H_n \to C</math> 是永真式，则称由前提 <math>H_1, H_2, H_3, \ldots, H_n</math> 逻辑的推出结论 <math>C</math>，但在谓词逻辑中，<math>H_1, H_2, H_3, \ldots, H_n, C</math> 均为谓词公式。命题演算中的推理规则，可在谓词推理理论中应用。
+
+=== 例题：苏格拉底三段论 ===
+'''例'''：证明苏格拉底三段论——凡是人都是要死的。苏格拉底是人。苏格拉底是要死的。
+
+设：<math>M(x)</math>：<math>x</math> 是人。<math>D(x)</math>：<math>x</math> 是要死的。<math>a</math>：苏格拉底。
+
+* 前提：<math>\forall x (M(x) \to D(x))</math>，<math>M(a)</math>
+* 结论：<math>D(a)</math>
+
+'''证明'''：
+
+{| class="wikitable"
+! 序号 !! 公式 !! 依据
+|-
+| ① || <math>\forall x (M(x) \to D(x))</math> || P
+|-
+| ② || <math>M(a) \to D(a)</math> || US
+|-
+| ③ || <math>M(a)</math> || P
+|-
+| ④ || <math>D(a)</math> || 直接证法
+|}
+
+== 参见 ==
+* [[命题逻辑]]
+* [[推理理论]]
+* [[数理逻辑]]
+
+[[Category:计算机数学基础]]
+[[Category:数理逻辑]]

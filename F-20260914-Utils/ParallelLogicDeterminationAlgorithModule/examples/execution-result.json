@@ -1,0 +1,157 @@
+{
+  "job_id": "fdb232488e84420592415c5479450613",
+  "state": "SUCCEEDED",
+  "outputs": {
+    "result": {
+      "shape": [
+        5
+      ],
+      "dtype": "float32",
+      "values": [
+        32.0,
+        64.0,
+        96.0,
+        128.0,
+        160.0
+      ]
+    }
+  },
+  "task_states": {
+    "twice_x": "SUCCEEDED",
+    "triple_y": "SUCCEEDED",
+    "result": "SUCCEEDED"
+  },
+  "attempts": {
+    "twice_x": 1,
+    "triple_y": 1,
+    "result": 1
+  },
+  "errors": {},
+  "events": [
+    {
+      "time_s": 1.750001683831215e-05,
+      "kind": "JOB_STARTED",
+      "task": null,
+      "device": null,
+      "detail": {}
+    },
+    {
+      "time_s": 0.0025255000218749046,
+      "kind": "RESERVED",
+      "task": "twice_x",
+      "device": "cpu:0",
+      "detail": {
+        "reserved_bytes": 80,
+        "used_slots": 1,
+        "used_bytes": 80,
+        "estimated_ms": 101.000008,
+        "attempt": 1
+      }
+    },
+    {
+      "time_s": 0.012978699989616871,
+      "kind": "RESERVED",
+      "task": "triple_y",
+      "device": "cpu:0",
+      "detail": {
+        "reserved_bytes": 80,
+        "used_slots": 2,
+        "used_bytes": 160,
+        "estimated_ms": 101.000008,
+        "attempt": 1
+      }
+    },
+    {
+      "time_s": 0.23784770001657307,
+      "kind": "RELEASE",
+      "task": "twice_x",
+      "device": "cpu:0",
+      "detail": {
+        "reserved_bytes": 80
+      }
+    },
+    {
+      "time_s": 0.2452422000351362,
+      "kind": "COMMITTED",
+      "task": "twice_x",
+      "device": "cpu:0",
+      "detail": {
+        "ok": true,
+        "execution_mode": "numpy-native",
+        "finished_at": 265748.2629453,
+        "elapsed_ms": 55.58290000772104,
+        "input_bytes": 20,
+        "output_bytes": 20
+      }
+    },
+    {
+      "time_s": 0.24526320002041757,
+      "kind": "RELEASE",
+      "task": "triple_y",
+      "device": "cpu:0",
+      "detail": {
+        "reserved_bytes": 80
+      }
+    },
+    {
+      "time_s": 0.25058069999795407,
+      "kind": "COMMITTED",
+      "task": "triple_y",
+      "device": "cpu:0",
+      "detail": {
+        "ok": true,
+        "execution_mode": "numpy-native",
+        "finished_at": 265748.262967,
+        "elapsed_ms": 55.4450000054203,
+        "input_bytes": 20,
+        "output_bytes": 20
+      }
+    },
+    {
+      "time_s": 0.25086249999003485,
+      "kind": "RESERVED",
+      "task": "result",
+      "device": "cpu:0",
+      "detail": {
+        "reserved_bytes": 120,
+        "used_slots": 1,
+        "used_bytes": 120,
+        "estimated_ms": 101.000012,
+        "attempt": 1
+      }
+    },
+    {
+      "time_s": 0.4565853000385687,
+      "kind": "RELEASE",
+      "task": "result",
+      "device": "cpu:0",
+      "detail": {
+        "reserved_bytes": 120
+      }
+    },
+    {
+      "time_s": 0.4659239000175148,
+      "kind": "COMMITTED",
+      "task": "result",
+      "device": "cpu:0",
+      "detail": {
+        "ok": true,
+        "execution_mode": "numpy-native",
+        "finished_at": 265748.4853849,
+        "elapsed_ms": 58.86600003577769,
+        "input_bytes": 40,
+        "output_bytes": 20
+      }
+    },
+    {
+      "time_s": 0.4672718000365421,
+      "kind": "JOB_FINISHED",
+      "task": null,
+      "device": null,
+      "detail": {
+        "state": "SUCCEEDED"
+      }
+    }
+  ],
+  "elapsed_s": 0.4672858000267297
+}

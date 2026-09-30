@@ -505,3 +505,144 @@ For multi-host scaling, migrate ArtifactStore to S3 before adding Workers. Enabl
 Environment configuration includes database connections, storage roots, n8n URLs, model endpoints, role mappings, concurrency, budgets, document retention, and identity settings. Connections use logical names such as `student_default`, `teacher_default`, and `mentor_runtime`, resolved to actual values at deployment.
 
 Development uses untracked `.env` or local secret files; deployments use injected environment values or mounted secrets. Model keys are available only to Runtime/Builder. n8n holds only the service credentials needed to call Mentor. Bundles contain connection requirements and parameter names, never secrets, user data, fixed local absolute paths, or debugging samples.
+
+## 12. Data Protection and Observability
+
+Documents are untrusted input. Instructions inside them are extraction data and must not affect system prompts, rules, tool permissions, or data destinations. Neither Teacher nor Student may execute document commands or access arbitrary document-provided URLs. File access goes through controlled storage; administrators configure provider endpoints and restrict network egress.
+
+The API uses organizational identities and roles: administrators manage connections and releases, operators run applications, and reviewers revise results. A protected deployment entry point and API tokens are sufficient initially, but review actions must identify the individual user. Production management interfaces cannot be anonymous. Parse uploads in resource-limited processes, escape preview content safely, and do not load embedded scripts or remote resources.
+
+Record `trace_id`, `run_id`, logical step, task/attempt, bundle hash, and n8n execution ID to correlate control and runtime activity. Dashboards include queue depth, oldest task age, lease expirations, technical/parsing failure rates, review rates, model errors/429s, costs, and latency percentiles. n8n execution data contains IDs and status summaries only; full prompts, source text, and secrets are not retained by default.
+
+Default retention is 30 days for business documents and parsing/result artifacts, and 90 days for redacted audit records, configurable per deployment. Deleting an original also cleans up related parses, page images, caches, results, and authorized sample copies. Cancel or finish active references first. Backup retention and reapplying deletions after recovery are part of the lifecycle; deleting online files alone is insufficient.
+
+Back up the Mentor database, artifact volumes, n8n database, and credential encryption key, with separate access controls for keys and data. Perform a complete recovery exercise before the pilot. Initial targets are daily backups, a 24-hour RPO, and a 4-hour RTO; commit to these only after a successful recovery exercise.
+
+## 13. Bundles, Versioning, and Platform Extensions
+
+### 13.1 Delivery Bundle
+
+```text
+purchase-order-extractor-0.1.0/
+  app-spec.yaml
+  execution-plan.json
+  runtime-config.json
+  workflow.n8n.json
+  prompts/
+  schemas/
+  rules/
+  manifest.json
+  evaluation-summary.json
+  connections.example.yaml
+  DEPLOY.md
+```
+
+`manifest.json` records hashes of runtime configuration, workflow, prompts, schemas, and rules, plus specification/compiler/target versions, node type versions, dependencies, and model roles. Calculate `build_digest` from this canonical manifest without recursively including its own hash. References to bundle hashes in this document mean this runtime-content digest.
+
+Evaluation reports, build timestamps, and deployment bindings are external records associated with `build_digest`. `evaluation-summary.json` is a bundled copy of those records and does not participate in the runtime digest, so packaging evaluation results does not change the evaluated subject. The distributed archive has a separate whole-file checksum. Original evaluation samples and full results remain in controlled storage.
+
+A bundle can be copied to a separate deployment and run after connection binding. It requires a specified Mentor Runtime version; n8n JSON alone is not a standalone document-processing application. Deployment verifies the digest, Runtime compatibility, actual model-role bindings, and evaluation records. Changing the Student model or generation parameters requires reevaluation rather than inheriting the previous model's quality claims.
+
+### 13.2 Release and Rollback
+
+Release sequence: static checks → import into the target instance → bind test connections → smoke tests and evaluation → create release record → switch deployment pointer. Artifacts without completed import and binding may be marked `built`, not `deployable`.
+
+Each released version has a separate workflow and fixed Runtime configuration. New runs resolve the deployment pointer to a pinned bundle; existing runs retain their version. Rollback changes routing for new runs without rewriting history. Manual canvas changes are drift: do not overwrite them automatically; export a new candidate for review or restore the known bundle.
+
+The n8n import adapter uses public workflow APIs and distinguishes exported file shapes from allowed create-request fields for the pinned version, removing read-only fields. Verify capabilities against the target version; see the [official workflow API](https://docs.n8n.io/connect/n8n-api/workflow). Do not assume identical paid features across deployments or rely on internal databases or unverified interfaces.
+
+### 13.3 Dify and Later Extensions
+
+Dify joins in v0.2 through a separate target adapter sharing AppSpec, parsing, rules, model records, and evaluation. First deliver importable DSL and verify real execution. Arbitrary n8n workflows are not promised lossless conversion.
+
+Dify DSL carries application configuration, workflows, and prompts, while knowledge-base content and some environment dependencies require separate handling. Explicitly exclude Secret environment variables; see [Dify application management](https://docs.dify.ai/en/cloud/use-dify/workspace/app-management). If Dify cannot support the same long-task or review semantics, the adapter must reject the capability or deliver an explicitly scoped asynchronous submit/query application. Successful submission must not be presented as completed extraction.
+
+Document question answering requires a separate template and evaluation set before introducing retrieval, indexing, reranking, and citation checks. Fine-tuning enters experimentation only after sufficient lawfully usable labeled data exists, prompt optimization has reached a bottleneck, and gains can be measured.
+
+Mentor uses the MIT license; integrated components retain their own licenses. The first release targets internal organizational self-hosting. A future hosted workflow editor or commercial offering of n8n capabilities requires reassessing commercial licensing boundaries; see the [n8n license explanation](https://docs.n8n.io/n8n-community-license/sustainable-use-license.md).
+
+## 14. Planned Layout and Development Constraints
+
+```text
+Mentor/
+  README.md
+  README.en.md
+  LICENSE
+  pyproject.toml
+  uv.lock
+  src/mentor/
+    api/                   # Public/internal APIs, identities, error mapping
+    domain/                # Specifications, documents, runs, reviews, state transitions
+    builder/               # Teacher requirement normalization and candidate generation
+    compiler/              # Normalized plans, type checks, template expansion
+    adapters/n8n/          # Node templates, import, binding, capability checks
+    adapters/dify/         # Implement in v0.2
+    documents/             # Docling, DocumentIR, evidence, table chunking
+    models/                # ProviderAdapter, role capabilities, usage, budgets
+    rules/                 # Registered deterministic checks and Decimal arithmetic
+    runtime/               # Atomic tasks, Workers, leases, outbox, recovery
+    evaluation/            # Datasets, evaluation, comparisons, statistics
+    optimization/          # Bounded search, error attribution, candidate comparisons
+    storage/               # Database and ArtifactStore
+    cli/                   # Build, run, evaluation, and operations commands
+  web/                     # Lightweight review console
+  migrations/
+  templates/purchase-order/
+  schemas/                 # Public contracts generated from domain types
+  compatibility/           # Exact versions, node capabilities, import fixtures
+  tests/
+    unit/
+    integration/
+    contracts/
+    e2e/
+    fixtures/              # Small, redacted, redistributable samples
+  evals/                   # Dataset manifests/docs; originals untracked by default
+  deploy/                  # Compose, containers, environment examples, startup checks
+  docs/adr/                # Architecture decisions and migration notes
+```
+
+Create modules when needed rather than scaffolding empty directories. Domain logic must not depend on n8n/Dify data structures; adapters depend on domain contracts. Version prompts, schemas, rules, and reference templates. Production changes create new versions.
+
+CI has three layers: static checks and fake-model tests on every change; real import/execution in pinned n8n containers for compatibility changes; authorized, budgeted real-model evaluation for release candidates. Fork PRs do not receive model keys. Tests must validate semantics, real execution, and recovery, not only exported JSON snapshots.
+
+Planned CLI commands include `mentor spec validate`, `mentor build`, `mentor evaluate`, `mentor run`, and `mentor review`. They are not yet executable. Add verified installation and quick-start commands after M1 implementation.
+
+## 15. Milestones and Definition of Done
+
+Advance by acceptance criteria rather than code completion. Expand scope after the preceding milestone passes. Each milestone includes reproducible demonstration inputs, execution records, and explicit limitations.
+
+| Milestone | Deliverables | Acceptance criteria |
+| --- | --- | --- |
+| **M0: Feasibility and compatibility baseline** | 30 samples, purchase-order fields/calculation conventions, Docling experiments, Teacher/Student comparison, minimal n8n import experiment, version matrix | Locatable digital/scan evidence; documented difficult cases and resource costs; fixed initial model pair, OCR configuration, fields, and evaluation definitions |
+| **M1: Reproducible atomic capabilities** | Python project, domain contracts, migrations, ArtifactStore, API/Worker, parsing/extraction/validation, fake models, atomic CLI debugging | One digital PDF produces JSON, evidence, and rules; missing/conflicting values cannot be falsely accepted; Worker restart recovers tasks; costs and errors are queryable |
+| **M2: End-to-end n8n workflow** | Reference AppSpec, deterministic compiler, native workflow, import/binding, outbox, bounded retries, run states, review API | Import and run on a clean instance; duplicate submissions do not duplicate results; scan support; correct recovery states; human revisions via CLI |
+| **M3: Teacher construction and optimization** | Requirements to candidate specs, PromptPack, error attribution, bounded optimization, three baselines, isolated datasets, cost reports | Human confirmation of constraints; reproducible compilation; Student meets frozen gates with demonstrated optimization gains; test data excluded from optimization inputs |
+| **M4: v0.1 pilot delivery** | Review console, roles, release/rollback, monitoring, backup/recovery, deployment instructions, full acceptance dataset | Operable requirements-to-release-to-review lifecycle; complete 200-document locked-test report; quality/cost gates passed; recovery exercise completed |
+| **M5: v0.2 extensions** | Dify DSL adapter, second document template, object storage, demand-driven scaling | Independent compatibility/evaluation reports for each target/template without changing existing application semantics |
+
+M2 is the first usable document application. M4 is the complete v0.1 with Mentor's stronger-model design and optimization capabilities. If Teacher optimization cannot meet targets, do not force a release: diagnose the bottleneck, choose a more suitable Student, narrow document scope, or increase human review, then establish a new baseline through an explicit specification change.
+
+### Required v0.1 Acceptance Scenarios
+
+- Normal digital PDFs, clear Chinese/English scans, and multipage line-item tables: correct source locations and totals consistent with template conventions.
+- Missing currency, ambiguous dates, conflicting amounts, repeated item names, merged cells, and unreadable pages: explicit states without fabricated values or incorrect merges.
+- Invalid JSON, excessive model output, insufficient context, and model 429/5xx/401: bounded handling, complete costs, and correct terminal states.
+- Repeated uploads/creation with an idempotency key, duplicate Webhooks, and Worker crashes after external calls: committed results remain intact, with potentially duplicated costs recorded.
+- Dispatch failure after API persistence, n8n restarts, expired leases, stale Workers, and cancellation: recovery or explicit failure rather than permanent processing states.
+- Concurrent human revisions, acceptance after critical-rule failures, and unauthorized reads/edits: enforced revision/permission checks and traceable audits.
+- Document prompt injection, forged evidence IDs, and dangerous links: no permission changes, skipped rules, or unauthorized resource access.
+- Clean-instance import, missing credentials, mismatched node versions, canvas drift, and rollback: actionable diagnostics and pinned versions for existing runs.
+- Data deletion, backup/recovery, and operation without Teacher: complete lifecycle management and continued execution of released applications.
+
+## 16. Initial Implementation Sequence
+
+Start in dependency order:
+
+1. Freeze purchase-order fields, rule applicability, and output/evidence schemas; prepare redacted samples and annotation guidelines.
+2. Validate Docling Chinese OCR, multipage tables, and evidence locations; establish compatible versions and model resources.
+3. Compare Teacher and Student on individual documents to establish quality, latency, and cost feasibility.
+4. Use a fixed, handwritten reference specification to verify n8n import, asynchronous task queries, and service credential binding.
+5. Implement durable atomic tasks and validation before connecting the reference specification to the deterministic compiler.
+6. Once end-to-end execution and evaluation are trustworthy, add Teacher generation/optimization, followed by the review console and release operations.
+
+Significant changes require an ADR recording the problem, alternatives, decision, validation evidence, and migration impact, with corresponding updates here. M0/M1 supply actual model IDs, dependency versions, deployment parameters, and measurements; guessed values must not be presented as verified configuration.

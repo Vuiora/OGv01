@@ -1,0 +1,471 @@
+{
+ "book": "ostep",
+ "offset": 0,
+ "total_pages": 500,
+ "pages": [
+  {
+   "slug": "preface",
+   "title": "前言",
+   "kind": "chapter",
+   "start": 0,
+   "end": 11,
+   "sections": []
+  },
+  {
+   "slug": "ch01",
+   "title": "01关于本书的对话",
+   "kind": "chapter",
+   "start": 12,
+   "end": 13,
+   "sections": []
+  },
+  {
+   "slug": "ch02",
+   "title": "02操作系统介绍",
+   "kind": "chapter",
+   "start": 14,
+   "end": 27,
+   "sections": []
+  },
+  {
+   "slug": "ch03",
+   "title": "03虚拟化的对话",
+   "kind": "chapter",
+   "start": 29,
+   "end": 29,
+   "sections": []
+  },
+  {
+   "slug": "ch04",
+   "title": "04抽象：进程",
+   "kind": "chapter",
+   "start": 30,
+   "end": 38,
+   "sections": []
+  },
+  {
+   "slug": "ch05",
+   "title": "05插叙：进程API",
+   "kind": "chapter",
+   "start": 39,
+   "end": 47,
+   "sections": []
+  },
+  {
+   "slug": "ch06",
+   "title": "06机制：受限直接执行",
+   "kind": "chapter",
+   "start": 48,
+   "end": 58,
+   "sections": []
+  },
+  {
+   "slug": "ch07",
+   "title": "07进程调度：介绍",
+   "kind": "chapter",
+   "start": 59,
+   "end": 67,
+   "sections": []
+  },
+  {
+   "slug": "ch08",
+   "title": "08调度：多级反馈列表",
+   "kind": "chapter",
+   "start": 68,
+   "end": 75,
+   "sections": []
+  },
+  {
+   "slug": "ch09",
+   "title": "09调度：比例份额",
+   "kind": "chapter",
+   "start": 76,
+   "end": 83,
+   "sections": []
+  },
+  {
+   "slug": "ch10",
+   "title": "10多处理器调度（高级）",
+   "kind": "chapter",
+   "start": 84,
+   "end": 91,
+   "sections": []
+  },
+  {
+   "slug": "ch11",
+   "title": "11关于CPU虚拟化的总结对话",
+   "kind": "chapter",
+   "start": 92,
+   "end": 93,
+   "sections": []
+  },
+  {
+   "slug": "ch12",
+   "title": "12关于内存虚拟化的对话",
+   "kind": "chapter",
+   "start": 94,
+   "end": 95,
+   "sections": []
+  },
+  {
+   "slug": "ch13",
+   "title": "13抽象：地址空间",
+   "kind": "chapter",
+   "start": 96,
+   "end": 101,
+   "sections": []
+  },
+  {
+   "slug": "ch14",
+   "title": "14插叙：内存操作API",
+   "kind": "chapter",
+   "start": 102,
+   "end": 110,
+   "sections": []
+  },
+  {
+   "slug": "ch15",
+   "title": "15机制：地址转换",
+   "kind": "chapter",
+   "start": 111,
+   "end": 121,
+   "sections": []
+  },
+  {
+   "slug": "ch16",
+   "title": "16分段",
+   "kind": "chapter",
+   "start": 122,
+   "end": 130,
+   "sections": []
+  },
+  {
+   "slug": "ch17",
+   "title": "17空闲空间管理",
+   "kind": "chapter",
+   "start": 131,
+   "end": 142,
+   "sections": []
+  },
+  {
+   "slug": "ch18",
+   "title": "18分页：介绍",
+   "kind": "chapter",
+   "start": 143,
+   "end": 152,
+   "sections": []
+  },
+  {
+   "slug": "ch19",
+   "title": "19分页：快速地址转换(TLB)",
+   "kind": "chapter",
+   "start": 153,
+   "end": 164,
+   "sections": []
+  },
+  {
+   "slug": "ch20",
+   "title": "20分页：较小的表",
+   "kind": "chapter",
+   "start": 165,
+   "end": 175,
+   "sections": []
+  },
+  {
+   "slug": "ch21",
+   "title": "21超越物理内存：机制",
+   "kind": "chapter",
+   "start": 176,
+   "end": 182,
+   "sections": []
+  },
+  {
+   "slug": "ch22",
+   "title": "22超越物理内存：策略",
+   "kind": "chapter",
+   "start": 183,
+   "end": 196,
+   "sections": []
+  },
+  {
+   "slug": "ch23",
+   "title": "23VAX/VMS虚拟内存系统",
+   "kind": "chapter",
+   "start": 197,
+   "end": 203,
+   "sections": []
+  },
+  {
+   "slug": "ch24",
+   "title": "24内存虚拟化总结对话",
+   "kind": "chapter",
+   "start": 204,
+   "end": 205,
+   "sections": []
+  },
+  {
+   "slug": "ch25",
+   "title": "25关于并发的对话",
+   "kind": "chapter",
+   "start": 207,
+   "end": 208,
+   "sections": []
+  },
+  {
+   "slug": "ch26",
+   "title": "26并发：介绍",
+   "kind": "chapter",
+   "start": 209,
+   "end": 220,
+   "sections": []
+  },
+  {
+   "slug": "ch27",
+   "title": "27插叙：线程API",
+   "kind": "chapter",
+   "start": 221,
+   "end": 229,
+   "sections": []
+  },
+  {
+   "slug": "ch28",
+   "title": "28锁",
+   "kind": "chapter",
+   "start": 230,
+   "end": 247,
+   "sections": []
+  },
+  {
+   "slug": "ch29",
+   "title": "29基于锁的并发数据结构",
+   "kind": "chapter",
+   "start": 248,
+   "end": 259,
+   "sections": []
+  },
+  {
+   "slug": "ch30",
+   "title": "30条件变量",
+   "kind": "chapter",
+   "start": 260,
+   "end": 273,
+   "sections": []
+  },
+  {
+   "slug": "ch31",
+   "title": "31信号量",
+   "kind": "chapter",
+   "start": 274,
+   "end": 289,
+   "sections": []
+  },
+  {
+   "slug": "ch32",
+   "title": "32常见并发问题",
+   "kind": "chapter",
+   "start": 290,
+   "end": 301,
+   "sections": []
+  },
+  {
+   "slug": "ch33",
+   "title": "33基于事件的并发（进阶）",
+   "kind": "chapter",
+   "start": 302,
+   "end": 310,
+   "sections": []
+  },
+  {
+   "slug": "ch34",
+   "title": "34并发的总结对话",
+   "kind": "chapter",
+   "start": 311,
+   "end": 311,
+   "sections": []
+  },
+  {
+   "slug": "ch35",
+   "title": "35关于持久化的对话",
+   "kind": "chapter",
+   "start": 313,
+   "end": 313,
+   "sections": []
+  },
+  {
+   "slug": "ch36",
+   "title": "36I/O设备",
+   "kind": "chapter",
+   "start": 314,
+   "end": 324,
+   "sections": []
+  },
+  {
+   "slug": "ch37",
+   "title": "37磁盘驱动器",
+   "kind": "chapter",
+   "start": 325,
+   "end": 336,
+   "sections": []
+  },
+  {
+   "slug": "ch38",
+   "title": "38廉价冗余磁盘阵列(RAID)",
+   "kind": "chapter",
+   "start": 337,
+   "end": 352,
+   "sections": []
+  },
+  {
+   "slug": "ch39",
+   "title": "39插叙：文件和目录",
+   "kind": "chapter",
+   "start": 353,
+   "end": 367,
+   "sections": []
+  },
+  {
+   "slug": "ch40",
+   "title": "40文件系统的实现",
+   "kind": "chapter",
+   "start": 368,
+   "end": 382,
+   "sections": []
+  },
+  {
+   "slug": "ch41",
+   "title": "41局部性和快速文件系统",
+   "kind": "chapter",
+   "start": 383,
+   "end": 390,
+   "sections": []
+  },
+  {
+   "slug": "ch42",
+   "title": "42崩溃一致性：FSCK和日志",
+   "kind": "chapter",
+   "start": 391,
+   "end": 405,
+   "sections": []
+  },
+  {
+   "slug": "ch43",
+   "title": "43日志结构文件系统",
+   "kind": "chapter",
+   "start": 406,
+   "end": 417,
+   "sections": []
+  },
+  {
+   "slug": "ch44",
+   "title": "44数据完整性和保护",
+   "kind": "chapter",
+   "start": 418,
+   "end": 427,
+   "sections": []
+  },
+  {
+   "slug": "ch45",
+   "title": "45关于持久的总结对话",
+   "kind": "chapter",
+   "start": 428,
+   "end": 428,
+   "sections": []
+  },
+  {
+   "slug": "ch46",
+   "title": "46关于分布式的对话",
+   "kind": "chapter",
+   "start": 429,
+   "end": 429,
+   "sections": []
+  },
+  {
+   "slug": "ch47",
+   "title": "47分布式系统",
+   "kind": "chapter",
+   "start": 430,
+   "end": 440,
+   "sections": []
+  },
+  {
+   "slug": "ch48",
+   "title": "48Sun的网络文件系统",
+   "kind": "chapter",
+   "start": 441,
+   "end": 452,
+   "sections": []
+  },
+  {
+   "slug": "ch49",
+   "title": "49Andrew文件系统(AFS)",
+   "kind": "chapter",
+   "start": 453,
+   "end": 463,
+   "sections": []
+  },
+  {
+   "slug": "ch50",
+   "title": "50关于分布式的总结对话",
+   "kind": "chapter",
+   "start": 464,
+   "end": 464,
+   "sections": []
+  },
+  {
+   "slug": "appA",
+   "title": "附录A:关于虚拟机监视器的对话",
+   "kind": "chapter",
+   "start": 465,
+   "end": 465,
+   "sections": []
+  },
+  {
+   "slug": "appB",
+   "title": "附录B:虚拟机监视器",
+   "kind": "chapter",
+   "start": 466,
+   "end": 476,
+   "sections": []
+  },
+  {
+   "slug": "appC",
+   "title": "附录C:关于监视器的对话",
+   "kind": "chapter",
+   "start": 477,
+   "end": 477,
+   "sections": []
+  },
+  {
+   "slug": "appD",
+   "title": "附录D:关于实验室的对话",
+   "kind": "chapter",
+   "start": 478,
+   "end": 478,
+   "sections": []
+  },
+  {
+   "slug": "appE",
+   "title": "附录E:实验室：指南",
+   "kind": "chapter",
+   "start": 479,
+   "end": 488,
+   "sections": []
+  },
+  {
+   "slug": "appF",
+   "title": "附录F:实验室:系统项目",
+   "kind": "chapter",
+   "start": 489,
+   "end": 490,
+   "sections": []
+  },
+  {
+   "slug": "appG",
+   "title": "附录G:实验室：xv6项目",
+   "kind": "chapter",
+   "start": 491,
+   "end": 499,
+   "sections": []
+  }
+ ]
+}

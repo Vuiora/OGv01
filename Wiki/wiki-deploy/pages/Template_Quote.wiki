@@ -1,0 +1,8 @@
+<noinclude>
+引用框模板，用于突出显示引文。
+
+'''用法'''：<code><nowiki>{{Quote|引文内容|出处}}</nowiki></code>
+</noinclude><includeonly><table style="margin:0.8em 0 0.8em 1.5em;border-left:3px solid #a2a9b1;background:#f8f9fa;border-collapse:collapse;">
+<tr><td style="padding:0.6em 1em;font-style:italic;">{{{1|}}}</td></tr>{{#if:{{{2|}}}|<tr><td style="padding:0 1em 0.6em 1em;text-align:right;font-size:90%;color:#54595d;">—— {{{2}}}</td></tr>}}</table></includeonly><noinclude>
+[[Category:模板]]
+</noinclude>

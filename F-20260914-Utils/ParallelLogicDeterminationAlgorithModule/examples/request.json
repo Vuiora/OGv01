@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "source_kind": "standard",
+  "inputs": {
+    "x": {"shape": [5], "dtype": "float32", "values": [1, 2, 3, 4, 5]},
+    "y": {"shape": [5], "dtype": "float32", "values": [10, 20, 30, 40, 50]}
+  },
+  "tasks": [
+    {"id": "twice_x", "op": "scale", "inputs": ["x"], "params": {"factor": 2}, "numerical_mode": "relaxed"},
+    {"id": "triple_y", "op": "scale", "inputs": ["y"], "params": {"factor": 3}, "numerical_mode": "relaxed"},
+    {"id": "result", "op": "add", "inputs": ["twice_x", "triple_y"], "numerical_mode": "relaxed"}
+  ],
+  "outputs": ["result"],
+  "instructions": [
+    {"id": "load_x", "unit": "load", "latency": 3, "accesses": [{"resource": "memory:x", "mode": "read"}, {"resource": "register:r1", "mode": "write"}]},
+    {"id": "load_y", "unit": "load", "latency": 3, "accesses": [{"resource": "memory:y", "mode": "read"}, {"resource": "register:r2", "mode": "write"}]},
+    {"id": "sum", "unit": "alu", "latency": 1, "accesses": [{"resource": "register:r1", "mode": "read"}, {"resource": "register:r2", "mode": "read"}, {"resource": "register:r3", "mode": "write"}]}
+  ],
+  "loops": [
+    {"id": "elementwise", "trip_count": 5, "vector_width": 4, "accesses": [{"resource": "x", "mode": "read", "stride": 4}, {"resource": "out", "mode": "write", "stride": 4}]},
+    {"id": "recurrence", "trip_count": 5, "vector_width": 4, "accesses": [{"resource": "a", "mode": "read", "stride": 4, "offset": 0}, {"resource": "a", "mode": "write", "stride": 4, "offset": 4}]}
+  ]
+}

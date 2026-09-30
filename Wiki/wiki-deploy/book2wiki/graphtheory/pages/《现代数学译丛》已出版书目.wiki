@@ -1,0 +1,120 @@
+== 《现代数学译丛》已出版书目 ==
+
+(按出版时间排序)2
+
+吴铤董军武王明强译
+
+2 金融数学引论—从风险管理到期权定价 2008.1 （美）Steven Roman 著
+
+邓欣雨译
+
+3 现代非参数统计 2008.5 （美） Larry Wasserman 著 吴喜之 译
+
+4 最优化问题的扰动分析 2008.6 （法）J. Frédéric Bonnans （美）Alexander Shapiro 著
+
+张立卫译统计学完全教程 2008.6 （美） Larry Wasserman 著 张 波 等 译
+
+应用偏微分方程 2008. 7 （英) John Ockendon, Sam Howison, Andrew Lacey & Alexander
+
+Movchan 著谭永基程晋蔡志杰 译
+
+7 有向图的理论、算法及其应用 2009.1 （丹）J. 邦詹森 （英）G. 古廷 著
+
+姚兵张忠辅译8
+
+微分方程的对称与积分方法 2009.1（加）乔治 W. 布卢曼 斯蒂芬 C. 安科 著 闫振亚 译
+
+9 动力系统入门教程及最新发展概述 2009.8 （美）Boris Hasselblatt & Anatole Katok 著
+
+朱玉峻 郑宏文 张金莲 阎欣华 译胡虎翼校
+
+<syntaxhighlight lang="c">
+调和分析基础教程 2009.10 （德）Anton Deitmar著 丁 勇 译
+应用分支理论基础 2009.12 （俄）尤里·阿·库兹涅佐夫 著 金成桴 译
+多尺度计算方法——均匀化及平均化 2010. 6 Grigorios A. Pavliotis, Andrew M. Stuart 著
+</syntaxhighlight>
+
+郑健龙李友云钱国平译
+
+13 最优可靠性设计：基础与应用 2011. 3 （美） Way Kuo, V. Rajendra Prasad, Frank
+
+A.Tillman, Ching-Lai Hwang 著 郭进利 闫春宁 译 史定华 校
+
+14 非线性最优化基础 2011.4（日）Masao Fukushima 著 林贵华 译
+
+15 图像处理与分析：变分，PDE，小波及随机方法 2011.6 Tony F. Chan，Jianhong
+
+(Jackie) Shen著陈文斌，程晋译
+
+16 马氏过程 2011.6（日）福岛正俊 竹田雅好 著 何 萍 译 应坚刚 校
+
+17 合作博弈理论模型 2011.7 （罗）Rodica Branzei （德）Dinko Dimitrov （荷）Stef Tijs 著
+
+刘小冬刘九强译
+
+18 变分分析与广义微分 I：基础理论 2011.9 （美） Boris S. Mordukhovich 著
+
+赵亚莉 王炳武 钱伟懿 译
+
+19 随机微分方程导论应用(第6版) 2012.4（挪) Bernt ∅ksendal 著 刘金山 吴付科 译
+
+20 金融衍生产品的数学模型 2012.4 郭宇权(Yue-Kuen Kwok) 著
+
+张寄洲边保军徐承龙等译
+
+21 欧拉图与相关专题 2012.4 （英）Herbert Fleischner 著
+
+孙志人李皓刘桂真刘振宏束金龙译张昭黄晓晖审校
+
+22 重分形：理论及应用 2012.5（美）戴维·哈特 著 华南理工分形课题组 译
+
+23 组合最优化：理论与算法 2014.1 （德） Bernhard Korte Jens Vygen 著
+
+姚恩瑜 林治勋 越民义 张国川 译
+
+24 变分分析与广义微分Ⅱ：应用 2014.1 （美） Boris S. Mordukhovich著
+
+李春王炳武赵亚莉王东译
+
+25 算子理论的 Banach 代数方法(原书第二版) 2014.3 （美） Ronald G. Douglas 著
+
+颜军徐胜芝舒永录 蒋卫生 郑德超孙顺华译
+
+2 5
+
+W. K. Schief 著 周子翔 译
+
+27 凸分析与应用捷径 2015.9 （美） Boris S. Mordukhovich, Nguyen Mau Nam 著
+
+赵亚莉王炳武译
+
+28 利己主义的数学解析 2017.8 （奥） K.Sigmund 著 徐金亚 杨 静 汪 芳 译s （ （
+
+傅士硕杨子辰译
+
+30 群的表示和特征标 2017.9 （英） Gordon James, Martin Liebeck 著
+
+杨义川刘瑞珊任燕梅庄晓 译
+
+31 动力系统仿真、分析与动画— XPPAUT 使用指南 2018.2 （美） Bard Ermentrout 著
+
+孝鹏程 段利霞 苏建忠 译
+
+32 微积分及其应用 2018.3 （美） Peter Lax Maria Terrell 著
+
+林开亮刘帅邵红亮等译s
+
+刘逸侃徐定华程晋译
+
+34 图论(原书第五版) 2020.4（德) Reinhard Diestel 著 （加）于青林 译
+
+www.sciencep.com
+
+ISBN科学出版社互联网入口科学数理分社
+
+7870301648075电话：(010)64019814 Email: lijingke@mail.sciencep.com
+
+定价：128.00元销售分类建议：高等数学
+
+[[Category:图论]]
+[[Category:出版书目]]

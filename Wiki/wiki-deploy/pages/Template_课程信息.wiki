@@ -1,0 +1,20 @@
+<noinclude>
+本模板用于'''[[计算机数学基础]]'''系列知识页，在页面顶部呈现统一的课程信息框。
+
+'''用法'''：
+<pre>
+{{课程信息
+| 课程名称 =
+| 英文名称 =
+| 归属 =
+| 授课教师 =
+| 单位 =
+| 日期 =
+| 关键词 =
+}}
+</pre>
+</noinclude><includeonly><table class="infobox" style="float:right;clear:right;width:22em;margin:0 0 1em 1em;border:1px solid #a2a9b1;background:#f8f9fa;font-size:88%;line-height:1.5;border-collapse:collapse;">
+<caption style="font-weight:bold;background:#eaecf0;padding:0.4em;">{{{课程名称|{{PAGENAME}}}}}</caption>
+{{#if:{{{英文名称|}}}|<tr><td colspan="2" style="text-align:center;font-style:italic;padding:0.3em 0.6em;">{{{英文名称}}}</td></tr>}}{{#if:{{{归属|}}}|<tr><td style="padding:0.3em 0.6em;font-weight:bold;white-space:nowrap;">归属</td><td style="padding:0.3em 0.6em;">{{{归属}}}</td></tr>}}{{#if:{{{授课教师|}}}|<tr><td style="padding:0.3em 0.6em;font-weight:bold;white-space:nowrap;">授课教师</td><td style="padding:0.3em 0.6em;">{{{授课教师}}}</td></tr>}}{{#if:{{{单位|}}}|<tr><td style="padding:0.3em 0.6em;font-weight:bold;white-space:nowrap;">单位</td><td style="padding:0.3em 0.6em;">{{{单位}}}</td></tr>}}{{#if:{{{日期|}}}|<tr><td style="padding:0.3em 0.6em;font-weight:bold;white-space:nowrap;">日期</td><td style="padding:0.3em 0.6em;">{{{日期}}}</td></tr>}}{{#if:{{{关键词|}}}|<tr><td style="padding:0.3em 0.6em;font-weight:bold;white-space:nowrap;">关键词</td><td style="padding:0.3em 0.6em;">{{{关键词}}}</td></tr>}}</table></includeonly><noinclude>
+[[Category:模板]]
+</noinclude>

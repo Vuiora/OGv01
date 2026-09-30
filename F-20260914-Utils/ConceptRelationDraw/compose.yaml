@@ -1,0 +1,58 @@
+name: concept-relation-draw
+services:
+  concept-api:
+    build: .
+    env_file: .env
+    environment:
+      DATA_ROOT: /app/data
+      DOCLING_BASE_URL: http://docling:5001
+      N8N_WEBHOOK_URL: http://n8n:5678/webhook/concept-relation
+      APP_API_KEY: ${APP_API_KEY:?Run scripts/init-env.ps1 or scripts/init_env.py first}
+    ports:
+      - "127.0.0.1:8091:8091"
+    volumes:
+      - concept_data:/app/data
+    restart: unless-stopped
+    init: true
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8091/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:2.38.7
+    ports:
+      - "127.0.0.1:5679:5678"
+    environment:
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:?Initialize .env first}
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_PERSONALIZATION_ENABLED: "false"
+      N8N_SECURE_COOKIE: "false"
+      GENERIC_TIMEZONE: Asia/Shanghai
+      EXECUTIONS_TIMEOUT: "7200"
+      EXECUTIONS_DATA_PRUNE: "true"
+      EXECUTIONS_DATA_MAX_AGE: "168"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n:/imports:ro
+    depends_on:
+      concept-api:
+        condition: service_healthy
+    restart: unless-stopped
+    init: true
+
+  docling:
+    image: quay.io/docling-project/docling-serve:v1.32.0
+    environment:
+      DOCLING_SERVE_API_KEY: ${DOCLING_API_KEY:?Initialize .env first}
+      DOCLING_SERVE_ENABLE_UI: "false"
+    volumes:
+      - docling_models:/opt/app-root/src/.cache
+    restart: unless-stopped
+    init: true
+
+volumes:
+  concept_data:
+  n8n_data:
+  docling_models:

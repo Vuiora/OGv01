@@ -1,0 +1,388 @@
+索引B
+
+C侧面(side)， 22半径(radius)，8测地的(geodetic)，29包含(contain)，3层(level), 14被匹配(matched)，32拆分定理(splitter theorem)， 77薄的(thin)， 197, 225长度(length)， 6, 7薄和 (thin sum), 225长度为 k 的途径 (walk of length k), 10闭包(closure)，217超过(exceed)，60闭的(closed)，10超图 (hypergraph), 25避开(avoid), 320超限归纳法(transfinite induction), 350边(edge), 1, 25, 26重边 (multiple edge), 25边稠密度(edge density)，153重数(multiplicity)，247(组合)边度数((combinatorial) edge-degree),抽象对偶(abstract dual), 98 193抽象图 (abstract graph), 3边分解(edge-decomposition)，44稠密的序(dense order)，235边极大的(edge-maximal)，4稠密图 (dense graph), 153边界 (boundary), 83, 206, 354初始点(initial vertex)，25边界映射 (boundary map), 31, 101初始线段(initial segment)，349边界圆(boundary circle)， 353穿越(pass),280边空间(edge space), 21传递图 (transitive graph), 49边连通度(edge-connectivity)，11垂直射线(vertical ray)，197边色数(edge-chromatic number), 105刺藤(bramble),315边着色(edge colouring)， 105刺藤数 (bramble number), 318边 e 在顶点 v (edge e at vertex v), 2
+
+D标准基(standard basis), 21, 22大波 (large wave), 206标准子空间(standard subspace),217大集合 (large set), 293补图(complement)，4带邻域 (strip neighourhood), 354不交的(disjoint)，3单纯的(simplicial)，313不可约的(irreducible)，341单纯形分解理论(simplicial decomposition)，不友好的(unfriendly)，192 241部分(parts), 311单面的(one-sided)，355部分匹配(partial matching),212单色的(monochromatic)，253
+
+单色子图 (monochromatic subgraph), 253
+
+端点(endvertex)，2导出(induce), 3
+
+短圈 (short cycle), 293导出圈 (induced cycle)， 7
+
+: <math>\text{对π 是满意的(happy with π), 216}</math>
+
+导出子图 (induced subgraph), 3
+
+多边形(polygon), 79等差数列(arithmetic progression)，269
+
+多边形弧(polygonal arc), 80等价的(equivalent), 269, 340, 353
+
+多重路(multipath)，280等价嵌入(equivalent embedding),90
+
+多重图(multigraph)，26第二类 (class 2), 114第二时刻方法(second moment method)， 288
+
+二部图 (bipartite graph), 16第一个点(first point), 80
+
+二叉树(binary tree)，193第一类 (class 1), 114
+
+二阶矩 (second moment),300递归定义(recursive definition), 351
+
+F递归可修剪的(recursively prunable)， 214
+
+反链(antichain)，48点(point), 1
+
+方差(variance)，300点态大于(pointwise greater)，277
+
+方向(direction)，133顶点(vertex)，1,25, 26
+
+非分离的(non-separating)，354(组合）顶点度数（(combinatorial) vertex-
+
+非匹配(unmatched)，32
+
+: <math>degree), 193</math>
+
+非平凡的(non-trivial)，269顶点复制(vertex duplication)，157
+
+分隔(separator)，10顶点可传递的(vertex-transitive)，204
+
+分离 (separate), 10, 80, 235, 353顶点空间(vectex space), 21
+
+分离(separation)，11顶点着色 (vertex colouring)， 105
+
+分离圆(separating circle), 354顶端(ends),2, 6
+
+分支(component)，10, 353定向(orientation), 25, 133, 320
+
+分支顶点(branch vertex)，18定向边(oriented edge)， 133
+
+分支集(branch set)， 18定向分离(oriented separation)，320
+
+疯狂的(wild)，238定向图 (oriented graph), 26
+
+覆盖(cover), 32, 44, 211, 315独立顶点(independent vertex), 2
+
+(顶点）覆盖（(vertex) cover), 33独立边(independent edge), 2
+
+复制(duplicating)，157独立路(independent path),7独立数(independence number)，119
+
+富勒烯(fullerene)，100
+
+附着力(adhesion)，312度(degree), 5
+
+G(拓扑）度((topological) degree)，219
+
+概率方法(probabilistic method)，288度序列(degree sequence), 277端点(end vertex),6
+
+高度(height)，14端点(end)， 26
+
+割(cut), 10, 22端点(endpoints)，80, 219
+
+割补(surgery)，355
+
+环柄(handle)，353割点(cutvertex)，10割空间(cut space)，23,240环流(circulation)，134根 (root), 13, 14, 331回路(circuit)，222跟随(follow)，234婚姻定理(marriage theorem), 34更好(better), 36
+
+J更优拟序(better-quasi-ordering)，345基本割 (fundamental cut), 24, 225共同边界映射(coboundary map), 31基本回路(fundamental circuit)， 225共尾的(cofinal)，229基本圈 (fundamental cycle), 23构建于 T* 上 (over T*), 322基数(cardinality)，349基数相同(same cardinality),349孤立顶点(isolated vertex)， 5关联(associate)，253极大的(maximal)，4,84, 90关联(incident),2极大的元素(maximal element)， 349关联矩阵(incidence matrix)，24极大可平面的(maximally planar),90关联偏序集(incidence poset)，96极大平面图 (maximal plane), 84冠(crown), 268极限 (limit), 207, 350规范的(canonical)，333极小的(minimal)，4极小的元素(minimal element)，349 H哈密顿圈(Hamilton cycle)，152极值的(extremal)，155好的(good),316极值图论 (extremal graph theory), 154好对(good pair), 308几乎可平面的(nearly planar), 332好刻画(good characterization), 331, 347几乎肯定地(almost surely)， 295好序列(good sequence),307几乎没有(almost no)，295核(kernel)，117几乎每个(almost every)，295几乎所有(almost all)，288,295核心(core)， 367横穿(cross)，22加法(addition)，350厚的(thick)，197价(valency), 5后继(successor)，349坚韧性猜想(toughness conjecture)，276弧(arc), 80, 219, 353尖端集(apex set),343弧分支(arc-component)，220键(bond), 10弧连通的(arc-connected)，220交叉(cross), 316花瓣(petal), 316交叉边(cross-edge)，44交叉的(cross)，326画法(drawing), 86划分(partition)，1, 235交叉套(crosscap),353划分积分(partition calculus)，241交错的(alternating)，101坏的(bad), 308交错路(alternating path), 32坏着色(bad colouring)，254交换链(exchange chain)，45环(ring), 334交替的(alternate)，61环边(loop)， 25交图 (intersection graph), 342
+
+角落分离(corner separation)，322
+
+扩展顶点(expanding a vertex), 121接触(touch), 315
+
+L阶(order), 2, 11, 315
+
+拉丁方(Latin square),127
+
+拉普拉斯(Laplacian)，31节点(node), 1结束(terminate), 351
+
+例外集(exceptional set)，166界(bound), 353
+
+立方图(cubic graph), 5界定(bound), 83
+
+连接(join),2紧致的(compact)，191
+
+连接 (link), 6, 80, 219紧致性(compactness)，189
+
+连接的 (linked)， 66, 69, 319紧致性原理(compactness principle)，190
+
+连通的(connected)，10禁用子式(forbidden minor), 328
+
+(拓扑）连通的（(topologically） connected)，禁用子式定理(forbidden-minor theorem)，
+
+219 308
+
+连通度(connectivity)，11竞赛图(tournament)，284
+
+连通树分解(connected tree-decomposition)，纠缠(tangle), 308, 321
+
+319局部连通的 (locally connected)， 238
+
+连通树宽(connected tree-width), 319局部有限的(locally finite)， 185
+
+连续多个元素(continuum many)，349距离(distance),8
+
+连续统(continuum)，238均值(mean)，291
+
+链 (chain), 14, 48, 349
+
+K
+
+良基集(well-founded set), 349开欧拉环游(open Euler tour), 240
+
+良拟序(well-quasi-ordering)，308康托尔集(Cantor set), 237
+
+良拟序化(well-quasi-ordered)，308可比图 (comparability graph), 119, 128
+
+良序集(well-ordered set)，349可定向亏格(orientable genus), 344
+
+列表色数(list-chromatic number)， 114可定向性(orientability)，145
+
+列表着色猜想 (list colouring conjecture)， 117可分散的(dispersed)，234
+
+列表着色指数(list-chromatic index)，115可接受的(acceptable)，36
+
+列举(enumeration), 349可连接的(linkable)，207
+
+邻点(neighbour), 2, 4可匹配(matchable)，211
+
+邻接矩阵(adjacency matrix)，25可匹配的(matchable)，39
+
+流(flow), 135可平面的(planar)，90
+
+流多项式(flow polynomial)，138可平面图 (planar graph), 79
+
+流数 (flow number), 140可数的(countable)，2,349可数无限的(countably infinite),349
+
+六边形四分网格(hexagonal quarter grid),空图 (empty graph), 2
+
+197
+
+路(path), 6, 186块(block), 54块图 (block graph), 55
+
+路分解(path-decomposition)，331,342宽度(width), 315, 331
+
+路覆盖(path cover),47
+
+路宽(path-width), 342平面多重图(plane multigraph), 97平面嵌入 (planar embedding), 86路-Hamilton的(path-Hamiltonian)，279旅行售货员问题(travelling salesman prob-平面三角剖分(plane triangulation)，84平面图 (plane graph), 79, 81
+
+: <math>lem), 285</math>
+
+平行边(parallel edge), 25轮子(wheel)，58普遍存在的(ubiquitous)，196轮子定理(wheel theorem)，58 M
+
+Q密度(density)，166期望值(expected value), 291奇分支 (odd component), 37面 (face), 82, 333, 354面空间(face space)，101奇圈(odd cycle)， 17面圈 (facial cycle), 94齐次的(homogeneous)，204模型(model)，18前趋(predecessor)，349末端(end)，185， 192前沿(frontier)，80,353末端空间(end space)，237嵌入 (embedding), 20, 263, 331, 354末端一一的(end-faithful)，237嵌套的(nested)，326母图(supergraph), 3强核心(strong core), 367强连通(strong connected), 28 N强完美的 (strongly perfect), 213内部(inner)，6内部(interior)，80强完美图猜想 (strong perfect graph conjec-内部点 (inner point), 217
+
+: <math>ture), 121</math>
+
+内部面(inner face),82桥(bridge), 10拟序(quasi-ordering)，308轻的(light),69逆极限(inverse limit)， 229区分(distinguish), 327逆系统(inverse system)， 229区间图 (interval graph), 119, 128区域 (region), 80, 81 0欧拉的(Eulerian)，20曲面(surface),353欧拉环游(Euler tour)， 20躯干(torso), 312圈(circle),7, 81, 221, 276偶的(even)，142 P圈空间(cycle space)，22排除子式(excluded minor)，328(拓扑)圈空间((topological) cycle space), 225圈数(cyclomatic number), 22匹配(matching)，32平凡的（trivial)，2全着色猜想 (total colouring conjecture)，128全色数 (total chromatic number), 128平衡的(balanced)，50平衡图 (balanced graph), 304
+
+R平均度(average degree),5容量(capacity)，135平面对偶(plane dual)， 97容量函数(capacity)，135平面对偶性(plane duality),79容许函数(admissible function)，352
+
+弱完美的(weakly perfect)，213
+
+树序(tree-order)，14弱完美图猜想(weak perfect graph conjec-
+
+双边 (double edge), 26
+
+: <math>ture), 121</math>
+
+双覆盖 (double cover), 101, 152
+
+S
+
+双轮(double wheel)， 268三角化图 (triangulated graph), 119
+
+双面的(two-sided)，354三角形(triangle), 2
+
+双圈覆盖(cycle double cover), 101色多项式(chromatical polynomial)，127
+
+双圈覆盖猜想(cycle double cover conjec-色类(colour class)， 105
+
+: <math>ture), 147, 152</math>
+
+(顶点)色数((vertex-) chromatic number)，
+
+双射线(double ray)，186 105
+
+水平边 (horizontal edge)， 198色指数(chromatic index)，105
+
+斯纳克(snark)，148森林(forest)，12
+
+四色定理 (four colour theorem), 106扇(fan), 64
+
+随机变量(random variable), 291上闭包(up-closure)，14
+
+随机图 (random graph), 203, 288, 289上闭的(up-closed)，14
+
+随机图的进化 (evolution of random graph),上集合(up-set)，14
+
+304上界(upper bound), 349
+
+所支撑(spanned by), 217上密度(upper density), 178
+
+T射线(ray)，186
+
+贪婪算法(greedy algorithm)，107深度优先搜索树(depth-first search tree), 15,
+
+提升(lifting)，280 28
+
+填装(packing),32生成(generate)，225
+
+通用的(universal)，202使用列表 Sv的着色 (colouring from the list
+
+同构(isomorphism)，3
+
+: <math>Sv), 114</math>
+
+同态(homomorphism), 3事件(event)， 289
+
+同样的顺序类型 (same order type), 350收缩(contraction)，18
+
+图(graph), 1收缩边 e (contracting the edge e), 19
+
+图不变量(graph invariant), 3收缩子式(contraction minor)，18
+
+图论同构(graph theoretical isomorphism),瘦的(lean)， 319
+
+88梳(comb)，186
+
+图性质(graph property), 3, 295梳背(spine)，186
+
+图子式定理(graph minor theorem), 308, 333梳齿(teeth)，186
+
+途径(walk)，10树(tree), 13
+
+团数(clique number), 119树的弦(chord of a tree), 13
+
+拓扑边(topological edge), 217树分解(tree-decomposition)，308,311
+
+拓扑等价的(topologically equivalent), 89树宽(tree-width), 315
+
+拓扑末端一—的(topologically end-faithful)，树宽对偶定理(tree-width duality theorem)，315
+
+237
+
+拓扑欧拉环游(topological Euler tour), 240弦图 (chordal graph), 119拓扑同构(topological isomorphism)，87线(line), 1拓扑支撑树(topological spanning tree), 222线图 (line graph), 4拓扑子式(topological minor)，18线性分解(linear decomposition)，330 W线性拓展(linear extension)，96外部面(outer face)， 82相处快乐 (happy with), 36外可平面的(outerplanar)，342相关联(associated)，264外可平面图(outerplanar graph)， 101相关联(incident)，83完美的(perfect)，213相邻的(adjacent)，2完美图(perfect graph)， 119相容的(consistent)，320完美图定理(perfect graph theorem), 121相容的(compatible)，229，352完全的(complete)，2小波(small wave),206完全多部图 (complete multipartite graph),小的一边(small side), 343 16小的 X-分离(small X-separation),69完全 r-部图 (complete r-partite graph), 16星(star), 16, 321网格(grid)，197, 315袖口(cuff), 331网络(network)，135虚拟顶点(dummy vertex)，229往返 (back and forth), 203序数(ordinal)，350围长(girth),7选择数(choice number)， 114维数(poset dimension)，96漩涡(vortex),343伪随机图(pseudo-random graph)， 271
+
+Y尾巴(tail)，186压缩(suppressing)，26稳定集(stable set), 2颜色(colours)，105, 253无纽结的(knotless),340叶子(leaves)，13无圈图(acyclic graph), 12一致的(compatible)，199无射线图中的排序(ranking of rayless graph),荫度(arboricity)，45 215因子临界的(factor-critical)，39无限的(infinite)，2, 349优先集(set of preferences),36 x有定向的圈(cycle with orientation)，145稀疏的(sparse)，95,154有根树(rooted tree)， 14系列平行的(series-parallel)，179有界的(bounded)，236细分(subdivision)，17有界图猜想 (bounded graph conjecture), 242细分顶点(subdividing vertex)， 18有限的(finite), 2, 349细化(refine)，1有限附着力(finite adhesion)， 332下闭包(down-closure)，14下闭的(down-closed)，14有限树宽 (finite tree-width), 332下集合(down-set)，14有限性圈空间 (finitary cycle space), 225弦(chord), 7有向路(directed path)，47
+
+有向偏序集(directed partially ordered set)，
+
+终点(terminal vertex)，25 229
+
+重的(heavy)，69有向图 (directed graph, digraph), 25
+
+周长(circumference)，7有效地(effcient)，327
+
+柱面(cylinder)，353阈函数(threshold function)， 299
+
+转换(transaction), 342圆(circle),353
+
+子模性(submodularity), 322圆盘 (disc), 353
+
+子式(minor),18
+
+Z
+
+子式封闭(minor-closed)，328在 X 相遇 (meet in X), 118
+
+子图(subgraph), 3增广路(augmenting path), 33
+
+自同构(automorphism)，3粘贴(pasting)，119
+
+总流量 (total value), 136着色数(colouring number)， 108
+
+组合等价的(combinatorially equivalent)，89真波(proper wave), 206
+
+组合集合论(combinatorial set theory), 185真的(proper), 11
+
+组合同构(combinatorial isomorphism)，87真子式(proper minor), 339
+
+最大度(maximum degree), 5真子图 (proper subgraph), 3
+
+最大流最小割(max-flow min-cut)，136整数的(integral)，135
+
+最大流最小割定理(max-flow min-cut theo-正规的(normal)，14, 194
+
+: <math>rem), 135</math>
+
+正规射线(normal ray)，194
+
+最小度(minimum degree), 5正则的(regular)，5
+
+最终单射的(eventually injective)，231正则性图 (regularity graph), 173
+
+最终顶点(last vertex),47正则性引理(regularity lemma)，166
+
+其他支撑(span), 3
+
+Erdős-Menger 猜想 (Erdős-Menger conjec-支撑子图 (spanning subgraph), 3
+
+: <math>ture), 205</math>
+
+支配(dominate), 233
+
+Erdős-Pósa 性质 (Erdős-Pósa property), 41,之间(between)，6,80
+
+329之下(below), 14
+
+Euler 亏格(Euler genus), 355直径(diameter),8
+
+Euler 特征 (Euler characteristic), 355直线段 (straight line segment), 79
+
+Freudenthal 紧致化 (Freudenthal com-指示随机变量(indicator random variable)，
+
+pactification), 246 292
+
+Gallai-Edmonds 匹配定理(Gallai-Edmonds指向(directed to), 25
+
+matching theorem), 41秩为 0 (rank 0), 215
+
+Gödel 紧致性定理(Gödel compactness秩为 0 的根树 (rooted trees of rank 0), 215中间圆(middle circle)， 354
+
+: <math>theorem), 242</math>
+
+Hajós 猜想 (Hajós conjecture), 166中心(centre)，16
+
+Hamilton的(Hamiltonian), 273, 277中心点(central vertex)，8中心面(central face)，333
+
+Hamilton 路(Hamilton path), 273
+
+Hamilton 圈(Hamilton cycle), 273, 276 X-分离(X-separation), 69 IX, 18Δ 系统(∆-system)， 270 König 引理 (König lemma), 242α-边(α-edge), 112 Kirchhoff 定律(Kirchhoff's law), 133χ-有界的(χ-bounded)，125 Kuratowski 集 (Kuratowski set), 269, 333 l-边连通的(l-edge-connected)， 11 Möbius 带 (Möbius strip), 354
+
+: <math>\text{F-纠缠(F-tangle),326}</math>
+
+Möbius 冠(Möbius crown), 268 c-着色(c-colouring)，253 Rado 图 (Rado graph), 203 d-维立方体(d-dimensional cube)， 27 Rado 选择性引理 (Rado selection lemma),k-边着色(k-edge-colouring)，105 242 k-可构造图 (k-constructible graph), 111 Ramsey 理论 (Ramsey Theory), 251 k-可列表着色的(k-list-colourable)，114 Ramsey 数 (Ramsey number), 253, 254 k-可选的(k-choosable)，114 Ramsey 图 (Ramsey graph), 258 k-可着色的（k-colourable)，105 Ramsey-极小的(Ramsey-minimal)，257
+
+: <math>\text{k-块 (k-block), 314}</math>
+
+Turán 图 (Turán graph), 155 k-刺藤(k-bramble), 313 Tutte 多项式 (Tutte polynomial), 153 k-几乎可嵌入的(k-nearly embeddable), 331 TX, 17
+
+: <math>\text{k-集(k-sets),1}</math>
+
+van der Waerden 定理 (van der Waerden the-
+
+: <math>\text{k-纠缠(k-tangle),321 orem), 269 k-连接的(k-linked)，66}</math>
+
+Wagner 猜想 (Wagner's conjecture), 344 k-连通的(k-connected)，11,53 4-流猜想(4-flow conjecture),148
+
+: <math>\text{k-流(k-flow),140}</math>
+
+5-流猜想(5-flow conjecture), 148
+
+: <math>\text{k-圈(k-cycle),7}</math>
+
+A-B 路 (A-B path), 7 k-色的(k-chromatic)，105
+
+: <math>\text{A → B 波 (A → B wave), 206 k-因子(k-factor),32 C-迹 (C-trail), 280}</math>
+
+k-着色(k-colouring)，105 H-循环(H-circulation)，240
+
+: <math>\text{k-正则的（k-regular)，5 H-流(H-flow), 138 k-子集（k-subsets)，1 H-路(H-path), 7}</math>
+
+r-部图 (r-partite graph), 16 N 中的一个割(cut in N),135 t-坚韧的(t-tough), 276
+
+: <math>\text{S-树(S-tree), 321}</math>
+
+V 上的图 (a graph on V), 2€-正则(e-regular)，166 X-Y 边 (X-Y edge), 2 e-正则划分(e-regular partition)，166
+
+[[Category:图论]]
+[[Category:索引]]

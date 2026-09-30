@@ -1,0 +1,19 @@
+{
+  "provider": "codex_cli",
+  "codex_command": "codex",
+  "analyst_model": "gpt-5.6-terra",
+  "planner_model": "gpt-5.6-terra",
+  "developer_model": "gpt-5.6-terra",
+  "reviewer_model": "gpt-5.6-terra",
+  "max_requirements": 2,
+  "max_cycles": 1,
+  "max_attempts": 2,
+  "max_turns": 16,
+  "max_api_calls": 100,
+  "max_total_tokens": 300000,
+  "test_commands": [],
+  "exclude": [],
+  "base_url": "https://api.openai.com/v1",
+  "api_key_env": "OPENAI_API_KEY",
+  "api_key": null
+}

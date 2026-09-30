@@ -1,0 +1,8 @@
+.env
+.venv
+.n8n-test
+data
+tests
+examples
+**/__pycache__
+

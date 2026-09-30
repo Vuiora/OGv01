@@ -1,0 +1,34 @@
+test_cycle_and_invalid_cost_rejected (test_analysis.AnalysisTests.test_cycle_and_invalid_cost_rejected) ... ok
+test_ilp_keeps_war_and_waw (test_analysis.AnalysisTests.test_ilp_keeps_war_and_waw) ... ok
+test_ilp_latency_ports_issue_width_and_critical_path (test_analysis.AnalysisTests.test_ilp_latency_ports_issue_width_and_critical_path) ... ok
+test_request_boundary_and_raw_normalization (test_analysis.AnalysisTests.test_request_boundary_and_raw_normalization) ... ok
+test_simd_matches_exhaustive_oracle_for_300_affine_loops (test_analysis.AnalysisTests.test_simd_matches_exhaustive_oracle_for_300_affine_loops) ... ok
+test_simd_recurrence_witness (test_analysis.AnalysisTests.test_simd_recurrence_witness) ... ok
+test_simd_reduction_requires_algebra_and_float_permission (test_analysis.AnalysisTests.test_simd_reduction_requires_algebra_and_float_permission) ... ok
+test_simd_safe_large_loop_and_tail (test_analysis.AnalysisTests.test_simd_safe_large_loop_and_tail) ... ok
+test_simd_unknown_and_budget (test_analysis.AnalysisTests.test_simd_unknown_and_budget) ... ok
+test_task_graph_shapes_and_ssa (test_analysis.AnalysisTests.test_task_graph_shapes_and_ssa) ... ok
+test_three_dependency_kinds_and_disjoint_slices (test_analysis.AnalysisTests.test_three_dependency_kinds_and_disjoint_slices) ... ok
+test_unknown_alias_does_not_use_relative_offsets (test_analysis.AnalysisTests.test_unknown_alias_does_not_use_relative_offsets) ... ok
+test_unknown_effect_and_barrier_serialize (test_analysis.AnalysisTests.test_unknown_effect_and_barrier_serialize) ... ok
+test_cancel_queued_job_never_starts_it (test_runtime.RuntimeTests.test_cancel_queued_job_never_starts_it) ... ok
+test_cancellation_and_queue_backpressure (test_runtime.RuntimeTests.test_cancellation_and_queue_backpressure) ... ok
+test_example_json_end_to_end (test_runtime.RuntimeTests.test_example_json_end_to_end) ... ok
+test_exception_skips_dependents_preserves_independent_branch (test_runtime.RuntimeTests.test_exception_skips_dependents_preserves_independent_branch) ... ok
+test_host_budget_and_invalid_graph_rejected (test_runtime.RuntimeTests.test_host_budget_and_invalid_graph_rejected) ... ok
+test_job_deadline_cancels_without_commit (test_runtime.RuntimeTests.test_job_deadline_cancels_without_commit) ... ok
+test_missing_accelerator_falls_back_without_fake_acceleration (test_runtime.RuntimeTests.test_missing_accelerator_falls_back_without_fake_acceleration) ... ok
+test_no_device_does_not_hang_and_dependents_skip (test_runtime.RuntimeTests.test_no_device_does_not_hang_and_dependents_skip) ... ok
+test_numpy_matches_scalar_on_builtin_examples (test_runtime.RuntimeTests.test_numpy_matches_scalar_on_builtin_examples) ... ok
+test_real_process_parallelism_and_dependency_commit (test_runtime.RuntimeTests.test_real_process_parallelism_and_dependency_commit) ... ok
+test_real_timeout_stops_worker_and_discards_output (test_runtime.RuntimeTests.test_real_timeout_stops_worker_and_discards_output) ... ok
+test_shards_tail_and_empty_vector (test_runtime.RuntimeTests.test_shards_tail_and_empty_vector) ... ok
+test_slot_and_memory_backpressure (test_runtime.RuntimeTests.test_slot_and_memory_backpressure) ... ok
+test_snapshot_and_sequential_jobs_share_quota (test_runtime.RuntimeTests.test_snapshot_and_sequential_jobs_share_quota) ... ok
+test_strict_arithmetic_does_not_route_to_accelerator (test_runtime.RuntimeTests.test_strict_arithmetic_does_not_route_to_accelerator) ... ok
+test_worker_crash_releases_resources_before_retry (test_runtime.RuntimeTests.test_worker_crash_releases_resources_before_retry) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 5.030s
+
+OK

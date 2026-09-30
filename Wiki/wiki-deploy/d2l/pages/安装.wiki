@@ -1,0 +1,90 @@
+== 安装 ==
+<span id="chap_installation"></span>
+
+我们需要配置一个环境来运行 Python、Jupyter Notebook、相关库以及运行本书所需的代码，以快速入门并获得动手学习经验。
+
+=== 安装 Miniconda ===
+
+最简单的方法就是安装依赖Python 3.x的[https://conda.io/en/latest/miniconda.html Miniconda]。
+如果已安装conda，则可以跳过以下步骤。访问Miniconda网站，根据Python3.x版本确定适合的版本。
+
+如果我们使用macOS，假设Python版本是3.9（我们的测试版本），将下载名称包含字符串“MacOSX”的bash脚本，并执行以下操作：
+
+<syntaxhighlight lang="bash">
+== 以Intel处理器为例，文件名可能会更改 ==
+sh Miniconda3-py39_4.12.0-MacOSX-x86_64.sh -b
+</syntaxhighlight>
+
+如果我们使用Linux，假设Python版本是3.9（我们的测试版本），将下载名称包含字符串“Linux”的bash脚本，并执行以下操作：
+
+<syntaxhighlight lang="bash">
+== 文件名可能会更改 ==
+sh Miniconda3-py39_4.12.0-Linux-x86_64.sh -b
+</syntaxhighlight>
+
+接下来，初始化终端Shell，以便我们可以直接运行<code>conda</code>。
+
+<syntaxhighlight lang="bash">
+~/miniconda3/bin/conda init
+</syntaxhighlight>
+
+现在关闭并重新打开当前的shell。并使用下面的命令创建一个新的环境：
+
+<syntaxhighlight lang="bash">
+conda create --name d2l python=3.9 -y
+</syntaxhighlight>
+
+现在激活 <code>d2l</code> 环境：
+
+<syntaxhighlight lang="bash">
+conda activate d2l
+</syntaxhighlight>
+
+=== 安装深度学习框架和<code>d2l</code>软件包 ===
+
+在安装深度学习框架之前，请先检查计算机上是否有可用的GPU。
+例如可以查看计算机是否装有NVIDIA GPU并已安装[https://developer.nvidia.com/cuda-downloads CUDA]。
+如果机器没有任何GPU，没有必要担心，因为CPU在前几章完全够用。
+但是，如果想流畅地学习全部章节，请提早获取GPU并且安装深度学习框架的GPU版本。
+
+我们可以按如下方式安装PyTorch的CPU或GPU版本：
+
+<syntaxhighlight lang="bash">
+pip install torch==1.12.0
+pip install torchvision==0.13.0
+</syntaxhighlight>
+
+我们的下一步是安装<code>d2l</code>包，以方便调取本书中经常使用的函数和类：
+
+<syntaxhighlight lang="bash">
+pip install d2l==0.17.6
+</syntaxhighlight>
+
+=== 下载 D2L Notebook ===
+
+接下来，需要下载这本书的代码。
+可以点击本书HTML页面顶部的“Jupyter 记事本”选项下载后解压代码，或者可以按照如下方式进行下载：
+
+<syntaxhighlight lang="bash">
+mkdir d2l-zh && cd d2l-zh
+curl https://zh-v2.d2l.ai/d2l-zh-2.0.0.zip -o d2l-zh.zip
+unzip d2l-zh.zip && rm d2l-zh.zip
+cd pytorch
+</syntaxhighlight>
+
+注意：如果没有安装<code>unzip</code>，则可以通过运行<code>sudo apt install unzip</code>进行安装。
+安装完成后我们可以通过运行以下命令打开Jupyter笔记本（在Window系统的命令行窗口中运行以下命令前，需先将当前路径定位到刚下载的本书代码解压后的目录）：
+
+<syntaxhighlight lang="bash">
+jupyter notebook
+</syntaxhighlight>
+
+现在可以在Web浏览器中打开<http://localhost:8888>（通常会自动打开）。
+由此，我们可以运行这本书中每个部分的代码。
+在运行书籍代码、更新深度学习框架或<code>d2l</code>软件包之前，请始终执行<code>conda activate d2l</code>以激活运行时环境。
+要退出环境，请运行<code>conda deactivate</code>。
+
+[https://discuss.d2l.ai/t/2083 Discussions]
+
+[[Category:动手学深度学习]]
+[[Category:前言与总览]]

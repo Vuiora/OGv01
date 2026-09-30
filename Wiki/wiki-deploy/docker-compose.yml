@@ -1,0 +1,38 @@
+services:
+  db:
+    image: mariadb:11
+    container_name: ogwiki-db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${OGWIKI_DB_ROOT_PASSWORD:?Set OGWIKI_DB_ROOT_PASSWORD in .env}
+      MARIADB_DATABASE: mediawiki
+      MARIADB_USER: wikiuser
+      MARIADB_PASSWORD: ${OGWIKI_DB_PASSWORD:?Set OGWIKI_DB_PASSWORD in .env}
+    volumes:
+      - dbdata:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  wiki:
+    image: mediawiki:1.43
+    container_name: ogwiki-web
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      OGWIKI_DB_PASSWORD: ${OGWIKI_DB_PASSWORD:?Set OGWIKI_DB_PASSWORD in .env}
+      OGWIKI_SECRET_KEY: ${OGWIKI_SECRET_KEY:?Set OGWIKI_SECRET_KEY in .env}
+      OGWIKI_UPGRADE_KEY: ${OGWIKI_UPGRADE_KEY:?Set OGWIKI_UPGRADE_KEY in .env}
+    depends_on:
+      - db
+    volumes:
+      - wikidata:/var/www/html
+      - ./LocalSettings.php:/var/www/html/LocalSettings.php:ro
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+
+volumes:
+  dbdata:
+    name: build_dbdata
+    external: true
+  wikidata:
+    name: build_wikidata
+    external: true

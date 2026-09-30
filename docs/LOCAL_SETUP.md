@@ -6,6 +6,10 @@
 
 原电脑 `.venv`、`node_modules`、Docling 模型、任务数据库与 n8n 凭据存于原工作区，不随 Git 克隆。`.env.example` 是新机器的配置起点。
 
+PRT 中的开发环境配置脚本曾包含硬编码 API Key，整合副本已移除；使用时从 `CODEXZH_API_KEY` 环境变量传入。
+
+Self Renew 的验证配置原有明文 `api_key` 已改为 `null`，运行时按其 `api_key_env` 从终端环境读取。
+
 CLC、CRD、架构工作台的端口和持久化目录分别依各自 README。部分原生脚本会复用同级模块依赖；保持本仓库目录布局后安装或显式指定依赖路径。
 
 `n8n-Docling` 原生部署依赖工作区 `work/n8n-docling`。整合仓库发布的是流程源码，需要重新安装其说明中记录的 n8n/Docling，初始化凭据、发布工作流并调整 Obsidian 路径。

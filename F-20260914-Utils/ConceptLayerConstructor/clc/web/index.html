@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CLC · 知识层级工作台</title>
+  <link rel="stylesheet" href="/assets/style.css?v=20260920-auth2"><script src="/assets/app.js?v=20260920-auth2" defer></script>
+</head>
+<body>
+<header><a class="brand" href="/">CLC <span>知识层级工作台</span></a><a href="/docs" target="_blank" rel="noopener">API 文档 ↗</a></header>
+<main>
+  <section class="intro"><div><p class="eyebrow">从资料，到有脉络的知识</p><h1>把知识整理成一棵树。</h1><p>上传资料或粘贴文字，生成可浏览、可追溯的知识层级。</p></div><span id="health" class="badge">正在连接服务…</span></section>
+  <details class="connection" id="connection"><summary>连接设置 <span>服务密钥</span></summary><label for="key">CLC_API_KEY</label><input id="key" type="password" autocomplete="off" placeholder="填写 .env 中的服务密钥"><p class="hint">密钥仅在当前页面内使用，刷新后需重新填写。模型参数在服务器的 .env 中配置。</p></details>
+  <div class="workspace">
+    <section class="card compose"><div class="section-title"><span class="step">01</span><h2>添加资料</h2></div>
+      <form id="create">
+        <label for="title">知识文档标题</label><input id="title" maxlength="160" required value="我的知识文档">
+        <div class="tabs" role="tablist" aria-label="资料输入方式"><button type="button" id="file-tab" role="tab" aria-selected="true" aria-controls="file-panel">上传文件</button><button type="button" id="text-tab" role="tab" aria-selected="false" aria-controls="text-panel">粘贴文字</button></div>
+        <div id="file-panel" role="tabpanel" aria-labelledby="file-tab">
+          <label class="drop" id="drop" for="files"><strong>＋ 选择文件，或拖拽到这里</strong><span>Markdown · TXT · PDF · Word (.docx)</span><input id="files" type="file" multiple accept=".md,.txt,.pdf,.docx"></label>
+          <p class="hint" id="limits">正在读取上传限制…</p><ul id="file-list" class="file-list"></ul>
+        </div>
+        <div id="text-panel" role="tabpanel" aria-labelledby="text-tab" hidden><label class="sr-only" for="text">原始资料</label><textarea id="text" rows="11" placeholder="粘贴笔记、文章或学习资料，保留原始上下文…"></textarea><div class="between hint"><span id="count">0 字符</span><button type="button" id="example" class="link">填入调度知识示例</button></div></div>
+        <fieldset><legend>导出格式</legend><label><input type="checkbox" checked disabled> Markdown <small>始终保留</small></label><label><input type="checkbox" id="docx" checked> Word</label><label><input type="checkbox" id="pdf" checked> PDF</label></fieldset>
+        <p class="hint">资料将发送至你配置的模型服务。生成的解释与关系请结合原文复核。</p>
+        <button class="primary" id="submit" type="submit">生成知识层级 →</button>
+        <p id="submit-error" class="error" role="alert"></p>
+      </form>
+    </section>
+    <section class="card progress"><div class="section-title"><span class="step">02</span><h2>任务与结果</h2></div>
+      <form id="lookup" class="lookup"><label class="sr-only" for="job-id">任务 ID</label><input id="job-id" placeholder="粘贴任务 ID，继续查看进度" required><button type="submit">查询</button></form>
+      <p id="task-error" class="error" role="alert"></p>
+      <div id="empty" class="empty"><span class="tree-icon">⌘</span><h3>知识将在这里生长</h3><p>提交资料后，可实时查看处理阶段，<br>完成后浏览层级并下载文档。</p></div>
+      <div id="task" hidden><div class="between"><h3 id="status" aria-live="polite"></h3><button id="refresh" type="button" class="link">刷新状态</button></div><p id="stage"></p><div id="activity" class="activity" hidden><span></span></div><p class="hint" id="task-id"></p><p id="job-error" class="error"></p><div id="downloads" class="downloads"></div></div>
+    </section>
+  </div>
+  <section class="card" id="preview" hidden><div class="section-title"><span class="step">03</span><h2>浏览知识层级</h2><span class="hint" id="graph-count"></span></div><div class="explorer"><nav id="tree" aria-label="知识层级目录"></nav><article id="node-detail"><p class="hint">点击左侧知识点，查看解释、原文依据与关联。</p></article></div></section>
+</main><footer>CLC · Concept Layer Constructor <span>让每个知识点都有出处</span></footer>
+</body></html>

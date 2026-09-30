@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "architecture-flow"
+version = "0.1.0"
+description = "n8n + Docling + compatible LLM APIs to validated multi-page draw.io"
+requires-python = ">=3.11"
+dependencies = ["fastapi>=0.115,<1", "uvicorn>=0.34,<1", "httpx>=0.28,<1", "pydantic>=2.10,<3", "python-dotenv>=1,<2"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10", "pyyaml>=6,<7"]
+
+[tool.setuptools.packages.find]
+include = ["architecture_flow*"]
+
+[tool.setuptools.package-data]
+architecture_flow = ["static/*.html"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+

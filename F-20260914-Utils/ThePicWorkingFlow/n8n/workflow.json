@@ -1,0 +1,531 @@
+{
+  "id": "ArchitectureFlowV1",
+  "name": "Architecture Flow · n8n + Docling · 项目风格 drawio",
+  "nodes": [
+    {
+      "id": "79f1dd6b-3367-504e-a607-06860595371f",
+      "name": "架构任务 Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "drawio-architecture",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "position": [
+        0,
+        240
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "Architecture Flow API"
+        }
+      },
+      "webhookId": "architecture-flow-v1"
+    },
+    {
+      "id": "6310191a-c1b5-5b9d-80d2-68e59210de6d",
+      "name": "创建持久化任务",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "method": "POST",
+        "url": "http://architecture-api:8080/v1/jobs",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 600000
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}"
+      },
+      "position": [
+        240,
+        240
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "Architecture Flow API"
+        }
+      },
+      "retryOnFail": false,
+      "maxTries": 2,
+      "waitBetweenTries": 1000
+    },
+    {
+      "id": "1ee6b2d0-69f8-5d84-b157-b5b23b5a453f",
+      "name": "立即返回任务 ID",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 202
+        }
+      },
+      "position": [
+        480,
+        240
+      ]
+    },
+    {
+      "id": "e6e835fd-c6e4-5e4b-87b6-48cb1d4c7819",
+      "name": "代码与 Docling 文档接入",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'http://architecture-api:8080/v1/jobs/' + $json.job_id + '/stages/ingest' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 600000
+        }
+      },
+      "position": [
+        720,
+        240
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "Architecture Flow API"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000
+    },
+    {
+      "id": "2ba8f3db-b4e0-5cc7-a683-a85ad363af01",
+      "name": "大模型分析代码架构",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'http://architecture-api:8080/v1/jobs/' + $json.job_id + '/stages/analyze' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 600000
+        }
+      },
+      "position": [
+        980,
+        240
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "Architecture Flow API"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000
+    },
+    {
+      "id": "a91838e2-ee7e-5101-bf4a-0ddf8ec3351d",
+      "name": "大模型设计模块与连接",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'http://architecture-api:8080/v1/jobs/' + $json.job_id + '/stages/design' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 600000
+        }
+      },
+      "position": [
+        1240,
+        240
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "Architecture Flow API"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000
+    },
+    {
+      "id": "08294f00-e45f-5a31-8fa1-3fdb94006b2b",
+      "name": "应用项目样式并生成分页",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'http://architecture-api:8080/v1/jobs/' + $json.job_id + '/stages/render' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 600000
+        }
+      },
+      "position": [
+        1500,
+        240
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "Architecture Flow API"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000
+    },
+    {
+      "id": "afe5cdaf-9832-5b09-8aa2-0675e78d3695",
+      "name": "校验总图 模块与风格",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'http://architecture-api:8080/v1/jobs/' + $json.job_id + '/stages/check' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 600000
+        }
+      },
+      "position": [
+        1760,
+        240
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "Architecture Flow API"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000
+    },
+    {
+      "id": "03669a65-4483-5b61-94cb-94078f23ea5b",
+      "name": "风格检查通过？",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6c1a4cfd-b4d8-5767-be42-57a0e11c6db2",
+              "leftValue": "={{ $json.quality_passed }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "position": [
+        2020,
+        240
+      ]
+    },
+    {
+      "id": "a1f43120-6018-5b55-b7a2-73dd35472656",
+      "name": "发布 drawio 与报告",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'http://architecture-api:8080/v1/jobs/' + $json.job_id + '/stages/publish' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 600000
+        }
+      },
+      "position": [
+        2320,
+        120
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "Architecture Flow API"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000
+    },
+    {
+      "id": "5c6bd749-f3b8-5558-8fd8-f108e0bb9a04",
+      "name": "仍可修复？",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "391a6f96-04e0-577c-998b-2dde8b7746ff",
+              "leftValue": "={{ $json.can_repair }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "position": [
+        2320,
+        400
+      ]
+    },
+    {
+      "id": "ff7c2189-f2b6-5423-bcb3-72853f7f862e",
+      "name": "模型按检查反馈修复",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'http://architecture-api:8080/v1/jobs/' + $json.job_id + '/stages/repair' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 600000
+        }
+      },
+      "position": [
+        2030,
+        590
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "Architecture Flow API"
+        }
+      },
+      "retryOnFail": false,
+      "maxTries": 2,
+      "waitBetweenTries": 1000
+    },
+    {
+      "id": "249753c6-327d-58d7-b9be-43e7525a8e4d",
+      "name": "拒绝发布并保留报告",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'http://architecture-api:8080/v1/jobs/' + $json.job_id + '/stages/reject' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 600000
+        }
+      },
+      "position": [
+        2620,
+        480
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "Architecture Flow API"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000
+    },
+    {
+      "id": "813958ef-8927-5fa4-bd98-3bbe61c03732",
+      "name": "使用说明",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "parameters": {
+        "content": "## n8n + Docling 架构设计\n1. 所有认证节点选择同一 Header Auth 凭据：X-API-Key = APP_API_KEY。\n2. Compose 中 API 地址为 architecture-api:8080；本机 npm 测试请替换为 127.0.0.1:8080。\n3. 发布工作流后 POST /webhook/drawio-architecture。立即返回 job_id，随后查询 API 任务状态。\n4. 修复最多两轮；只有通过 XML、模块归属与样式校验才发布。\n5. 厂商 LLM Key 仅配置在架构服务 .env。",
+        "width": 680,
+        "height": 310
+      },
+      "position": [
+        0,
+        -130
+      ]
+    }
+  ],
+  "connections": {
+    "架构任务 Webhook": {
+      "main": [
+        [
+          {
+            "node": "创建持久化任务",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "创建持久化任务": {
+      "main": [
+        [
+          {
+            "node": "立即返回任务 ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "立即返回任务 ID": {
+      "main": [
+        [
+          {
+            "node": "代码与 Docling 文档接入",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "代码与 Docling 文档接入": {
+      "main": [
+        [
+          {
+            "node": "大模型分析代码架构",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "大模型分析代码架构": {
+      "main": [
+        [
+          {
+            "node": "大模型设计模块与连接",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "大模型设计模块与连接": {
+      "main": [
+        [
+          {
+            "node": "应用项目样式并生成分页",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "应用项目样式并生成分页": {
+      "main": [
+        [
+          {
+            "node": "校验总图 模块与风格",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "校验总图 模块与风格": {
+      "main": [
+        [
+          {
+            "node": "风格检查通过？",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "风格检查通过？": {
+      "main": [
+        [
+          {
+            "node": "发布 drawio 与报告",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "仍可修复？",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "仍可修复？": {
+      "main": [
+        [
+          {
+            "node": "模型按检查反馈修复",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "拒绝发布并保留报告",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "模型按检查反馈修复": {
+      "main": [
+        [
+          {
+            "node": "应用项目样式并生成分页",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "executionTimeout": 3600,
+    "saveExecutionProgress": true
+  },
+  "active": false,
+  "versionId": "4bc7a73e-a171-5bb8-95a4-d4a48e02f2b7",
+  "pinData": {},
+  "tags": []
+}

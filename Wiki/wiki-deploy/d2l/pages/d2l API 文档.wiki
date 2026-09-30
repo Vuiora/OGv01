@@ -1,0 +1,15 @@
+== <code>d2l</code> API 文档 ==
+<span id="sec_d2l"></span>
+
+<code>d2l</code>包以下成员的实现及其定义和解释部分可在[https://github.com/d2l-ai/d2l-en/tree/master/d2l 源文件]中找到。
+
+=== 模型 ===
+
+=== 数据 ===
+
+=== 训练 ===
+
+=== 公用 ===
+
+[[Category:动手学深度学习]]
+[[Category:附录：深度学习工具]]

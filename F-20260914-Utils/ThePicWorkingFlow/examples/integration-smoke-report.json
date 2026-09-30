@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "job_id": "0f5f17c1db09451baf67562ff501e3ad",
+  "n8n": "2.38.7",
+  "docling": "1.32.0",
+  "llm": "FAKE local compatible HTTP provider",
+  "webhook_accepted_seconds": 0.206,
+  "total_seconds": 3.473,
+  "pages": [
+    "系统总览",
+    "n8n 编排模块",
+    "架构服务模块",
+    "Docling 文档模块",
+    "大模型 API 模块"
+  ],
+  "downloads": [
+    "drawio",
+    "architecture",
+    "quality",
+    "analysis",
+    "style"
+  ],
+  "quality_passed": true,
+  "stages": [
+    "ingest:0",
+    "analyze:0",
+    "design:0",
+    "render:0",
+    "check:0",
+    "publish:0"
+  ]
+}

@@ -1,0 +1,225 @@
+{
+  "id": "ConceptRelationDrawV1",
+  "name": "ConceptRelationDraw · n8n + Docling · 文档概念关系图",
+  "active": false,
+  "nodes": [
+    {
+      "id": "webhook",
+      "name": "接收文档任务",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        240
+      ],
+      "webhookId": "concept-relation-v1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "ConceptRelationDraw API"
+        }
+      },
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "concept-relation",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "respond",
+      "name": "立即确认任务",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        240,
+        240
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { job_id: $('接收文档任务').first().json.body.job_id, accepted: true } }}",
+        "options": {
+          "responseCode": 202
+        }
+      }
+    },
+    {
+      "id": "parse",
+      "name": "Docling 解析文档",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        240
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "ConceptRelationDraw API"
+        }
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'http://concept-api:8091/api/jobs/' + $('接收文档任务').first().json.body.job_id + '/stages/parse' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 7200000
+        }
+      }
+    },
+    {
+      "id": "extract",
+      "name": "按知识部分提取概念",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        760,
+        240
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "ConceptRelationDraw API"
+        }
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'http://concept-api:8091/api/jobs/' + $('接收文档任务').first().json.body.job_id + '/stages/extract' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 7200000
+        }
+      }
+    },
+    {
+      "id": "relate",
+      "name": "结合全文判断关系",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        240
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "ConceptRelationDraw API"
+        }
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'http://concept-api:8091/api/jobs/' + $('接收文档任务').first().json.body.job_id + '/stages/relate' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 7200000
+        }
+      }
+    },
+    {
+      "id": "render",
+      "name": "校验与生成关系图",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        240
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_HEADER_AUTH",
+          "name": "ConceptRelationDraw API"
+        }
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'http://concept-api:8091/api/jobs/' + $('接收文档任务').first().json.body.job_id + '/stages/render' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 7200000
+        }
+      }
+    },
+    {
+      "id": "readme",
+      "name": "首次部署说明",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -140
+      ],
+      "parameters": {
+        "width": 1450,
+        "height": 280,
+        "content": "## ConceptRelationDraw · 文档知识图谱服务\n1. 创建 Header Auth 凭据：Name = X-API-Key，Value = .env 中的 APP_API_KEY。\n2. 将同一凭据绑定到 Webhook 和四个 HTTP Request 节点，然后发布工作流。\n3. Web UI 上传文档后调用此 Webhook，仅传 job_id；文档和模型密钥留在 API 服务。\n4. 每阶段持久化状态与证据；失败停止流程，并可在工作台查看错误。\n5. 全文用于每批关系分析；超出预算则失败，不截断文档。\n6. 幂等接口跳过已成功完成的阶段。中断任务请重新上传。\n7. Docker 内 API 地址为 concept-api:8091。"
+      }
+    }
+  ],
+  "connections": {
+    "接收文档任务": {
+      "main": [
+        [
+          {
+            "node": "立即确认任务",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "立即确认任务": {
+      "main": [
+        [
+          {
+            "node": "Docling 解析文档",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Docling 解析文档": {
+      "main": [
+        [
+          {
+            "node": "按知识部分提取概念",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "按知识部分提取概念": {
+      "main": [
+        [
+          {
+            "node": "结合全文判断关系",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "结合全文判断关系": {
+      "main": [
+        [
+          {
+            "node": "校验与生成关系图",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "executionTimeout": 7200
+  },
+  "pinData": {}
+}

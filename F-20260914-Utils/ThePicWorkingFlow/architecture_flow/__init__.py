@@ -1,0 +1,2 @@
+"""Project-style architecture workflow."""
+

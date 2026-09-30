@@ -1,0 +1,89 @@
+== 近似训练 ==
+<span id="sec_approx_train"></span>
+
+回想一下我们在 [[词嵌入（word2vec）#sec_word2vec|《词嵌入（word2vec）》]]中的讨论。跳元模型的主要思想是使用softmax运算来计算基于给定的中心词<math>w_c</math>生成上下文字<math>w_o</math>的条件概率（如 [[词嵌入（word2vec）#eq_skip-gram-softmax|式 (1)]]），对应的对数损失在 [[词嵌入（word2vec）#eq_skip-gram-log|式 (2)]]给出。
+
+由于softmax操作的性质，上下文词可以是词表<math>\mathcal{V}</math>中的任意项， [[词嵌入（word2vec）#eq_skip-gram-log|式 (2)]]包含与整个词表大小一样多的项的求和。因此， [[词嵌入（word2vec）#eq_skip-gram-grad|式 (3)]]中跳元模型的梯度计算和 [[词嵌入（word2vec）#eq_cbow-gradient|式 (4)]]中的连续词袋模型的梯度计算都包含求和。不幸的是，在一个词典上（通常有几十万或数百万个单词）求和的梯度的计算成本是巨大的！
+
+为了降低上述计算复杂度，本节将介绍两种近似训练方法：''负采样''和''分层softmax''。
+由于跳元模型和连续词袋模型的相似性，我们将以跳元模型为例来描述这两种近似训练方法。
+
+=== 负采样 ===
+<span id="subsec_negative-sampling"></span>
+
+负采样修改了原目标函数。给定中心词<math>w_c</math>的上下文窗口，任意上下文词<math>w_o</math>来自该上下文窗口的被认为是由下式建模概率的事件：
+
+<math display="block">P(D=1\mid w_c, w_o) = \sigma(\mathbf{u}_o^\top \mathbf{v}_c),</math>
+
+其中<math>\sigma</math>使用了sigmoid激活函数的定义：
+
+<math display="block">\sigma(x) = \frac{1}{1+\exp(-x)}.</math>
+<span id="eq_sigma-f"></span>
+
+让我们从最大化文本序列中所有这些事件的联合概率开始训练词嵌入。具体而言，给定长度为<math>T</math>的文本序列，以<math>w^{(t)}</math>表示时间步<math>t</math>的词，并使上下文窗口为<math>m</math>，考虑最大化联合概率：
+
+<math display="block">\prod_{t=1}^{T} \prod_{-m \leq j \leq m,\ j \neq 0} P(D=1\mid w^{(t)}, w^{(t+j)}).</math>
+<span id="eq-negative-sample-pos"></span>
+
+然而， [[#eq-negative-sample-pos|式 (2)]]只考虑那些正样本的事件。仅当所有词向量都等于无穷大时， [[#eq-negative-sample-pos|式 (2)]]中的联合概率才最大化为1。当然，这样的结果毫无意义。为了使目标函数更有意义，''负采样''添加从预定义分布中采样的负样本。
+
+用<math>S</math>表示上下文词<math>w_o</math>来自中心词<math>w_c</math>的上下文窗口的事件。对于这个涉及<math>w_o</math>的事件，从预定义分布<math>P(w)</math>中采样<math>K</math>个不是来自这个上下文窗口''噪声词''。用<math>N_k</math>表示噪声词<math>w_k</math>（<math>k=1, \ldots, K</math>）不是来自<math>w_c</math>的上下文窗口的事件。假设正例和负例<math>S, N_1, \ldots, N_K</math>的这些事件是相互独立的。负采样将 [[#eq-negative-sample-pos|式 (2)]]中的联合概率（仅涉及正例）重写为
+
+<math display="block">\prod_{t=1}^{T} \prod_{-m \leq j \leq m,\ j \neq 0} P(w^{(t+j)} \mid w^{(t)}),</math>
+
+通过事件<math>S, N_1, \ldots, N_K</math>近似条件概率：
+
+<math display="block">P(w^{(t+j)} \mid w^{(t)}) =P(D=1\mid w^{(t)}, w^{(t+j)})\prod_{k=1,\ w_k \sim P(w)}^K P(D=0\mid w^{(t)}, w_k).</math>
+<span id="eq-negative-sample-conditional-prob"></span>
+
+分别用<math>i_t</math>和<math>h_k</math>表示词<math>w^{(t)}</math>和噪声词<math>w_k</math>在文本序列的时间步<math>t</math>处的索引。 [[#eq-negative-sample-conditional-prob|式 (3)]]中关于条件概率的对数损失为：
+
+<math display="block">\begin{aligned}
+-\log P(w^{(t+j)} \mid w^{(t)})
+=& -\log P(D=1\mid w^{(t)}, w^{(t+j)}) - \sum_{k=1,\ w_k \sim P(w)}^K \log P(D=0\mid w^{(t)}, w_k)\\
+=&-  \log\, \sigma\left(\mathbf{u}_{i_{t+j}}^\top \mathbf{v}_{i_t}\right) - \sum_{k=1,\ w_k \sim P(w)}^K \log\left(1-\sigma\left(\mathbf{u}_{h_k}^\top \mathbf{v}_{i_t}\right)\right)\\
+=&-  \log\, \sigma\left(\mathbf{u}_{i_{t+j}}^\top \mathbf{v}_{i_t}\right) - \sum_{k=1,\ w_k \sim P(w)}^K \log\sigma\left(-\mathbf{u}_{h_k}^\top \mathbf{v}_{i_t}\right).
+\end{aligned}</math>
+
+我们可以看到，现在每个训练步的梯度计算成本与词表大小无关，而是线性依赖于<math>K</math>。当将超参数<math>K</math>设置为较小的值时，在负采样的每个训练步处的梯度的计算成本较小。
+
+=== 层序Softmax ===
+
+作为另一种近似训练方法，''层序Softmax''（hierarchical softmax）使用二叉树（ [[#fig_hi_softmax|图 1]]中说明的数据结构），其中树的每个叶节点表示词表<math>\mathcal{V}</math>中的一个词。
+
+[[文件:hi-softmax.svg|用于近似训练的分层softmax，其中树的每个叶节点表示词表中的一个词]]
+
+<span id="fig_hi_softmax"></span>
+
+用<math>L(w)</math>表示二叉树中表示字<math>w</math>的从根节点到叶节点的路径上的节点数（包括两端）。设<math>n(w,j)</math>为该路径上的<math>j^\mathrm{th}</math>节点，其上下文字向量为<math>\mathbf{u}_{n(w, j)}</math>。例如， [[#fig_hi_softmax|图 1]]中的<math>L(w_3) = 4</math>。分层softmax将 [[词嵌入（word2vec）#eq_skip-gram-softmax|式 (1)]]中的条件概率近似为
+
+<math display="block">P(w_o \mid w_c) = \prod_{j=1}^{L(w_o)-1} \sigma\left( [\![  n(w_o, j+1) = \text{leftChild}(n(w_o, j)) ]\!] \cdot \mathbf{u}_{n(w_o, j)}^\top \mathbf{v}_c\right),</math>
+
+其中函数<math>\sigma</math>在 [[#eq_sigma-f|式 (1)]]中定义，<math>\text{leftChild}(n)</math>是节点<math>n</math>的左子节点：如果<math>x</math>为真，<math>[\![x]\!] = 1</math>;否则<math>[\![x]\!] = -1</math>。
+
+为了说明，让我们计算 [[#fig_hi_softmax|图 1]]中给定词<math>w_c</math>生成词<math>w_3</math>的条件概率。这需要<math>w_c</math>的词向量<math>\mathbf{v}_c</math>和从根到<math>w_3</math>的路径（ [[#fig_hi_softmax|图 1]]中加粗的路径）上的非叶节点向量之间的点积，该路径依次向左、向右和向左遍历：
+
+<math display="block">P(w_3 \mid w_c) = \sigma(\mathbf{u}_{n(w_3, 1)}^\top \mathbf{v}_c) \cdot \sigma(-\mathbf{u}_{n(w_3, 2)}^\top \mathbf{v}_c) \cdot \sigma(\mathbf{u}_{n(w_3, 3)}^\top \mathbf{v}_c).</math>
+
+由<math>\sigma(x)+\sigma(-x) = 1</math>，它认为基于任意词<math>w_c</math>生成词表<math>\mathcal{V}</math>中所有词的条件概率总和为1：
+
+<math display="block">\sum_{w \in \mathcal{V}} P(w \mid w_c) = 1.</math>
+<span id="eq_hi-softmax-sum-one"></span>
+
+幸运的是，由于二叉树结构，<math>L(w_o)-1</math>大约与<math>\mathcal{O}(\text{log}_2|\mathcal{V}|)</math>是一个数量级。当词表大小<math>\mathcal{V}</math>很大时，与没有近似训练的相比，使用分层softmax的每个训练步的计算代价显著降低。
+
+=== 小结 ===
+
+* 负采样通过考虑相互独立的事件来构造损失函数，这些事件同时涉及正例和负例。训练的计算量与每一步的噪声词数成线性关系。
+* 分层softmax使用二叉树中从根节点到叶节点的路径构造损失函数。训练的计算成本取决于词表大小的对数。
+
+=== 练习 ===
+
+# 如何在负采样中对噪声词进行采样？
+# 验证 [[#eq_hi-softmax-sum-one|式 (4)]]是否有效。
+# 如何分别使用负采样和分层softmax训练连续词袋模型？
+
+[https://discuss.d2l.ai/t/5741 Discussions]
+
+[[Category:动手学深度学习]]
+[[Category:自然语言处理：预训练]]

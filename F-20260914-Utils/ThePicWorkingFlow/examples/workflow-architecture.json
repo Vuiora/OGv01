@@ -1,0 +1,232 @@
+{
+  "version": 1,
+  "title": "代码架构分析与 draw.io 设计工作流",
+  "modules": [
+    {
+      "id": "orchestration",
+      "label": "n8n 编排模块",
+      "kind": "infrastructure"
+    },
+    {
+      "id": "architecture-service",
+      "label": "架构服务模块",
+      "kind": "infrastructure"
+    },
+    {
+      "id": "documents",
+      "label": "Docling 文档模块",
+      "kind": "data"
+    },
+    {
+      "id": "models",
+      "label": "大模型 API 模块",
+      "kind": "data"
+    }
+  ],
+  "components": [
+    {
+      "id": "webhook",
+      "label": "Webhook / 立即返回任务 ID",
+      "module": "orchestration",
+      "parent": null,
+      "role": "component",
+      "evidence": [],
+      "status": "proposed"
+    },
+    {
+      "id": "stages",
+      "label": "阶段编排 / 有界修复循环",
+      "module": "orchestration",
+      "parent": null,
+      "role": "component",
+      "evidence": [],
+      "status": "proposed"
+    },
+    {
+      "id": "collector",
+      "label": "代码快照 / AST 符号 / 来源行",
+      "module": "architecture-service",
+      "parent": null,
+      "role": "component",
+      "evidence": [],
+      "status": "proposed"
+    },
+    {
+      "id": "analysis",
+      "label": "架构分析 / 证据聚合",
+      "module": "architecture-service",
+      "parent": null,
+      "role": "component",
+      "evidence": [],
+      "status": "proposed"
+    },
+    {
+      "id": "design",
+      "label": "模块与数据线结构化设计",
+      "module": "architecture-service",
+      "parent": null,
+      "role": "component",
+      "evidence": [],
+      "status": "proposed"
+    },
+    {
+      "id": "style",
+      "label": "项目风格 / 总图 / 模块分页",
+      "module": "architecture-service",
+      "parent": null,
+      "role": "component",
+      "evidence": [],
+      "status": "proposed"
+    },
+    {
+      "id": "quality",
+      "label": "独立风格与结构检查",
+      "module": "architecture-service",
+      "parent": null,
+      "role": "component",
+      "evidence": [],
+      "status": "proposed"
+    },
+    {
+      "id": "publish",
+      "label": "校验通过后发布",
+      "module": "architecture-service",
+      "parent": null,
+      "role": "component",
+      "evidence": [],
+      "status": "proposed"
+    },
+    {
+      "id": "delivery",
+      "label": "工作台 / 状态查询 / 下载文件",
+      "module": "architecture-service",
+      "parent": null,
+      "role": "component",
+      "evidence": [],
+      "status": "proposed"
+    },
+    {
+      "id": "docling",
+      "label": "文档转换 / OCR / Markdown",
+      "module": "documents",
+      "parent": null,
+      "role": "component",
+      "evidence": [],
+      "status": "proposed"
+    },
+    {
+      "id": "analysis-model",
+      "label": "分析模型 / 兼容 API",
+      "module": "models",
+      "parent": null,
+      "role": "component",
+      "evidence": [],
+      "status": "proposed"
+    },
+    {
+      "id": "design-model",
+      "label": "设计与修复模型 / 兼容 API",
+      "module": "models",
+      "parent": null,
+      "role": "component",
+      "evidence": [],
+      "status": "proposed"
+    }
+  ],
+  "connections": [
+    {
+      "id": "flow-0",
+      "source": "webhook",
+      "target": "stages",
+      "kind": "control",
+      "label": ""
+    },
+    {
+      "id": "flow-1",
+      "source": "stages",
+      "target": "collector",
+      "kind": "dispatch",
+      "label": ""
+    },
+    {
+      "id": "flow-2",
+      "source": "collector",
+      "target": "docling",
+      "kind": "raw",
+      "label": ""
+    },
+    {
+      "id": "flow-3",
+      "source": "docling",
+      "target": "analysis",
+      "kind": "standard",
+      "label": ""
+    },
+    {
+      "id": "flow-4",
+      "source": "collector",
+      "target": "analysis",
+      "kind": "standard",
+      "label": ""
+    },
+    {
+      "id": "flow-5",
+      "source": "analysis",
+      "target": "analysis-model",
+      "kind": "analysis",
+      "label": ""
+    },
+    {
+      "id": "flow-6",
+      "source": "analysis-model",
+      "target": "design",
+      "kind": "analysis",
+      "label": ""
+    },
+    {
+      "id": "flow-7",
+      "source": "design",
+      "target": "design-model",
+      "kind": "analysis",
+      "label": ""
+    },
+    {
+      "id": "flow-8",
+      "source": "design-model",
+      "target": "style",
+      "kind": "analysis",
+      "label": ""
+    },
+    {
+      "id": "flow-9",
+      "source": "style",
+      "target": "quality",
+      "kind": "standard",
+      "label": ""
+    },
+    {
+      "id": "flow-10",
+      "source": "quality",
+      "target": "design",
+      "kind": "control",
+      "label": ""
+    },
+    {
+      "id": "flow-11",
+      "source": "quality",
+      "target": "publish",
+      "kind": "control",
+      "label": ""
+    },
+    {
+      "id": "flow-12",
+      "source": "publish",
+      "target": "delivery",
+      "kind": "result",
+      "label": ""
+    }
+  ],
+  "assumptions": [
+    "流程设计图；运行实现以 architecture_flow 与 n8n/workflow.json 为准。"
+  ]
+}

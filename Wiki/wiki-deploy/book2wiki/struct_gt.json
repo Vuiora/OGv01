@@ -1,0 +1,580 @@
+{
+ "book": "gt",
+ "offset": 0,
+ "total_pages": 412,
+ "pages": [
+  {
+   "slug": "front",
+   "title": "前言与译者序",
+   "kind": "front",
+   "start": 3,
+   "end": 15,
+   "sections": []
+  },
+  {
+   "slug": "ch01",
+   "title": "第1章基础知识",
+   "kind": "chapter",
+   "start": 16,
+   "end": 46,
+   "sections": [
+    {
+     "title": "1.1图",
+     "page": 16
+    },
+    {
+     "title": "1.2顶点度",
+     "page": 19
+    },
+    {
+     "title": "1.3路和圈",
+     "page": 21
+    },
+    {
+     "title": "1.4连通性",
+     "page": 25
+    },
+    {
+     "title": "1.5树和森林",
+     "page": 27
+    },
+    {
+     "title": "1.6二部图",
+     "page": 31
+    },
+    {
+     "title": "1.7收缩运算和子式",
+     "page": 32
+    },
+    {
+     "title": "1.8欧拉环游",
+     "page": 35
+    },
+    {
+     "title": "1.9若干线性代数知识",
+     "page": 36
+    },
+    {
+     "title": "1.10图中的其他概念",
+     "page": 40
+    },
+    {
+     "title": "练习",
+     "page": 42
+    },
+    {
+     "title": "注解",
+     "page": 45
+    }
+   ]
+  },
+  {
+   "slug": "ch02",
+   "title": "第2章匹配、覆盖和填装",
+   "kind": "chapter",
+   "start": 47,
+   "end": 67,
+   "sections": [
+    {
+     "title": "2.1二部图中的匹配",
+     "page": 47
+    },
+    {
+     "title": "2.2一般图中的匹配",
+     "page": 52
+    },
+    {
+     "title": "2.3Erd*s＊Pósa定理",
+     "page": 56
+    },
+    {
+     "title": "2.4树填装和荫度",
+     "page": 58
+    },
+    {
+     "title": "2.5路覆盖",
+     "page": 62
+    },
+    {
+     "title": "练习",
+     "page": 63
+    },
+    {
+     "title": "注解",
+     "page": 66
+    }
+   ]
+  },
+  {
+   "slug": "ch03",
+   "title": "第3章连通性",
+   "kind": "chapter",
+   "start": 68,
+   "end": 93,
+   "sections": [
+    {
+     "title": "3.1 2＊连通图以及子图",
+     "page": 68
+    },
+    {
+     "title": "3.2 3＊连通图的结构",
+     "page": 70
+    },
+    {
+     "title": "3.3Menger定理",
+     "page": 75
+    },
+    {
+     "title": "3.4Mader定理",
+     "page": 79
+    },
+    {
+     "title": "3.5顶点对之间的连接",
+     "page": 81
+    },
+    {
+     "title": "练习",
+     "page": 89
+    },
+    {
+     "title": "注解",
+     "page": 91
+    }
+   ]
+  },
+  {
+   "slug": "ch04",
+   "title": "第4章可平面图",
+   "kind": "chapter",
+   "start": 94,
+   "end": 119,
+   "sections": [
+    {
+     "title": "4.1拓扑知识准备",
+     "page": 94
+    },
+    {
+     "title": "4.2平面图",
+     "page": 96
+    },
+    {
+     "title": "4.3画法",
+     "page": 101
+    },
+    {
+     "title": "4.4可平面图：Kuratowski定理",
+     "page": 105
+    },
+    {
+     "title": "4.5可平面性判别的代数准则",
+     "page": 109
+    },
+    {
+     "title": "4.6平面对偶性",
+     "page": 111
+    },
+    {
+     "title": "练习",
+     "page": 114
+    },
+    {
+     "title": "注解",
+     "page": 117
+    }
+   ]
+  },
+  {
+   "slug": "ch05",
+   "title": "第5章着色",
+   "kind": "chapter",
+   "start": 120,
+   "end": 147,
+   "sections": [
+    {
+     "title": "5.1地图和可平面图的着色",
+     "page": 121
+    },
+    {
+     "title": "5.2顶点着色",
+     "page": 122
+    },
+    {
+     "title": "5.3边着色",
+     "page": 127
+    },
+    {
+     "title": "5.4列表着色",
+     "page": 129
+    },
+    {
+     "title": "5.5完美图",
+     "page": 134
+    },
+    {
+     "title": "练习",
+     "page": 141
+    },
+    {
+     "title": "注解",
+     "page": 144
+    }
+   ]
+  },
+  {
+   "slug": "ch06",
+   "title": "第6章流",
+   "kind": "chapter",
+   "start": 148,
+   "end": 168,
+   "sections": [
+    {
+     "title": "6.1环流",
+     "page": 148
+    },
+    {
+     "title": "6.2网络中的流",
+     "page": 150
+    },
+    {
+     "title": "6.3群上的流",
+     "page": 152
+    },
+    {
+     "title": "6.4具有较小k值的k＊流",
+     "page": 157
+    },
+    {
+     "title": "6.5流和着色的对偶性",
+     "page": 159
+    },
+    {
+     "title": "6.6Tutte的流猜想",
+     "page": 162
+    },
+    {
+     "title": "练习",
+     "page": 166
+    },
+    {
+     "title": "注解",
+     "page": 167
+    }
+   ]
+  },
+  {
+   "slug": "ch07",
+   "title": "第7章极值图论",
+   "kind": "chapter",
+   "start": 169,
+   "end": 199,
+   "sections": [
+    {
+     "title": "7.1子图",
+     "page": 170
+    },
+    {
+     "title": "7.2子式",
+     "page": 175
+    },
+    {
+     "title": "7.3Hadwiger猜想",
+     "page": 178
+    },
+    {
+     "title": "7.4Szemer.edi正则性引理",
+     "page": 181
+    },
+    {
+     "title": "7.5正则性引理的应用",
+     "page": 187
+    },
+    {
+     "title": "练习",
+     "page": 193
+    },
+    {
+     "title": "注解",
+     "page": 195
+    }
+   ]
+  },
+  {
+   "slug": "ch08",
+   "title": "第8章无限图",
+   "kind": "chapter",
+   "start": 200,
+   "end": 265,
+   "sections": [
+    {
+     "title": "8.1基本的概念、结论和技巧",
+     "page": 200
+    },
+    {
+     "title": "8.2路、树和末端",
+     "page": 208
+    },
+    {
+     "title": "8.3齐次与通用图",
+     "page": 217
+    },
+    {
+     "title": "8.4连通度和匹配",
+     "page": 219
+    },
+    {
+     "title": "8.5递归结构",
+     "page": 228
+    },
+    {
+     "title": "8.6具有末端的图：全貌",
+     "page": 231
+    },
+    {
+     "title": "8.7拓扑圈空间",
+     "page": 240
+    },
+    {
+     "title": "8.8无限图作为有限图的极限",
+     "page": 243
+    },
+    {
+     "title": "练习",
+     "page": 247
+    },
+    {
+     "title": "注解",
+     "page": 256
+    }
+   ]
+  },
+  {
+   "slug": "ch09",
+   "title": "第9章图的Ramsey理论",
+   "kind": "chapter",
+   "start": 266,
+   "end": 287,
+   "sections": [
+    {
+     "title": "9.1Ramsey的原始定理",
+     "page": 266
+    },
+    {
+     "title": "9.2Ramsey数",
+     "page": 269
+    },
+    {
+     "title": "9.3导出Ramsey定理",
+     "page": 272
+    },
+    {
+     "title": "9.4Ramsey性质与连通性",
+     "page": 282
+    },
+    {
+     "title": "练习",
+     "page": 284
+    },
+    {
+     "title": "注解",
+     "page": 286
+    }
+   ]
+  },
+  {
+   "slug": "ch10",
+   "title": "第10章Hamilton圈",
+   "kind": "chapter",
+   "start": 288,
+   "end": 302,
+   "sections": [
+    {
+     "title": "10.1充分条件",
+     "page": 288
+    },
+    {
+     "title": "10.2Hamilton圈与度序列",
+     "page": 292
+    },
+    {
+     "title": "10.3平方图的Hamilton圈",
+     "page": 294
+    },
+    {
+     "title": "练习",
+     "page": 299
+    },
+    {
+     "title": "注解",
+     "page": 300
+    }
+   ]
+  },
+  {
+   "slug": "ch11",
+   "title": "第11章随机图",
+   "kind": "chapter",
+   "start": 303,
+   "end": 322,
+   "sections": [
+    {
+     "title": "11.1随机图的概念",
+     "page": 303
+    },
+    {
+     "title": "11.2概率方法",
+     "page": 308
+    },
+    {
+     "title": "11.3几乎所有图的性质",
+     "page": 310
+    },
+    {
+     "title": "11.4阈函数与第二矩量",
+     "page": 313
+    },
+    {
+     "title": "练习",
+     "page": 320
+    },
+    {
+     "title": "注解",
+     "page": 321
+    }
+   ]
+  },
+  {
+   "slug": "ch12",
+   "title": "第12章图子式、树和良拟序",
+   "kind": "chapter",
+   "start": 323,
+   "end": 363,
+   "sections": [
+    {
+     "title": "12.1良拟序",
+     "page": 323
+    },
+    {
+     "title": "12.2树的图子式定理",
+     "page": 324
+    },
+    {
+     "title": "12.3树分解",
+     "page": 326
+    },
+    {
+     "title": "12.4树宽",
+     "page": 330
+    },
+    {
+     "title": "12.5纠缠",
+     "page": 335
+    },
+    {
+     "title": "12.6树分解和禁用子式",
+     "page": 343
+    },
+    {
+     "title": "12.7图子式定理",
+     "page": 347
+    },
+    {
+     "title": "练习",
+     "page": 355
+    },
+    {
+     "title": "注解",
+     "page": 359
+    }
+   ]
+  },
+  {
+   "slug": "appA",
+   "title": "附录A无限集",
+   "kind": "chapter",
+   "start": 364,
+   "end": 367,
+   "sections": []
+  },
+  {
+   "slug": "appB",
+   "title": "附录B曲面",
+   "kind": "chapter",
+   "start": 368,
+   "end": 373,
+   "sections": []
+  },
+  {
+   "slug": "hints",
+   "title": "所有练习的提示",
+   "kind": "chapter",
+   "start": 374,
+   "end": 399,
+   "sections": [
+    {
+     "title": "第1章提示",
+     "page": 374
+    },
+    {
+     "title": "第2章提示",
+     "page": 376
+    },
+    {
+     "title": "第3章提示",
+     "page": 377
+    },
+    {
+     "title": "第4章提示",
+     "page": 379
+    },
+    {
+     "title": "第5章提示",
+     "page": 381
+    },
+    {
+     "title": "第6章提示",
+     "page": 383
+    },
+    {
+     "title": "第7章提示",
+     "page": 384
+    },
+    {
+     "title": "第8章提示",
+     "page": 386
+    },
+    {
+     "title": "第9章提示",
+     "page": 393
+    },
+    {
+     "title": "第10章提示",
+     "page": 394
+    },
+    {
+     "title": "第11章提示",
+     "page": 395
+    },
+    {
+     "title": "第12章提示",
+     "page": 396
+    }
+   ]
+  },
+  {
+   "slug": "index",
+   "title": "索引",
+   "kind": "chapter",
+   "start": 400,
+   "end": 408,
+   "sections": []
+  },
+  {
+   "slug": "series",
+   "title": "《现代数学译丛》已出版书目",
+   "kind": "chapter",
+   "start": 409,
+   "end": 411,
+   "sections": []
+  }
+ ]
+}

@@ -1,0 +1,149 @@
+{{课程信息
+| 课程名称 = 推理理论
+| 英文名称 = Theory of Inference
+| 归属 = [[命题逻辑]]
+| 关键词 = 有效结论、推理规则、P规则、T规则、附加前提、归谬法
+}}
+
+'''推理理论'''研究如何从前提推出有效结论。证明 <math>C</math> 是 <math>A</math> 的有效结论的方法，就是判别'''重言蕴含'''的方法。
+
+论证方法千变万化，但最基本、最常用的方法有三种：'''真值表法'''、'''直接证法'''、'''间接证法'''。
+
+== 真值表法 ==
+构造命题公式 <math>H_1 \land H_2 \land \ldots \land H_n \to C</math> 的真值表，若为永真，则 <math>H_1 \land H_2 \land \ldots \land H_n \Rightarrow C</math> 推理正确。
+
+'''例'''：证明 <math>((P \lor Q) \land \neg Q) \Rightarrow P</math>。
+
+{| class="wikitable"
+|+ 真值表
+! <math>P</math> !! <math>Q</math> !! <math>P \lor Q</math> !! <math>\neg Q</math> !! <math>(P \lor Q) \land \neg Q</math> !! <math>((P \lor Q) \land \neg Q) \to P</math>
+|-
+| 0 || 0 || 0 || 1 || 0 || 1
+|-
+| 0 || 1 || 1 || 0 || 0 || 1
+|-
+| 1 || 0 || 1 || 1 || 1 || 1
+|-
+| 1 || 1 || 1 || 0 || 0 || 1
+|}
+
+由上面真值表可知 <math>((P \lor Q) \land \neg Q) \Rightarrow P</math>。
+
+== 直接证法 ==
+'''直接证法'''：由一组前提，利用一些公认的推理规则，根据已知的等价或蕴含公式推演得到有效结论。
+
+=== 常用的推理规则 ===
+* '''P 规则'''（也称前提引入规则）：前提在推导过程中的任何时候都可以引用。
+* '''T 规则'''：在推导过程中，所证明的结论、已知的等价或蕴含公式都可以作为后续证明的前提，命题公式中的任何子公式都可以用与之等价的命题公式置换。
+
+=== 例题 ===
+'''例'''：如果考试及格，那我高兴。若我高兴，那么我饭量增加。我的饭量没增加，所以我考试没有及格。试对上述论证构造证明。
+
+'''解'''：设 <math>P</math>：我考试及格。<math>Q</math>：我高兴。<math>R</math>：我饭量增加。
+
+则此论证可表为 <math>(P \to Q) \land (Q \to R) \land \neg R \Rightarrow \neg P</math>。
+
+'''证'''：
+
+{| class="wikitable"
+! 序号 !! 公式 !! 依据
+|-
+| 1 || <math>P \to Q</math> || P
+|-
+| 2 || <math>Q \to R</math> || P
+|-
+| 3 || <math>\neg R</math> || P
+|-
+| 4 || <math>\neg Q</math> || T, (2)(3)
+|-
+| 5 || <math>\neg P</math> || T, (1)(4)
+|}
+
+== 间接证法 ==
+=== 附加前提证明法 ===
+适用于如下类型蕴含式的证明：
+
+<math>(A_1 \land A_2 \land \ldots \land A_k) \Rightarrow (A \to B)</math>
+
+欲证 (*) 式，只需证明
+
+<math>(A_1 \land A_2 \land \ldots \land A_k \land A) \Rightarrow B</math>
+
+即可。原来结论中的前件 <math>A</math> 就变成了前提，称 <math>A</math> 为'''附加前提'''。
+
+'''例'''：前提 <math>P \to (Q \to R)</math>，<math>S \to P</math>，<math>Q</math>；结论 <math>S \to R</math>。
+
+'''证明'''：
+
+{| class="wikitable"
+! 序号 !! 公式 !! 依据
+|-
+| 1 || <math>S \to P</math> || P
+|-
+| 2 || <math>S</math> || P（附加前提引入）
+|-
+| 3 || <math>P</math> || T (1)(2)
+|-
+| 4 || <math>P \to (Q \to R)</math> || P
+|-
+| 5 || <math>Q \to R</math> || T (3)(4)
+|-
+| 6 || <math>Q</math> || P
+|-
+| 7 || <math>R</math> || T (5)(6)
+|-
+| 8 || <math>S \to R</math> || T (2)(7)
+|}
+
+=== 归谬法 ===
+设命题公式集合为 <math>\{H_1, H_2, H_3, \ldots, H_n\}</math>，若
+
+<math>H_1 \land H_2 \land H_3 \land \ldots \land H_n</math>
+
+为永假式，则称 <math>\{H_1, H_2, H_3, \ldots, H_n\}</math> 是'''不相容的'''，否则称为相容的。
+
+由于
+
+<math>
+\begin{aligned}
+(A_1 \land A_2 \land \ldots \land A_k) \to B
+&\Leftrightarrow \neg (A_1 \land A_2 \land \ldots \land A_k) \lor B \\
+&\Leftrightarrow \neg (A_1 \land A_2 \land \ldots \land A_k \land \neg B)
+\end{aligned}
+</math>
+
+故要证 <math>(A_1 \land A_2 \land \ldots \land A_k) \to B</math> 永真，只需证 <math>A_1 \land A_2 \land \ldots \land A_k \land \neg B</math> 永假。这种将 <math>\neg B</math> 作为附加前提推出矛盾的证明方法称为'''归谬法'''。
+
+'''例'''：证明 <math>(P \to \neg Q) \land (\neg R \lor Q) \land (R \land \neg S) \Rightarrow \neg P</math>。
+
+'''证'''：
+
+{| class="wikitable"
+! 序号 !! 公式 !! 依据
+|-
+| 1 || <math>P</math> || P（附加前提）
+|-
+| 2 || <math>P \to \neg Q</math> || P
+|-
+| 3 || <math>\neg Q</math> || T (1)(2)
+|-
+| 4 || <math>\neg R \lor Q</math> || P
+|-
+| 5 || <math>\neg R</math> || T (3)(4)
+|-
+| 6 || <math>R \land \neg S</math> || P
+|-
+| 7 || <math>R</math> || T (6)
+|-
+| 8 || <math>R \land \neg R</math>（矛盾） || T (5)(7)
+|}
+
+由 8 得出了矛盾，根据归谬法说明原推理正确。
+
+== 参见 ==
+* [[命题逻辑]]
+* [[范式]]
+* [[谓词逻辑]]
+
+[[Category:计算机数学基础]]
+[[Category:数理逻辑]]

@@ -1,0 +1,52 @@
+services:
+  architecture-api:
+    build: .
+    env_file: .env
+    environment:
+      INPUT_ROOT: /workspace
+      DRAWIO_TEMPLATE: /workspace/TheStructure.drawio
+      DATA_ROOT: /app/data
+      DOCLING_BASE_URL: http://docling:5001
+      N8N_WEBHOOK_URL: http://n8n:5678/webhook/drawio-architecture
+    ports: ["127.0.0.1:8080:8080"]
+    volumes:
+      - ..:/workspace:ro
+      - architecture_data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 4
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:2.38.7
+    ports: ["127.0.0.1:5678:5678"]
+    environment:
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:?Run scripts/init-env.ps1 first}
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_PERSONALIZATION_ENABLED: "false"
+      N8N_SECURE_COOKIE: "false"
+      GENERIC_TIMEZONE: Asia/Shanghai
+      EXECUTIONS_TIMEOUT: "3600"
+      EXECUTIONS_DATA_PRUNE: "true"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n:/imports:ro
+    depends_on:
+      architecture-api:
+        condition: service_healthy
+    restart: unless-stopped
+  docling:
+    image: quay.io/docling-project/docling-serve:v1.32.0
+    environment:
+      DOCLING_SERVE_API_KEY: ${DOCLING_API_KEY:?Run scripts/init-env.ps1 first}
+      DOCLING_SERVE_ENABLE_UI: "false"
+    ports: ["127.0.0.1:5001:5001"]
+    volumes:
+      - docling_models:/opt/app-root/src/.cache
+    restart: unless-stopped
+volumes:
+  n8n_data:
+  architecture_data:
+  docling_models:
+
