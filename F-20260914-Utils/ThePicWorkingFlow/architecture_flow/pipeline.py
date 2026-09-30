@@ -96,6 +96,8 @@ class Pipeline:
               "required_module_names":record["request"]["module_names"],"instructions":record["request"]["instructions"],
               "schema":Architecture.model_json_schema(),"allowed_evidence":{s["path"]:len(s["content"].splitlines()) for s in context["sources"]}}
         data["allowed_evidence"].update({"doc:"+d["path"]:len(d["markdown"].splitlines()) for d in context["documents"]})
+        if context.get("design_contract"):
+            data["source_derived_outline"] = context["design_contract"]
         if repair:
             data["previous_design"]=self.load(ident,"architecture.json")
             data["validation_errors"]=self.load(ident,"quality.json")
@@ -110,6 +112,14 @@ class Pipeline:
                 if required and [m.label for m in architecture.modules]!=required:
                     raise ValueError("一级模块名称/顺序必须与 required_module_names 完全一致")
                 self.evidence_check(architecture,context)
+                contract = context.get("design_contract")
+                if contract:
+                    expected = {n["id"] for n in contract["components"]}
+                    if {n.id for n in architecture.components} != expected:
+                        raise ValueError("retain exactly the source_derived_outline component IDs")
+                    flows = {(e["source"], e["target"], e["kind"]) for e in contract["connections"]}
+                    if {(e.source, e.target, e.kind) for e in architecture.connections} != flows:
+                        raise ValueError("retain exactly the source_derived_outline data/control flows")
                 self.write(ident,"architecture.json",architecture.model_dump())
                 return
             except ValueError as exc:
@@ -147,7 +157,10 @@ class Pipeline:
                     context=self.load(ident,"context.json")
                     all_sources=context["sources"]+[{"path":"doc:"+d["path"],"content":d["markdown"]} for d in context["documents"]]
                     reports=[]
-                    for i,chunk in enumerate(chunks(all_sources,self.settings.chunk_chars)):
+                    # Integrators may provide a source-derived AST index while retaining
+                    # full source snapshots for evidence validation and audit.
+                    analysis_chunks = [context["analysis_index"]] if context.get("analysis_index") else chunks(all_sources,self.settings.chunk_chars)
+                    for i,chunk in enumerate(analysis_chunks):
                         self.cancelled(ident)
                         report,usage=await self.llm.call("analysis",ANALYZE,{"chunk":i+1,"source_data":chunk})
                         if not isinstance(report.get("summary"),str) or not isinstance(report.get("responsibilities"),list):

@@ -36,12 +36,14 @@ git show a7959a2:sdl_m11/driver.py
 git merge-base --is-ancestor a7959a2 main
 git merge-base --is-ancestor 2072516 main
 git merge-base --is-ancestor d9cb7f4 main
-py -3.12 tools/monorepo/import_workspace.py verify --repo .
+py -3.12 tools/monorepo/import_workspace.py verify --repo . --revision 04e4cff
 ```
 
 查看原提交时使用原仓库路径，例如 `sdl_m11/driver.py`；查看合并后文件时使用 `F-20260919-StatisticalDiscoveryLearning/sdl_m11/driver.py`。子目录路径的 `git log -- <path>` 不会自动跨越这种路径迁移；应结合历史分支查询。
 
 `migration-manifest.json` 保存来源 refs。Mentor 另有 Codex checkpoint ref，属于工具内部检查点，不是独立的用户分支；正式历史保留以 Git 提交祖先、来源分支及标签为准。
+
+后续业务开发使用普通提交。`--revision 04e4cff` 在保留的导入基线核对 1,224 个原文件，同时仍检查当前跟踪文件的发布边界、54 个原始提交的祖先关系和 Git 完整性；不会把正常开发修改误判为迁移损坏。省略该参数会要求当前文件仍与初次导入字节完全相同。
 
 没有 Git 历史的项目在一次源码导入提交中建立起点。目录名里的日期只是来源信息，不伪造成过去的提交日期。原仓库未提交修改保存在整合后的导入提交中，原仓库 HEAD、索引和工作目录状态保持原样。
 

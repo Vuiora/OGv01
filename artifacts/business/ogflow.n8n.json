@@ -1,0 +1,99 @@
+{
+  "name": "OGv01 discovery closed loop",
+  "nodes": [
+    {
+      "id": "start",
+      "name": "Start discovery",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ogv01-discovery",
+        "responseMode": "responseNode",
+        "authentication": "headerAuth"
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_OGFLOW_AUTH",
+          "name": "OGflow API"
+        }
+      }
+    },
+    {
+      "id": "submit",
+      "name": "Submit business task",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.OGFLOW_URL + '/v1/runs' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_OGFLOW_AUTH",
+          "name": "OGflow API"
+        }
+      }
+    },
+    {
+      "id": "reply",
+      "name": "Return task reference",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        520,
+        0
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 202
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Start discovery": {
+      "main": [
+        [
+          {
+            "node": "Submit business task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submit business task": {
+      "main": [
+        [
+          {
+            "node": "Return task reference",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

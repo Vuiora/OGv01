@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "dataset_id": "ogflow-synthetic-product-v1",
+  "observations": "demo-observations.csv",
+  "target": "Y",
+  "features": ["X1", "X2", "X3"],
+  "group_column": "batch",
+  "units": {"X1": "1", "X2": "1", "X3": "1", "Y": "1"},
+  "top_k": 3,
+  "max_candidates": 48,
+  "freeze_cap": 3,
+  "n_resamples": 8,
+  "llm": "live",
+  "confirmation": {
+    "method": "group_sign_test",
+    "alpha": 0.05,
+    "min_effect": 0.1,
+    "min_groups": 10,
+    "independence_assumption": "Synthetic groups use independently generated inputs and noise; only an implementation validation."
+  },
+  "documents": [],
+  "architecture": true,
+  "feedback": true,
+  "synthetic": true
+}

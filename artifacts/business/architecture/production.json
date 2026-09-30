@@ -1,0 +1,53 @@
+{
+  "mode": "live_tpwf",
+  "quality_passed": true,
+  "page_count": 7,
+  "module_count": 6,
+  "llm": {
+    "base_url": "https://llm.ujn.edu.cn/v1",
+    "model": "deepseek-v41-flash",
+    "protocol": "chat/completions"
+  },
+  "source_count": 30,
+  "drawio": "C:\\Users\\Lenovo\\Desktop\\OGv01\\OGv01-monorepo\\artifacts\\business\\architecture\\architecture.drawio",
+  "job_id": "0b77e86316714dbcb344a61103096728",
+  "usage": [
+    {
+      "stage": "analyze",
+      "chunk": 1,
+      "model": "deepseek-v41-flash",
+      "usage": {
+        "prompt_tokens": 5664,
+        "completion_tokens": 2741,
+        "total_tokens": 8405,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "created_cache_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1227
+        }
+      },
+      "request_id": "chatcmpl-d10b518a98054e73b5a07eef"
+    },
+    {
+      "stage": "design",
+      "attempt": 1,
+      "model": "deepseek-v41-flash",
+      "usage": {
+        "prompt_tokens": 6363,
+        "completion_tokens": 3288,
+        "total_tokens": 9651,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "created_cache_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 902
+        }
+      },
+      "request_id": "chatcmpl-1cfc48c1df5d421ca6ed75b6"
+    }
+  ],
+  "sha256": "42a8351c2250c19f881088423b80cc994ed87753aa1b787a9a220b0a5408a761"
+}

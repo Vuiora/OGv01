@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     llm_model: str = ""
     llm_json_mode: bool = True
     llm_timeout: int = Field(120, ge=1)
+    llm_output_tokens: int = Field(8192, ge=512, le=32768)
     llm_retries: int = Field(2, ge=0, le=5)
     max_upload_mb: int = Field(40, ge=1, le=500)
     max_files: int = Field(10, ge=1, le=50)

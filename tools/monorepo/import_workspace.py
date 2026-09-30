@@ -35,6 +35,7 @@ SKIP_FILES = {".env", "botpw.txt", "a.out", "res", "TESTORFILE", ".DS_Store", "T
 SKIP_SUFFIXES = {".pyc", ".pyo", ".log", ".bkp", ".zip", ".apkg", ".out", ".token", ".key", ".pem", ".mutation-backup"}
 TOKEN_PATTERNS = [
     re.compile(rb"sk-[A-Za-z0-9_-]{20,}"),
+    re.compile(rb"ujn-[A-Za-z0-9_-]{20,}"),
     re.compile(rb"(?:gh[pousr]_[A-Za-z0-9]{25,}|github_pat_[A-Za-z0-9_]{30,})"),
     re.compile(rb"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
 ]
@@ -337,18 +338,43 @@ def add_repository(source: Path, repo: Path, prefix: str, name: str) -> None:
                       "bytes": sum(item["bytes"] for item in files)}, ensure_ascii=False), flush=True)
 
 
-def verify(repo: Path, source: Path | None = None) -> None:
+def verify(repo: Path, source: Path | None = None, revision: str | None = None) -> None:
     manifest = json.loads((repo / "docs/migration-manifest.json").read_text(encoding="utf-8"))
     errors = []
     tracked = set(run(repo, "ls-files", "-z").decode("utf-8").rstrip("\0").split("\0"))
     tracked_source_data = {item["path"] for item in manifest["files"]
                            if item.get("source_tracked") and "data" in Path(item["path"]).parts}
-    for entry in manifest["files"]:
-        path = repo / entry["path"]
-        if not path.is_file() or digest(path.read_bytes()) != entry["imported_sha256"]:
-            errors.append("file mismatch: " + entry["path"])
-        if entry["path"] not in tracked:
-            errors.append("file not tracked: " + entry["path"])
+    if revision:
+        resolved = git(repo, "rev-parse", "--verify", revision + "^{commit}")
+        tree = {}
+        for item in run(repo, "ls-tree", "-r", "-z", resolved).rstrip(b"\0").split(b"\0"):
+            metadata, name = item.split(b"\t", 1)
+            tree[name.decode("utf-8")] = metadata.split()[2].decode("ascii")
+        process = subprocess.Popen(["git", "-C", str(repo), "cat-file", "--batch"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        try:
+            for entry in manifest["files"]:
+                oid = tree.get(entry["path"])
+                if oid is None:
+                    errors.append("missing imported file at revision: " + entry["path"])
+                    continue
+                process.stdin.write((oid + "\n").encode("ascii"))
+                process.stdin.flush()
+                header = process.stdout.readline().split()
+                body = process.stdout.read(int(header[2]))
+                process.stdout.read(1)
+                if digest(body) != entry["imported_sha256"]:
+                    errors.append("import baseline mismatch: " + entry["path"])
+        finally:
+            process.stdin.close()
+            process.stdout.close()
+            process.wait()
+    else:
+        for entry in manifest["files"]:
+            path = repo / entry["path"]
+            if not path.is_file() or digest(path.read_bytes()) != entry["imported_sha256"]:
+                errors.append("file mismatch: " + entry["path"])
+            if entry["path"] not in tracked:
+                errors.append("file not tracked: " + entry["path"])
     total = 0
     for history in manifest["histories"]:
         for commit in history["commits"]:
@@ -370,7 +396,8 @@ def verify(repo: Path, source: Path | None = None) -> None:
     if errors:
         raise RuntimeError("\n".join(errors))
     print(json.dumps({"verified_files": len(manifest["files"]), "original_commits_in_main": total,
-                      "tracked_files": len(tracked), "git_fsck": "passed", "source_state_check": bool(source)}, ensure_ascii=False), flush=True)
+                      "tracked_files": len(tracked), "git_fsck": "passed", "source_state_check": bool(source),
+                      "import_baseline_revision": revision}, ensure_ascii=False), flush=True)
 
 
 def main() -> None:
@@ -388,13 +415,14 @@ def main() -> None:
     check = sub.add_parser("verify")
     check.add_argument("--repo", type=Path, default=Path.cwd())
     check.add_argument("--source", type=Path)
+    check.add_argument("--revision", help="Check original import hashes at this preserved commit after later development")
     args = parser.parse_args()
     if args.action == "import":
         import_all(args.source.resolve(), args.repo.resolve(), args.resume)
     elif args.action == "add":
         add_repository(args.source.resolve(), args.repo.resolve(), args.prefix, args.id)
     else:
-        verify(args.repo.resolve(), args.source.resolve() if args.source else None)
+        verify(args.repo.resolve(), args.source.resolve() if args.source else None, args.revision)
 
 
 if __name__ == "__main__":

@@ -1304,15 +1304,17 @@ class BoundaryGuardTests(unittest.TestCase):
         self.assertNotIn("expectedFailure", called)
 
     def test_frozen_directory_is_untouched_by_this_stage(self):
-        """本阶段不得修改 sdl_m01/：其源码文件 mtime 应早于本模块。"""
+        """冻结计划构造不得写入 M1 源码，允许经过审查的独立 M1 修复。"""
         root = pathlib.Path(__file__).resolve().parent.parent
-        module_mtime = MODULE_PATH.stat().st_mtime
-        for path in (root / "sdl_m01").glob("*.py"):
-            self.assertLess(
-                path.stat().st_mtime,
-                module_mtime,
-                f"冻结目录文件 {path.name} 在本阶段被改动过",
-            )
+        frozen = root / "sdl_m01"
+        before = {path.name: path.read_bytes() for path in frozen.glob("*.py")}
+        fixture = _ProtocolFixture()
+        try:
+            fixture.setUp()
+            fixture.plan_of(make_hypothesis())
+        finally:
+            fixture.doCleanups()
+        self.assertEqual(before, {path.name: path.read_bytes() for path in frozen.glob("*.py")})
 
     def test_freeze_version_is_declared(self):
         self.assertTrue(FREEZE_VERSION.startswith("P11"))

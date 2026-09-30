@@ -1,0 +1,125 @@
+{
+  "sources": [
+    {
+      "path": "ogflow/__init__.py",
+      "sha256": "c900c89ea8ead8dd0b2af8d5201aa597e1de38aefdaab1178b3727714ac16ccc"
+    },
+    {
+      "path": "ogflow/api.py",
+      "sha256": "407db8b3983fdaf3344310756e45b225d6776e0a1f178042daac354b36851a2d"
+    },
+    {
+      "path": "ogflow/architecture.py",
+      "sha256": "17d0bbbfd41ba3d849920700ec1e226a6de0bd8be98a245a83b308f60d41ce89"
+    },
+    {
+      "path": "ogflow/bootstrap.py",
+      "sha256": "e8cf71c8877d4ea29ad0331ccebfa1fffbd7a9a10c00a758cc3deb40f97cf09c"
+    },
+    {
+      "path": "ogflow/cli.py",
+      "sha256": "16b0630546b8e6e210748141d924876d959b15813dede4ea30134238d1fb2706"
+    },
+    {
+      "path": "ogflow/config.py",
+      "sha256": "9ea47b6001e412f979404b2ae1a671b6840763b72877a21b24351b0e2d0362f9"
+    },
+    {
+      "path": "ogflow/documents.py",
+      "sha256": "2e6fa058a2910bf49d1e2eb11d7ecc78525ed8aedf0a5184d76ec53a3a7cbc28"
+    },
+    {
+      "path": "ogflow/evidence_registry.py",
+      "sha256": "5682b7153648d276147383b195055a600e1ff36906cd5c84cfb328015a8fb5ab"
+    },
+    {
+      "path": "ogflow/feedback.py",
+      "sha256": "dcb0257d96d1ea3354d4e23f5e8e46132745ea2e37f5a5a16daa85225f613fab"
+    },
+    {
+      "path": "ogflow/llm.py",
+      "sha256": "4929f003f59219bad220e283ed1ab49b7820992cd546f7271cdfd50fc3914ccf"
+    },
+    {
+      "path": "ogflow/mentor.py",
+      "sha256": "e82839b30dc5cd97ce84f4dcfcaa727b6f94ead149305bc9d03c54c4eb140aec"
+    },
+    {
+      "path": "ogflow/models.py",
+      "sha256": "cff50881e004a0b0d79b6c4edde1fb3820e355c5a6f97c0e5f832e85f2a3efae"
+    },
+    {
+      "path": "ogflow/observations.py",
+      "sha256": "8ef7f8ff8e5cd21b5b33479941ba6180fa53e10b63c97a515297984aff13522d"
+    },
+    {
+      "path": "ogflow/pipeline.py",
+      "sha256": "6bece1dad36c61fecea8d5e0ebc89bcdace6e55dd17655eb17764e20a78fa738"
+    },
+    {
+      "path": "ogflow/recommendation.py",
+      "sha256": "9fcaf0236a0f5d674fcc67e59bb750b8a380afe7aef10b9f53d73268ea796f7c"
+    },
+    {
+      "path": "ogflow/renew_adapter.py",
+      "sha256": "7464e3b7292a785c76419e3e77458fb39516f7f84ae23232d3ef38f40e689003"
+    },
+    {
+      "path": "ogflow/sdl_adapter.py",
+      "sha256": "cb255d144124a14485237208685a7cf69f09870dd7f07ef1b381b76a8244ceb9"
+    },
+    {
+      "path": "ogflow/statistics.py",
+      "sha256": "4bcbd841cc183fd50f1ee6bd18785a59a1eb0cc1e6f3844a9b3002fedef2f21f"
+    },
+    {
+      "path": "ogflow/store.py",
+      "sha256": "4fbd2a1d0900f6e9531047fee5ff4591470b856afd6c8f7e595f2879c042c33c"
+    },
+    {
+      "path": "MTBMT/src/mtbmt/meta_features.py",
+      "sha256": "c00656e942371b6a4c66944639f82b3c97e8e473ebb9202fafc35c33a2a78efb"
+    },
+    {
+      "path": "MTBMT/src/mtbmt/experience_store.py",
+      "sha256": "0491368eb5dbd2b1fedaa9be3ff4c2c1c817b3fbc775a2d6faf36ddb3cf1f070"
+    },
+    {
+      "path": "MTBMT/src/mtbmt/meta_learner.py",
+      "sha256": "1e0532add5aa943a28430abbd492b3a53a361eedabf036b9d5221601968422cb"
+    },
+    {
+      "path": "F-20260919-StatisticalDiscoveryLearning/sdl_m01/__init__.py",
+      "sha256": "8905f847e90393da331a6849e54302222e63dfea1336bda0f3b78ded761ad29d"
+    },
+    {
+      "path": "F-20260914-Utils/ParallelLogicDeterminationAlgorithModule/plda/__init__.py",
+      "sha256": "e2bc09079b8387e9bcb354f39d6f05b227ed851aa4c7623d3d4fde59f119e3d0"
+    },
+    {
+      "path": "F-20260914-Utils/ConceptLayerConstructor/clc/build.py",
+      "sha256": "5c3ab20ef95d7b97e4b49830f07fe1ef96a1f6f2a5d735065ce766925b118eb2"
+    },
+    {
+      "path": "F-20260914-Utils/ConceptRelationDraw/concept_relation/pipeline.py",
+      "sha256": "26c666c294eea935119c847ed2cf47c0dc2efb3cfdb45774d8c3e6d7389d5fbc"
+    },
+    {
+      "path": "F-20260914-Utils/Mentor/src/mentor/domain.py",
+      "sha256": "225d9e74cd15759d308f08581addcf8c29bce9c819f64059c2858887055b8f21"
+    },
+    {
+      "path": "F-20260914-Utils/Mentor/src/mentor/compiler.py",
+      "sha256": "f110f05d0321a9f27e37427e8c997301713db622caa0557df0a19d21d8605737"
+    },
+    {
+      "path": "F-260908-GPTSelf-renew/renew/prompts.py",
+      "sha256": "cdc270287c0ffdc83bd94ffbff1eb9edd2808ad835ce088c255085534b3d50a8"
+    },
+    {
+      "path": "F-20260914-Utils/ThePicWorkingFlow/architecture_flow/pipeline.py",
+      "sha256": "606983ac1220fe8463f73a3b378490671efaf584cf98e57c00cab3829eb18dcd"
+    }
+  ],
+  "template_sha256": "7e83bfcee4cb96f2fd719b69db491555bbda257be12857872ee097ad6efbfb59"
+}

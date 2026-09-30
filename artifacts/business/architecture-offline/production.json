@@ -1,0 +1,16 @@
+{
+  "mode": "offline_source_grounded",
+  "quality_passed": true,
+  "page_count": 7,
+  "module_count": 6,
+  "llm": {
+    "base_url": "https://llm.ujn.edu.cn/v1",
+    "model": "deepseek-v41-flash",
+    "protocol": "chat/completions"
+  },
+  "source_count": 30,
+  "drawio": "C:\\Users\\Lenovo\\Desktop\\OGv01\\OGv01-monorepo\\artifacts\\business\\architecture-offline\\architecture.drawio",
+  "job_id": "7105974f87c64ef9bbea985120a0b21d",
+  "usage": [],
+  "sha256": "d45409a79054fa1530507fc622809c2d60b139965007d748accf9abac406cbd9"
+}

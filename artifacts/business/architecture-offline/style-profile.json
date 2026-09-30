@@ -1,0 +1,67 @@
+{
+  "name": "OGv01 TheStructure",
+  "source_sha256": "7e83bfcee4cb96f2fd719b69db491555bbda257be12857872ee097ad6efbfb59",
+  "module_definition": "除背景板外，不被其他区域包含的最大区域",
+  "palette": {
+    "device": {
+      "fillColor": "#008a00",
+      "strokeColor": "#005700",
+      "fontColor": "#ffffff"
+    },
+    "infrastructure": {
+      "fillColor": "#dae8fc",
+      "strokeColor": "#6c8ebf",
+      "fontColor": "#202020"
+    },
+    "data": {
+      "fillColor": "#ffe6cc",
+      "strokeColor": "#d79b00",
+      "fontColor": "#202020"
+    },
+    "group": {
+      "fillColor": "#d5e8d4",
+      "strokeColor": "#82b366",
+      "fontColor": "#202020"
+    },
+    "plda": {
+      "fillColor": "#ffcd28",
+      "strokeColor": "#d79b00",
+      "fontColor": "#202020"
+    },
+    "core": {
+      "fillColor": "#647687",
+      "strokeColor": "#314354",
+      "fontColor": "#ffffff"
+    },
+    "component": {
+      "fillColor": "#fff2cc",
+      "strokeColor": "#d6b656",
+      "fontColor": "#202020"
+    },
+    "payload": {
+      "fillColor": "#f8cecc",
+      "strokeColor": "#b85450",
+      "fontColor": "#202020"
+    }
+  },
+  "font": "Microsoft YaHei",
+  "font_size": 16,
+  "edge_colors": {
+    "raw": "#0000FF",
+    "standard": "#202020",
+    "analysis": "#FF0000",
+    "dispatch": "#005700",
+    "result": "#FF0080",
+    "control": "#7B1FA2"
+  },
+  "source_cells": {
+    "device": "8rw-NWJHrkYK3E8QMIOX-75",
+    "infrastructure": "8rw-NWJHrkYK3E8QMIOX-14",
+    "data": "8rw-NWJHrkYK3E8QMIOX-1",
+    "group": "8rw-NWJHrkYK3E8QMIOX-54",
+    "plda": "8rw-NWJHrkYK3E8QMIOX-83",
+    "core": "8rw-NWJHrkYK3E8QMIOX-53",
+    "component": "8rw-NWJHrkYK3E8QMIOX-27",
+    "payload": "8rw-NWJHrkYK3E8QMIOX-2"
+  }
+}

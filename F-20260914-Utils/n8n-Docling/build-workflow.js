@@ -33,8 +33,8 @@ node('上传文档', 'formTrigger', 2.6, {
 code('配置与检查', String.raw`
 const item = $input.first(), f = item.json;
 const cfg = {
-  apiBase: 'https://api.deepseek.com',
-  translationModel: 'deepseek-flash', reviewModel: 'deepseek-flash', styleModel: 'deepseek-flash',
+  apiBase: 'https://llm.ujn.edu.cn/v1',
+  translationModel: 'deepseek-v41-flash', reviewModel: 'deepseek-v41-flash', styleModel: 'deepseek-v41-flash',
   outputDir: 'D:/Obsidian/ob/OG-blog', doclingUrl: 'http://127.0.0.1:5001',
   maxTokens: 16000,
 };
@@ -107,7 +107,7 @@ function llm(name, position, optional = false) {
   node(name,'httpRequest',4.4,{method:'POST',url:'={{ $json.apiBase.replace(/\\/$/, "") + "/chat/completions" }}',
     authentication:'predefinedCredentialType',nodeCredentialType:'openAiApi',sendBody:true,specifyBody:'json',jsonBody:'={{ $json.request }}',
     options:{timeout:300000,response:{response:{responseFormat:'json'}}}},position,
-    {credentials:{openAiApi:{id:'ogblog-deepseek',name:'DeepSeek API'}},retryOnFail:true,maxTries:3,waitBetweenTries:5000,
+    {credentials:{openAiApi:{id:'CONFIGURE_UJN_LLM',name:'UJN LLM'}},retryOnFail:true,maxTries:3,waitBetweenTries:5000,
       ...(optional ? {onError:'continueRegularOutput'} : {})});
 }
 llm('DeepSeek 翻译',[1500,200]);
@@ -146,7 +146,7 @@ connect('逐段处理','准备翻译',1);
 const repeated=['准备翻译','DeepSeek 翻译','检查译文并准备复核','DeepSeek 复核','检查复核并准备排版','DeepSeek 重点选择','应用标记并校验','逐段处理'];
 for(let i=1;i<repeated.length;i++) connect(repeated[i-1],repeated[i]);
 connect('逐段处理','生成 Markdown 与附件',0);connect('生成 Markdown 与附件','写入 OG-blog');connect('写入 OG-blog','导入完成');
-node('使用说明','stickyNote',1,{content:'## 使用方法\n1. 使用已配置的 OpenAI 兼容凭据「DeepSeek API」，Base URL 为 https://api.deepseek.com。\n2. 「配置与检查」可改模型、API 地址和输出目录。\n3. 保存并 Publish。访问 http://127.0.0.1:5678/form/og-blog-translate 上传文档。\n\n每段调用 3 次 API：翻译、复核、重点选择。最终每章一篇，以章节名称命名；跳过目录、前言等非正文。代码补充语言与缩进。所有章节完成后才写文件。 失败请查看 Executions，文件写入并非事务，磁盘错误可能留下部分文件。\n正文排版添加 **粗体** 和 ==高亮==；源码保留标识符与字面量，恢复分行缩进。\n机器复核不能保证 99% 准确率。',height:380,width:610},[0,-470]);
+node('使用说明','stickyNote',1,{content:'## 使用方法\n1. 使用已配置的 OpenAI 兼容凭据「UJN LLM」，Base URL 为 https://llm.ujn.edu.cn/v1，密钥仅保存在 n8n 凭据中。\n2. 「配置与检查」可改模型、API 地址和输出目录。\n3. 保存并 Publish。访问 http://127.0.0.1:5678/form/og-blog-translate 上传文档。\n\n每段调用 3 次 API：翻译、复核、重点选择。最终每章一篇，以章节名称命名；跳过目录、前言等非正文。代码补充语言与缩进。所有章节完成后才写文件。 失败请查看 Executions，文件写入并非事务，磁盘错误可能留下部分文件。\n正文排版添加 **粗体** 和 ==高亮==；源码保留标识符与字面量，恢复分行缩进。\n机器复核不能保证 99% 准确率。',height:380,width:610},[0,-470]);
 
 const workflow={id:'ogblogDoclingDeepseek',name:'PDF Word → DeepSeek 翻译复核 → OG-blog',active:false,nodes,connections,
   settings:{executionOrder:'v1',timezone:'Asia/Shanghai',saveDataErrorExecution:'all',saveDataSuccessExecution:'all',saveManualExecutions:true,executionTimeout:14400},

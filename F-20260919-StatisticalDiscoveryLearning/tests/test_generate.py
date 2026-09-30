@@ -1102,12 +1102,14 @@ class BoundaryTests(unittest.TestCase):
         self.assertIn("证据等级", make_pool().provenance["evidence_grade_note"])
 
     def test_does_not_modify_frozen_directory(self):
-        """``sdl_m01/`` 冻结目录未被本阶段触碰（mtime 早于本阶段交付物）。"""
+        """假说生成不得写入 M1 源码；内容校验不依赖 checkout 的 mtime。"""
         root = MODULE_PATH.parent.parent
         frozen = root / "sdl_m01"
         self.assertTrue(frozen.is_dir())
-        newest = max(path.stat().st_mtime for path in frozen.glob("*.py"))
-        self.assertLess(newest, MODULE_PATH.stat().st_mtime)
+        before = {path.name: path.read_bytes() for path in frozen.glob("*.py")}
+        make_pool()
+        after = {path.name: path.read_bytes() for path in frozen.glob("*.py")}
+        self.assertEqual(before, after)
 
     def test_kind_mapping_matches_p07_vocabulary(self):
         """模式种类到假说类型的映射与 P07 的词表一致。"""

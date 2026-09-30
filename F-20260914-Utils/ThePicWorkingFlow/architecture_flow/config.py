@@ -28,6 +28,7 @@ class Settings:
     max_source_chars: int = 240_000
     chunk_chars: int = 20_000
     json_mode: bool = True
+    output_tokens: int = 8192
 
     @classmethod
     def from_env(cls):

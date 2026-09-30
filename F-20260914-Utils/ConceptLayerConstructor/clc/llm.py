@@ -34,7 +34,8 @@ class LLM:
         headers = {"Authorization": f"Bearer {settings.llm_api_key}"} if settings.llm_api_key else {}
         with httpx.Client(timeout=settings.llm_timeout, transport=self.transport) as client:
             for attempt in range(settings.llm_retries + 1):
-                body = {"model": settings.llm_model, "messages": messages}
+                body = {"model": settings.llm_model, "messages": messages,
+                        "max_tokens": settings.llm_output_tokens, "temperature": 0, "stream": False}
                 if settings.llm_json_mode:
                     body["response_format"] = {"type": "json_object"}
                 try:

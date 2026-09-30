@@ -1,0 +1,1099 @@
+<mxfile host="architecture-flow" pages="7">
+<diagram id="architecture-overview" name="系统总览">
+  <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="5200" pageHeight="1474" math="0" shadow="0">
+    <root>
+      <mxCell id="0" />
+      <mxCell id="1" parent="0" />
+      <object id="title" label="OGv01 整体业务闭环 · 系统总览" kind="title" semantic_id="" module_id="" role="title">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=none;strokeColor=none;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="20" width="4750" height="70" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="m-input" label="观测与知识输入" kind="module" semantic_id="input" module_id="input" role="data" link="data:page/id,module-input">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffe6cc;strokeColor=#d79b00;fontColor=#202020;align=left;verticalAlign=top;fontStyle=1;">
+          <mxGeometry x="30" y="140" width="640" height="640" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-csv" label="带来源的观测数据" kind="component" semantic_id="csv" module_id="input" role="component">
+        <mxCell vertex="1" parent="m-input" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="72" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-knowledge" label="Docling → CLC / CRD" kind="component" semantic_id="knowledge" module_id="input" role="component">
+        <mxCell vertex="1" parent="m-input" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="180" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-evidence" label="M1 证据与权限分区" kind="component" semantic_id="evidence" module_id="input" role="component">
+        <mxCell vertex="1" parent="m-input" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="288" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-exploration" label="E / V 探索与验证" kind="component" semantic_id="exploration" module_id="input" role="component">
+        <mxCell vertex="1" parent="m-input" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="396" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-sealed_c" label="封存 C · 冻结后一次消费" kind="component" semantic_id="sealed_c" module_id="input" role="component">
+        <mxCell vertex="1" parent="m-input" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="504" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="m-strategy" label="MTBMT 探索策略" kind="module" semantic_id="strategy" module_id="strategy" role="infrastructure" link="data:page/id,module-strategy">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=left;verticalAlign=top;fontStyle=1;">
+          <mxGeometry x="890" y="140" width="640" height="316" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-recommender" label="元学习选择 / 分组冷启动" kind="component" semantic_id="recommender" module_id="strategy" role="component">
+        <mxCell vertex="1" parent="m-strategy" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="72" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-proposal" label="统一 LLM 提出表达式" kind="component" semantic_id="proposal" module_id="strategy" role="component">
+        <mxCell vertex="1" parent="m-strategy" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="180" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="m-discovery" label="SDL 发现与确证" kind="module" semantic_id="discovery" module_id="discovery" role="infrastructure" link="data:page/id,module-discovery">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=left;verticalAlign=top;fontStyle=1;">
+          <mxGeometry x="1750" y="140" width="640" height="424" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-hypotheses" label="M2–M5 候选与 V 门禁" kind="component" semantic_id="hypotheses" module_id="discovery" role="component">
+        <mxCell vertex="1" parent="m-discovery" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="72" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-freeze" label="冻结方法 / 参数 / 阈值" kind="component" semantic_id="freeze" module_id="discovery" role="component">
+        <mxCell vertex="1" parent="m-discovery" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="180" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-sign_test" label="独立组符号检验" kind="component" semantic_id="sign_test" module_id="discovery" role="component">
+        <mxCell vertex="1" parent="m-discovery" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="288" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="m-compute" label="PLDA 确定性计算" kind="module" semantic_id="compute" module_id="compute" role="infrastructure" link="data:page/id,module-compute">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=left;verticalAlign=top;fontStyle=1;">
+          <mxGeometry x="2610" y="140" width="640" height="208" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-plda" label="任务 DAG / CPU 损失计算" kind="component" semantic_id="plda" module_id="compute" role="component">
+        <mxCell vertex="1" parent="m-compute" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="72" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="m-archive" label="归档与经验反馈" kind="module" semantic_id="archive" module_id="archive" role="data" link="data:page/id,module-archive">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffe6cc;strokeColor=#d79b00;fontColor=#202020;align=left;verticalAlign=top;fontStyle=1;">
+          <mxGeometry x="3470" y="140" width="640" height="316" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-archive_store" label="M8 发现档案与审计" kind="component" semantic_id="archive_store" module_id="archive" role="component">
+        <mxCell vertex="1" parent="m-archive" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="72" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-experience" label="E 经验库 → 下一任务推荐" kind="component" semantic_id="experience" module_id="archive" role="component">
+        <mxCell vertex="1" parent="m-archive" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="180" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="m-engineering" label="应用与架构生产" kind="module" semantic_id="engineering" module_id="engineering" role="infrastructure" link="data:page/id,module-engineering">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=left;verticalAlign=top;fontStyle=1;">
+          <mxGeometry x="4330" y="140" width="640" height="532" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-mentor" label="Mentor AppSpec / n8n 入口" kind="component" semantic_id="mentor" module_id="engineering" role="component">
+        <mxCell vertex="1" parent="m-engineering" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="72" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-renew" label="Self Renew 研发建议" kind="component" semantic_id="renew" module_id="engineering" role="component">
+        <mxCell vertex="1" parent="m-engineering" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="180" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-tpwf" label="TPWF 分析 / 设计 / 校验" kind="component" semantic_id="tpwf" module_id="engineering" role="component">
+        <mxCell vertex="1" parent="m-engineering" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="288" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-ujn_llm" label="UJN 统一 LLM 服务" kind="component" semantic_id="ujn_llm" module_id="engineering" role="component">
+        <mxCell vertex="1" parent="m-engineering" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="396" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="e-edge-0" label="观测数据登记为带来源证据" kind="connection" semantic_id="edge-0" flow="raw">
+        <mxCell edge="1" parent="1" source="n-csv" target="n-evidence" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#0000FF;fontColor=#0000FF;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="248.0" />
+              <mxPoint x="50" y="464.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-1" label="仅探索分区 E/V 可反复使用" kind="connection" semantic_id="edge-1" flow="standard">
+        <mxCell edge="1" parent="1" source="n-evidence" target="n-exploration" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#202020;fontColor=#202020;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="56" y="464.0" />
+              <mxPoint x="56" y="572.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-2" label="C 分区封存，冻结前不可见" kind="connection" semantic_id="edge-2" flow="raw">
+        <mxCell edge="1" parent="1" source="n-evidence" target="n-sealed_c" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#0000FF;fontColor=#0000FF;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="62" y="464.0" />
+              <mxPoint x="62" y="680.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-3" label="探索特征驱动元学习选择" kind="connection" semantic_id="edge-3" flow="analysis">
+        <mxCell edge="1" parent="1" source="n-exploration" target="n-recommender" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="715" y="572.0" />
+              <mxPoint x="715" y="906" />
+              <mxPoint x="865" y="906" />
+              <mxPoint x="865" y="248.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-4" label="探索结果生成候选假设" kind="connection" semantic_id="edge-4" flow="standard">
+        <mxCell edge="1" parent="1" source="n-exploration" target="n-hypotheses" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#202020;fontColor=#202020;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="715" y="572.0" />
+              <mxPoint x="715" y="928" />
+              <mxPoint x="1725" y="928" />
+              <mxPoint x="1725" y="248.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-5" label="冻结后一次性消费 C 做确证" kind="connection" semantic_id="edge-5" flow="standard">
+        <mxCell edge="1" parent="1" source="n-sealed_c" target="n-sign_test" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#202020;fontColor=#202020;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="715" y="680.0" />
+              <mxPoint x="715" y="950" />
+              <mxPoint x="1725" y="950" />
+              <mxPoint x="1725" y="464.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-6" label="文档知识仅用于探索性提议" kind="connection" semantic_id="edge-6" flow="analysis">
+        <mxCell edge="1" parent="1" source="n-knowledge" target="n-proposal" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="715" y="356.0" />
+              <mxPoint x="715" y="972" />
+              <mxPoint x="865" y="972" />
+              <mxPoint x="865" y="356.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-7" label="推荐策略约束表达式提议" kind="connection" semantic_id="edge-7" flow="analysis">
+        <mxCell edge="1" parent="1" source="n-recommender" target="n-proposal" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="952" y="248.0" />
+              <mxPoint x="952" y="356.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-8" label="LLM 表达式进入 M2–M5 候选" kind="connection" semantic_id="edge-8" flow="analysis">
+        <mxCell edge="1" parent="1" source="n-proposal" target="n-hypotheses" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1575" y="356.0" />
+              <mxPoint x="1575" y="1016" />
+              <mxPoint x="1725" y="1016" />
+              <mxPoint x="1725" y="248.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-9" label="通过 V 门禁后冻结方法参数" kind="connection" semantic_id="edge-9" flow="standard">
+        <mxCell edge="1" parent="1" source="n-hypotheses" target="n-freeze" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#202020;fontColor=#202020;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1770" y="248.0" />
+              <mxPoint x="1770" y="356.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-10" label="冻结配置下发确证检验" kind="connection" semantic_id="edge-10" flow="dispatch">
+        <mxCell edge="1" parent="1" source="n-freeze" target="n-sign_test" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#005700;fontColor=#005700;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1776" y="356.0" />
+              <mxPoint x="1776" y="464.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-11" label="确证任务下发 PLDA 计算" kind="connection" semantic_id="edge-11" flow="dispatch">
+        <mxCell edge="1" parent="1" source="n-sign_test" target="n-plda" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#005700;fontColor=#005700;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2435" y="464.0" />
+              <mxPoint x="2435" y="1082" />
+              <mxPoint x="2585" y="1082" />
+              <mxPoint x="2585" y="248.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-12" label="确定性损失结果回传检验" kind="connection" semantic_id="edge-12" flow="result">
+        <mxCell edge="1" parent="1" source="n-plda" target="n-sign_test" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0080;fontColor=#FF0080;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2585" y="248.0" />
+              <mxPoint x="2585" y="1104" />
+              <mxPoint x="2435" y="1104" />
+              <mxPoint x="2435" y="464.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-13" label="确证结论写入 M8 档案" kind="connection" semantic_id="edge-13" flow="result">
+        <mxCell edge="1" parent="1" source="n-sign_test" target="n-archive_store" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0080;fontColor=#FF0080;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2435" y="464.0" />
+              <mxPoint x="2435" y="1126" />
+              <mxPoint x="3445" y="1126" />
+              <mxPoint x="3445" y="248.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-14" label="档案沉淀为 E 经验记录" kind="connection" semantic_id="edge-14" flow="standard">
+        <mxCell edge="1" parent="1" source="n-archive_store" target="n-experience" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#202020;fontColor=#202020;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="3520" y="248.0" />
+              <mxPoint x="3520" y="356.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-15" label="经验库回灌下一任务推荐" kind="connection" semantic_id="edge-15" flow="analysis">
+        <mxCell edge="1" parent="1" source="n-experience" target="n-recommender" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="3445" y="356.0" />
+              <mxPoint x="3445" y="1170" />
+              <mxPoint x="1575" y="1170" />
+              <mxPoint x="1575" y="248.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-16" label="档案驱动 Self Renew 建议" kind="connection" semantic_id="edge-16" flow="analysis">
+        <mxCell edge="1" parent="1" source="n-archive_store" target="n-renew" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="4155" y="248.0" />
+              <mxPoint x="4155" y="1192" />
+              <mxPoint x="4305" y="1192" />
+              <mxPoint x="4305" y="356.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-17" label="Mentor 规格约束证据与任务边界" kind="connection" semantic_id="edge-17" flow="control">
+        <mxCell edge="1" parent="1" source="n-mentor" target="n-evidence" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7B1FA2;fontColor=#7B1FA2;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;dashed=1;dashPattern=6 4;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="4305" y="248.0" />
+              <mxPoint x="4305" y="1214" />
+              <mxPoint x="715" y="1214" />
+              <mxPoint x="715" y="464.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-18" label="档案输入 TPWF 生产流程" kind="connection" semantic_id="edge-18" flow="control">
+        <mxCell edge="1" parent="1" source="n-archive_store" target="n-tpwf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7B1FA2;fontColor=#7B1FA2;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;dashed=1;dashPattern=6 4;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="4155" y="248.0" />
+              <mxPoint x="4155" y="1236" />
+              <mxPoint x="4305" y="1236" />
+              <mxPoint x="4305" y="464.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-19" label="表达式提议调用统一 LLM" kind="connection" semantic_id="edge-19" flow="dispatch">
+        <mxCell edge="1" parent="1" source="n-proposal" target="n-ujn_llm" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#005700;fontColor=#005700;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1575" y="356.0" />
+              <mxPoint x="1575" y="1258" />
+              <mxPoint x="4305" y="1258" />
+              <mxPoint x="4305" y="572.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-20" label="建议生成调用统一 LLM" kind="connection" semantic_id="edge-20" flow="dispatch">
+        <mxCell edge="1" parent="1" source="n-renew" target="n-ujn_llm" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#005700;fontColor=#005700;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="4362" y="356.0" />
+              <mxPoint x="4362" y="572.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-21" label="架构生产调用统一 LLM" kind="connection" semantic_id="edge-21" flow="dispatch">
+        <mxCell edge="1" parent="1" source="n-tpwf" target="n-ujn_llm" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#005700;fontColor=#005700;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="4368" y="464.0" />
+              <mxPoint x="4368" y="572.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="legend" label="蓝：原始数据   黑：标准数据   红：分析数据   绿：执行任务   洋红：结果   紫色虚线：控制 / 异常" kind="legend" semantic_id="" module_id="" role="legend">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#f5f5f5;strokeColor=#bbbbbb;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="1374" width="5140" height="75" as="geometry" />
+        </mxCell>
+      </object>
+    </root>
+  </mxGraphModel>
+</diagram>
+<diagram id="module-input" name="观测与知识输入">
+  <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1480" pageHeight="980" math="0" shadow="0">
+    <root>
+      <mxCell id="0" />
+      <mxCell id="1" parent="0" />
+      <object id="title" label="观测与知识输入 · 独立模块页" kind="title" semantic_id="" module_id="" role="title">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=none;strokeColor=none;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="20" width="1030" height="70" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="back" label="返回总图 ↗" kind="navigation" semantic_id="" module_id="" role="navigation" link="data:page/id,architecture-overview">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="1120" y="30" width="300" height="50" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="m-input" label="观测与知识输入" kind="module" semantic_id="input" module_id="input" role="data" link="data:page/id,module-input">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffe6cc;strokeColor=#d79b00;fontColor=#202020;align=left;verticalAlign=top;fontStyle=1;">
+          <mxGeometry x="390" y="140" width="640" height="640" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-csv" label="带来源的观测数据" kind="component" semantic_id="csv" module_id="input" role="component">
+        <mxCell vertex="1" parent="m-input" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="72" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-knowledge" label="Docling → CLC / CRD" kind="component" semantic_id="knowledge" module_id="input" role="component">
+        <mxCell vertex="1" parent="m-input" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="180" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-evidence" label="M1 证据与权限分区" kind="component" semantic_id="evidence" module_id="input" role="component">
+        <mxCell vertex="1" parent="m-input" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="288" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-exploration" label="E / V 探索与验证" kind="component" semantic_id="exploration" module_id="input" role="component">
+        <mxCell vertex="1" parent="m-input" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="396" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-sealed_c" label="封存 C · 冻结后一次消费" kind="component" semantic_id="sealed_c" module_id="input" role="component">
+        <mxCell vertex="1" parent="m-input" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="504" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-hypotheses" label="外部接口 · SDL 发现与确证&lt;br&gt;M2–M5 候选与 V 门禁" kind="interface" semantic_id="hypotheses" module_id="discovery" role="interface" link="data:page/id,module-discovery">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="145" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-mentor" label="外部接口 · 应用与架构生产&lt;br&gt;Mentor AppSpec / n8n 入口" kind="interface" semantic_id="mentor" module_id="engineering" role="interface" link="data:page/id,module-engineering">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="261" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-proposal" label="外部接口 · MTBMT 探索策略&lt;br&gt;统一 LLM 提出表达式" kind="interface" semantic_id="proposal" module_id="strategy" role="interface" link="data:page/id,module-strategy">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="377" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-recommender" label="外部接口 · MTBMT 探索策略&lt;br&gt;元学习选择 / 分组冷启动" kind="interface" semantic_id="recommender" module_id="strategy" role="interface" link="data:page/id,module-strategy">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="493" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-sign_test" label="外部接口 · SDL 发现与确证&lt;br&gt;独立组符号检验" kind="interface" semantic_id="sign_test" module_id="discovery" role="interface" link="data:page/id,module-discovery">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="609" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="e-edge-0" label="观测数据登记为带来源证据" kind="connection" semantic_id="edge-0" flow="raw">
+        <mxCell edge="1" parent="1" source="n-csv" target="n-evidence" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#0000FF;fontColor=#0000FF;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="410" y="248.0" />
+              <mxPoint x="410" y="464.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-1" label="仅探索分区 E/V 可反复使用" kind="connection" semantic_id="edge-1" flow="standard">
+        <mxCell edge="1" parent="1" source="n-evidence" target="n-exploration" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#202020;fontColor=#202020;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="416" y="464.0" />
+              <mxPoint x="416" y="572.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-2" label="C 分区封存，冻结前不可见" kind="connection" semantic_id="edge-2" flow="raw">
+        <mxCell edge="1" parent="1" source="n-evidence" target="n-sealed_c" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#0000FF;fontColor=#0000FF;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="422" y="464.0" />
+              <mxPoint x="422" y="680.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-3" label="探索特征驱动元学习选择" kind="connection" semantic_id="edge-3" flow="analysis">
+        <mxCell edge="1" parent="1" source="n-exploration" target="port-recommender" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1097" y="572.0" />
+              <mxPoint x="1097" y="543.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-4" label="探索结果生成候选假设" kind="connection" semantic_id="edge-4" flow="standard">
+        <mxCell edge="1" parent="1" source="n-exploration" target="port-hypotheses" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#202020;fontColor=#202020;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1106" y="572.0" />
+              <mxPoint x="1106" y="195.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-5" label="冻结后一次性消费 C 做确证" kind="connection" semantic_id="edge-5" flow="standard">
+        <mxCell edge="1" parent="1" source="n-sealed_c" target="port-sign_test" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#202020;fontColor=#202020;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1115" y="680.0" />
+              <mxPoint x="1115" y="659.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-6" label="文档知识仅用于探索性提议" kind="connection" semantic_id="edge-6" flow="analysis">
+        <mxCell edge="1" parent="1" source="n-knowledge" target="port-proposal" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1124" y="356.0" />
+              <mxPoint x="1124" y="427.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-17" label="Mentor 规格约束证据与任务边界" kind="connection" semantic_id="edge-17" flow="control">
+        <mxCell edge="1" parent="1" source="port-mentor" target="n-evidence" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7B1FA2;fontColor=#7B1FA2;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;dashed=1;dashPattern=6 4;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1070" y="311.0" />
+              <mxPoint x="1070" y="464.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="legend" label="蓝：原始数据   黑：标准数据   红：分析数据   绿：执行任务   洋红：结果   紫色虚线：控制 / 异常" kind="legend" semantic_id="" module_id="" role="legend">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#f5f5f5;strokeColor=#bbbbbb;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="880" width="1420" height="75" as="geometry" />
+        </mxCell>
+      </object>
+    </root>
+  </mxGraphModel>
+</diagram>
+<diagram id="module-strategy" name="MTBMT 探索策略">
+  <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1480" pageHeight="940" math="0" shadow="0">
+    <root>
+      <mxCell id="0" />
+      <mxCell id="1" parent="0" />
+      <object id="title" label="MTBMT 探索策略 · 独立模块页" kind="title" semantic_id="" module_id="" role="title">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=none;strokeColor=none;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="20" width="1030" height="70" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="back" label="返回总图 ↗" kind="navigation" semantic_id="" module_id="" role="navigation" link="data:page/id,architecture-overview">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="1120" y="30" width="300" height="50" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="m-strategy" label="MTBMT 探索策略" kind="module" semantic_id="strategy" module_id="strategy" role="infrastructure" link="data:page/id,module-strategy">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=left;verticalAlign=top;fontStyle=1;">
+          <mxGeometry x="390" y="140" width="640" height="316" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-recommender" label="元学习选择 / 分组冷启动" kind="component" semantic_id="recommender" module_id="strategy" role="component">
+        <mxCell vertex="1" parent="m-strategy" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="72" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-proposal" label="统一 LLM 提出表达式" kind="component" semantic_id="proposal" module_id="strategy" role="component">
+        <mxCell vertex="1" parent="m-strategy" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="180" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-experience" label="外部接口 · 归档与经验反馈&lt;br&gt;E 经验库 → 下一任务推荐" kind="interface" semantic_id="experience" module_id="archive" role="interface" link="data:page/id,module-archive">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="145" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-exploration" label="外部接口 · 观测与知识输入&lt;br&gt;E / V 探索与验证" kind="interface" semantic_id="exploration" module_id="input" role="interface" link="data:page/id,module-input">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="261" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-hypotheses" label="外部接口 · SDL 发现与确证&lt;br&gt;M2–M5 候选与 V 门禁" kind="interface" semantic_id="hypotheses" module_id="discovery" role="interface" link="data:page/id,module-discovery">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="377" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-knowledge" label="外部接口 · 观测与知识输入&lt;br&gt;Docling → CLC / CRD" kind="interface" semantic_id="knowledge" module_id="input" role="interface" link="data:page/id,module-input">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="493" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-ujn_llm" label="外部接口 · 应用与架构生产&lt;br&gt;UJN 统一 LLM 服务" kind="interface" semantic_id="ujn_llm" module_id="engineering" role="interface" link="data:page/id,module-engineering">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="609" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="e-edge-3" label="探索特征驱动元学习选择" kind="connection" semantic_id="edge-3" flow="analysis">
+        <mxCell edge="1" parent="1" source="port-exploration" target="n-recommender" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1070" y="311.0" />
+              <mxPoint x="1070" y="248.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-6" label="文档知识仅用于探索性提议" kind="connection" semantic_id="edge-6" flow="analysis">
+        <mxCell edge="1" parent="1" source="port-knowledge" target="n-proposal" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1079" y="543.0" />
+              <mxPoint x="1079" y="356.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-7" label="推荐策略约束表达式提议" kind="connection" semantic_id="edge-7" flow="analysis">
+        <mxCell edge="1" parent="1" source="n-recommender" target="n-proposal" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="422" y="248.0" />
+              <mxPoint x="422" y="356.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-8" label="LLM 表达式进入 M2–M5 候选" kind="connection" semantic_id="edge-8" flow="analysis">
+        <mxCell edge="1" parent="1" source="n-proposal" target="port-hypotheses" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1097" y="356.0" />
+              <mxPoint x="1097" y="427.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-15" label="经验库回灌下一任务推荐" kind="connection" semantic_id="edge-15" flow="analysis">
+        <mxCell edge="1" parent="1" source="port-experience" target="n-recommender" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1106" y="195.0" />
+              <mxPoint x="1106" y="248.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-19" label="表达式提议调用统一 LLM" kind="connection" semantic_id="edge-19" flow="dispatch">
+        <mxCell edge="1" parent="1" source="n-proposal" target="port-ujn_llm" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#005700;fontColor=#005700;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1115" y="356.0" />
+              <mxPoint x="1115" y="659.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="legend" label="蓝：原始数据   黑：标准数据   红：分析数据   绿：执行任务   洋红：结果   紫色虚线：控制 / 异常" kind="legend" semantic_id="" module_id="" role="legend">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#f5f5f5;strokeColor=#bbbbbb;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="840" width="1420" height="75" as="geometry" />
+        </mxCell>
+      </object>
+    </root>
+  </mxGraphModel>
+</diagram>
+<diagram id="module-discovery" name="SDL 发现与确证">
+  <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1480" pageHeight="940" math="0" shadow="0">
+    <root>
+      <mxCell id="0" />
+      <mxCell id="1" parent="0" />
+      <object id="title" label="SDL 发现与确证 · 独立模块页" kind="title" semantic_id="" module_id="" role="title">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=none;strokeColor=none;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="20" width="1030" height="70" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="back" label="返回总图 ↗" kind="navigation" semantic_id="" module_id="" role="navigation" link="data:page/id,architecture-overview">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="1120" y="30" width="300" height="50" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="m-discovery" label="SDL 发现与确证" kind="module" semantic_id="discovery" module_id="discovery" role="infrastructure" link="data:page/id,module-discovery">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=left;verticalAlign=top;fontStyle=1;">
+          <mxGeometry x="390" y="140" width="640" height="424" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-hypotheses" label="M2–M5 候选与 V 门禁" kind="component" semantic_id="hypotheses" module_id="discovery" role="component">
+        <mxCell vertex="1" parent="m-discovery" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="72" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-freeze" label="冻结方法 / 参数 / 阈值" kind="component" semantic_id="freeze" module_id="discovery" role="component">
+        <mxCell vertex="1" parent="m-discovery" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="180" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-sign_test" label="独立组符号检验" kind="component" semantic_id="sign_test" module_id="discovery" role="component">
+        <mxCell vertex="1" parent="m-discovery" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="288" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-archive_store" label="外部接口 · 归档与经验反馈&lt;br&gt;M8 发现档案与审计" kind="interface" semantic_id="archive_store" module_id="archive" role="interface" link="data:page/id,module-archive">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="145" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-exploration" label="外部接口 · 观测与知识输入&lt;br&gt;E / V 探索与验证" kind="interface" semantic_id="exploration" module_id="input" role="interface" link="data:page/id,module-input">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="261" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-plda" label="外部接口 · PLDA 确定性计算&lt;br&gt;任务 DAG / CPU 损失计算" kind="interface" semantic_id="plda" module_id="compute" role="interface" link="data:page/id,module-compute">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="377" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-proposal" label="外部接口 · MTBMT 探索策略&lt;br&gt;统一 LLM 提出表达式" kind="interface" semantic_id="proposal" module_id="strategy" role="interface" link="data:page/id,module-strategy">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="493" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-sealed_c" label="外部接口 · 观测与知识输入&lt;br&gt;封存 C · 冻结后一次消费" kind="interface" semantic_id="sealed_c" module_id="input" role="interface" link="data:page/id,module-input">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="609" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="e-edge-4" label="探索结果生成候选假设" kind="connection" semantic_id="edge-4" flow="standard">
+        <mxCell edge="1" parent="1" source="port-exploration" target="n-hypotheses" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#202020;fontColor=#202020;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1070" y="311.0" />
+              <mxPoint x="1070" y="248.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-5" label="冻结后一次性消费 C 做确证" kind="connection" semantic_id="edge-5" flow="standard">
+        <mxCell edge="1" parent="1" source="port-sealed_c" target="n-sign_test" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#202020;fontColor=#202020;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1079" y="659.0" />
+              <mxPoint x="1079" y="464.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-8" label="LLM 表达式进入 M2–M5 候选" kind="connection" semantic_id="edge-8" flow="analysis">
+        <mxCell edge="1" parent="1" source="port-proposal" target="n-hypotheses" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1088" y="543.0" />
+              <mxPoint x="1088" y="248.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-9" label="通过 V 门禁后冻结方法参数" kind="connection" semantic_id="edge-9" flow="standard">
+        <mxCell edge="1" parent="1" source="n-hypotheses" target="n-freeze" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#202020;fontColor=#202020;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="428" y="248.0" />
+              <mxPoint x="428" y="356.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-10" label="冻结配置下发确证检验" kind="connection" semantic_id="edge-10" flow="dispatch">
+        <mxCell edge="1" parent="1" source="n-freeze" target="n-sign_test" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#005700;fontColor=#005700;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="434" y="356.0" />
+              <mxPoint x="434" y="464.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-11" label="确证任务下发 PLDA 计算" kind="connection" semantic_id="edge-11" flow="dispatch">
+        <mxCell edge="1" parent="1" source="n-sign_test" target="port-plda" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#005700;fontColor=#005700;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1115" y="464.0" />
+              <mxPoint x="1115" y="427.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-12" label="确定性损失结果回传检验" kind="connection" semantic_id="edge-12" flow="result">
+        <mxCell edge="1" parent="1" source="port-plda" target="n-sign_test" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0080;fontColor=#FF0080;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1124" y="427.0" />
+              <mxPoint x="1124" y="464.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-13" label="确证结论写入 M8 档案" kind="connection" semantic_id="edge-13" flow="result">
+        <mxCell edge="1" parent="1" source="n-sign_test" target="port-archive_store" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0080;fontColor=#FF0080;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1070" y="464.0" />
+              <mxPoint x="1070" y="195.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="legend" label="蓝：原始数据   黑：标准数据   红：分析数据   绿：执行任务   洋红：结果   紫色虚线：控制 / 异常" kind="legend" semantic_id="" module_id="" role="legend">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#f5f5f5;strokeColor=#bbbbbb;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="840" width="1420" height="75" as="geometry" />
+        </mxCell>
+      </object>
+    </root>
+  </mxGraphModel>
+</diagram>
+<diagram id="module-compute" name="PLDA 确定性计算">
+  <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1480" pageHeight="548" math="0" shadow="0">
+    <root>
+      <mxCell id="0" />
+      <mxCell id="1" parent="0" />
+      <object id="title" label="PLDA 确定性计算 · 独立模块页" kind="title" semantic_id="" module_id="" role="title">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=none;strokeColor=none;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="20" width="1030" height="70" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="back" label="返回总图 ↗" kind="navigation" semantic_id="" module_id="" role="navigation" link="data:page/id,architecture-overview">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="1120" y="30" width="300" height="50" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="m-compute" label="PLDA 确定性计算" kind="module" semantic_id="compute" module_id="compute" role="infrastructure" link="data:page/id,module-compute">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=left;verticalAlign=top;fontStyle=1;">
+          <mxGeometry x="390" y="140" width="640" height="208" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-plda" label="任务 DAG / CPU 损失计算" kind="component" semantic_id="plda" module_id="compute" role="component">
+        <mxCell vertex="1" parent="m-compute" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="72" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-sign_test" label="外部接口 · SDL 发现与确证&lt;br&gt;独立组符号检验" kind="interface" semantic_id="sign_test" module_id="discovery" role="interface" link="data:page/id,module-discovery">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="145" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="e-edge-11" label="确证任务下发 PLDA 计算" kind="connection" semantic_id="edge-11" flow="dispatch">
+        <mxCell edge="1" parent="1" source="port-sign_test" target="n-plda" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#005700;fontColor=#005700;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1070" y="195.0" />
+              <mxPoint x="1070" y="248.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-12" label="确定性损失结果回传检验" kind="connection" semantic_id="edge-12" flow="result">
+        <mxCell edge="1" parent="1" source="n-plda" target="port-sign_test" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0080;fontColor=#FF0080;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1079" y="248.0" />
+              <mxPoint x="1079" y="195.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="legend" label="蓝：原始数据   黑：标准数据   红：分析数据   绿：执行任务   洋红：结果   紫色虚线：控制 / 异常" kind="legend" semantic_id="" module_id="" role="legend">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#f5f5f5;strokeColor=#bbbbbb;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="448" width="1420" height="75" as="geometry" />
+        </mxCell>
+      </object>
+    </root>
+  </mxGraphModel>
+</diagram>
+<diagram id="module-archive" name="归档与经验反馈">
+  <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1480" pageHeight="824" math="0" shadow="0">
+    <root>
+      <mxCell id="0" />
+      <mxCell id="1" parent="0" />
+      <object id="title" label="归档与经验反馈 · 独立模块页" kind="title" semantic_id="" module_id="" role="title">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=none;strokeColor=none;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="20" width="1030" height="70" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="back" label="返回总图 ↗" kind="navigation" semantic_id="" module_id="" role="navigation" link="data:page/id,architecture-overview">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="1120" y="30" width="300" height="50" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="m-archive" label="归档与经验反馈" kind="module" semantic_id="archive" module_id="archive" role="data" link="data:page/id,module-archive">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffe6cc;strokeColor=#d79b00;fontColor=#202020;align=left;verticalAlign=top;fontStyle=1;">
+          <mxGeometry x="390" y="140" width="640" height="316" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-archive_store" label="M8 发现档案与审计" kind="component" semantic_id="archive_store" module_id="archive" role="component">
+        <mxCell vertex="1" parent="m-archive" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="72" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-experience" label="E 经验库 → 下一任务推荐" kind="component" semantic_id="experience" module_id="archive" role="component">
+        <mxCell vertex="1" parent="m-archive" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="180" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-recommender" label="外部接口 · MTBMT 探索策略&lt;br&gt;元学习选择 / 分组冷启动" kind="interface" semantic_id="recommender" module_id="strategy" role="interface" link="data:page/id,module-strategy">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="145" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-renew" label="外部接口 · 应用与架构生产&lt;br&gt;Self Renew 研发建议" kind="interface" semantic_id="renew" module_id="engineering" role="interface" link="data:page/id,module-engineering">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="261" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-sign_test" label="外部接口 · SDL 发现与确证&lt;br&gt;独立组符号检验" kind="interface" semantic_id="sign_test" module_id="discovery" role="interface" link="data:page/id,module-discovery">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="377" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-tpwf" label="外部接口 · 应用与架构生产&lt;br&gt;TPWF 分析 / 设计 / 校验" kind="interface" semantic_id="tpwf" module_id="engineering" role="interface" link="data:page/id,module-engineering">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="493" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="e-edge-13" label="确证结论写入 M8 档案" kind="connection" semantic_id="edge-13" flow="result">
+        <mxCell edge="1" parent="1" source="port-sign_test" target="n-archive_store" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0080;fontColor=#FF0080;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1070" y="427.0" />
+              <mxPoint x="1070" y="248.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-14" label="档案沉淀为 E 经验记录" kind="connection" semantic_id="edge-14" flow="standard">
+        <mxCell edge="1" parent="1" source="n-archive_store" target="n-experience" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#202020;fontColor=#202020;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="416" y="248.0" />
+              <mxPoint x="416" y="356.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-15" label="经验库回灌下一任务推荐" kind="connection" semantic_id="edge-15" flow="analysis">
+        <mxCell edge="1" parent="1" source="n-experience" target="port-recommender" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1088" y="356.0" />
+              <mxPoint x="1088" y="195.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-16" label="档案驱动 Self Renew 建议" kind="connection" semantic_id="edge-16" flow="analysis">
+        <mxCell edge="1" parent="1" source="n-archive_store" target="port-renew" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1097" y="248.0" />
+              <mxPoint x="1097" y="311.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-18" label="档案输入 TPWF 生产流程" kind="connection" semantic_id="edge-18" flow="control">
+        <mxCell edge="1" parent="1" source="n-archive_store" target="port-tpwf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7B1FA2;fontColor=#7B1FA2;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;dashed=1;dashPattern=6 4;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1106" y="248.0" />
+              <mxPoint x="1106" y="543.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="legend" label="蓝：原始数据   黑：标准数据   红：分析数据   绿：执行任务   洋红：结果   紫色虚线：控制 / 异常" kind="legend" semantic_id="" module_id="" role="legend">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#f5f5f5;strokeColor=#bbbbbb;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="724" width="1420" height="75" as="geometry" />
+        </mxCell>
+      </object>
+    </root>
+  </mxGraphModel>
+</diagram>
+<diagram id="module-engineering" name="应用与架构生产">
+  <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1480" pageHeight="872" math="0" shadow="0">
+    <root>
+      <mxCell id="0" />
+      <mxCell id="1" parent="0" />
+      <object id="title" label="应用与架构生产 · 独立模块页" kind="title" semantic_id="" module_id="" role="title">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=none;strokeColor=none;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="20" width="1030" height="70" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="back" label="返回总图 ↗" kind="navigation" semantic_id="" module_id="" role="navigation" link="data:page/id,architecture-overview">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="1120" y="30" width="300" height="50" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="m-engineering" label="应用与架构生产" kind="module" semantic_id="engineering" module_id="engineering" role="infrastructure" link="data:page/id,module-engineering">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#202020;align=left;verticalAlign=top;fontStyle=1;">
+          <mxGeometry x="390" y="140" width="640" height="532" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-mentor" label="Mentor AppSpec / n8n 入口" kind="component" semantic_id="mentor" module_id="engineering" role="component">
+        <mxCell vertex="1" parent="m-engineering" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="72" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-renew" label="Self Renew 研发建议" kind="component" semantic_id="renew" module_id="engineering" role="component">
+        <mxCell vertex="1" parent="m-engineering" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="180" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-tpwf" label="TPWF 分析 / 设计 / 校验" kind="component" semantic_id="tpwf" module_id="engineering" role="component">
+        <mxCell vertex="1" parent="m-engineering" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="288" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="n-ujn_llm" label="UJN 统一 LLM 服务" kind="component" semantic_id="ujn_llm" module_id="engineering" role="component">
+        <mxCell vertex="1" parent="m-engineering" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#202020;align=center;verticalAlign=middle;">
+          <mxGeometry x="95" y="396" width="450" height="72" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-archive_store" label="外部接口 · 归档与经验反馈&lt;br&gt;M8 发现档案与审计" kind="interface" semantic_id="archive_store" module_id="archive" role="interface" link="data:page/id,module-archive">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="145" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-evidence" label="外部接口 · 观测与知识输入&lt;br&gt;M1 证据与权限分区" kind="interface" semantic_id="evidence" module_id="input" role="interface" link="data:page/id,module-input">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="261" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="port-proposal" label="外部接口 · MTBMT 探索策略&lt;br&gt;统一 LLM 提出表达式" kind="interface" semantic_id="proposal" module_id="strategy" role="interface" link="data:page/id,module-strategy">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#ffffff;strokeColor=#808080;align=center;verticalAlign=middle;">
+          <mxGeometry x="1150" y="377" width="290" height="100" as="geometry" />
+        </mxCell>
+      </object>
+      <object id="e-edge-16" label="档案驱动 Self Renew 建议" kind="connection" semantic_id="edge-16" flow="analysis">
+        <mxCell edge="1" parent="1" source="port-archive_store" target="n-renew" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#FF0000;fontColor=#FF0000;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1070" y="195.0" />
+              <mxPoint x="1070" y="356.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-17" label="Mentor 规格约束证据与任务边界" kind="connection" semantic_id="edge-17" flow="control">
+        <mxCell edge="1" parent="1" source="n-mentor" target="port-evidence" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7B1FA2;fontColor=#7B1FA2;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;dashed=1;dashPattern=6 4;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1079" y="248.0" />
+              <mxPoint x="1079" y="311.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-18" label="档案输入 TPWF 生产流程" kind="connection" semantic_id="edge-18" flow="control">
+        <mxCell edge="1" parent="1" source="port-archive_store" target="n-tpwf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7B1FA2;fontColor=#7B1FA2;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;dashed=1;dashPattern=6 4;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1088" y="195.0" />
+              <mxPoint x="1088" y="464.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-19" label="表达式提议调用统一 LLM" kind="connection" semantic_id="edge-19" flow="dispatch">
+        <mxCell edge="1" parent="1" source="port-proposal" target="n-ujn_llm" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#005700;fontColor=#005700;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1097" y="427.0" />
+              <mxPoint x="1097" y="572.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-20" label="建议生成调用统一 LLM" kind="connection" semantic_id="edge-20" flow="dispatch">
+        <mxCell edge="1" parent="1" source="n-renew" target="n-ujn_llm" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#005700;fontColor=#005700;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="434" y="356.0" />
+              <mxPoint x="434" y="572.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="e-edge-21" label="架构生产调用统一 LLM" kind="connection" semantic_id="edge-21" flow="dispatch">
+        <mxCell edge="1" parent="1" source="n-tpwf" target="n-ujn_llm" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#005700;fontColor=#005700;fontFamily=Microsoft YaHei;fontSize=14;labelBackgroundColor=#ffffff;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;jumpStyle=arc;jumpSize=6;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="440" y="464.0" />
+              <mxPoint x="440" y="572.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </object>
+      <object id="legend" label="蓝：原始数据   黑：标准数据   红：分析数据   绿：执行任务   洋红：结果   紫色虚线：控制 / 异常" kind="legend" semantic_id="" module_id="" role="legend">
+        <mxCell vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Microsoft YaHei;fontSize=16;spacing=8;fillColor=#f5f5f5;strokeColor=#bbbbbb;align=center;verticalAlign=middle;">
+          <mxGeometry x="30" y="772" width="1420" height="75" as="geometry" />
+        </mxCell>
+      </object>
+    </root>
+  </mxGraphModel>
+</diagram>
+</mxfile>

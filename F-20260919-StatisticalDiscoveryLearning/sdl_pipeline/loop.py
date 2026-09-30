@@ -1164,6 +1164,7 @@ def build_exploration(
     target_field: str,
     counterexample_expressions: Sequence[str] = (),
     variables: Sequence[str] | None = None,
+    representation_builder: Callable[..., Any] | None = None,
     **_rejected: Any,
 ) -> ExplorationOutcome:
     """执行表示构造（M2）与模式搜索（M3）。
@@ -1186,7 +1187,11 @@ def build_exploration(
     exploration_ref = str(resources["E"])
 
     # -- M2：表示构造（仅经 explorer 读取 E 分区） ------------------------
-    pool = build_representation(explorer, protocol, budget.representation_budget())
+    if representation_builder is None:
+        pool = build_representation(explorer, protocol, budget.representation_budget(), target_field=target_field)
+    else:
+        pool = representation_builder(explorer=explorer, protocol=protocol,
+                                      budget=budget.representation_budget(), target_field=target_field)
     candidates = tuple(pool.candidates)
 
     # -- M3：样本准备与逐候选拟合 ----------------------------------------
@@ -2027,6 +2032,10 @@ def run_loop(
     recorded_at: str | None = None,
     knowledge: KnowledgeVersion | None = None,
     acquisition_sink: Callable[[int, Mapping[str, Any]], Any] | None = None,
+    representation_builder: Callable[..., Any] | None = None,
+    evaluation_filter: Callable[..., Any] | None = None,
+    confirmation_options: Mapping[str, Any] | None = None,
+    freeze_sink: Callable[..., Any] | None = None,
     **_rejected: Any,
 ) -> DiscoveryArchive:
     """按《SDL算法框架说明》§5 的伪代码执行端到端主循环。
@@ -2094,6 +2103,9 @@ def run_loop(
     _require_callable_or_none(data_supplier, "data_supplier")
     _require_callable_or_none(confirmation_evaluator, "confirmation_evaluator")
     _require_callable_or_none(acquisition_sink, "acquisition_sink")
+    _require_callable_or_none(representation_builder, "representation_builder")
+    _require_callable_or_none(evaluation_filter, "evaluation_filter")
+    _require_callable_or_none(freeze_sink, "freeze_sink")
     evaluator = confirmation_evaluator or unavailable_evaluator
     _require_nonempty_str(target_field, "target_field")
 
@@ -2158,6 +2170,7 @@ def run_loop(
             target_field=target_field,
             counterexample_expressions=counterexample_expressions,
             variables=variables,
+            representation_builder=representation_builder,
         )
         ledger.candidates_enumerated += len(outcome.pool.candidates)
         all_counterexamples.extend(outcome.counterexamples)
@@ -2185,6 +2198,11 @@ def run_loop(
             knowledge=knowledge_base,
             target_field=target_field,
         )
+        if evaluation_filter is not None:
+            filtered = tuple(evaluation_filter(evaluations=evaluations, outcome=outcome, pool=pool))
+            if any(not any(item is original for original in evaluations) for item in filtered):
+                raise LoopPolicyError("evaluation_filter may only retain existing evaluations")
+            evaluations = filtered
         ledger.fit_skips.extend(skipped)
         ledger.fits_attempted += len(outcome.candidate_by_id)
         ledger.fits_succeeded += len(outcome.fits)
@@ -2236,9 +2254,13 @@ def run_loop(
 
         # -- 冻结：M6（bind 之前取快照） ---------------------------------
         plan = _build_plan(
-            selection, current_protocol, round_index, frozen_hypotheses, target_field
+            selection, current_protocol, round_index, frozen_hypotheses, target_field,
+            confirmation_options=confirmation_options,
         )
         snapshot = freeze_snapshot(plan)
+        if freeze_sink is not None:
+            freeze_sink(round_index, plan)
+            assert_frozen_unchanged(plan, snapshot)
         alpha = _alpha_for(current_protocol, round_index)
 
         # 冻结之后**不再**重建表示、不再改候选与预处理。
@@ -2671,20 +2693,37 @@ def _build_plan(
     round_index: int,
     hypotheses: Sequence[Hypothesis],
     target_field: str,
+    *,
+    confirmation_options: Mapping[str, Any] | None = None,
 ) -> Any:
     """装配冻结计划（M6 的 ``build_frozen_plan``）。
 
     单独抽出是为了让测试能在**不跑完整循环**的情况下拿到计划，
     从而独立验证冻结不变量；装配口径与循环体内完全一致。
     """
+    options = dict(confirmation_options or {})
+    allowed = {"method", "effect_threshold", "preprocessing_steps", "primary_metric"}
+    if set(options) - allowed:
+        raise LoopInputError("Unknown confirmation_options field")
+    declarations = _declarations_for(hypotheses, target_field)
+    if "effect_threshold" in options:
+        for declaration in declarations.values():
+            declaration["effect_threshold"] = options["effect_threshold"]
+            declaration["prediction"] = f"Median group MSE improvement exceeds frozen delta; target {target_field}."
+    if "primary_metric" in options:
+        for declaration in declarations.values():
+            declaration["primary_metric"] = options["primary_metric"]
+            declaration["metrics"] = [options["primary_metric"]]
+    kwargs = {key: options[key] for key in ("preprocessing_steps",) if key in options}
     return build_frozen_plan(
         list(selection.candidates),
         protocol["protocol_id"],
         round_index,
         protocol=protocol,
         hypotheses=[hypothesis.to_dict() for hypothesis in hypotheses],
-        declarations=_declarations_for(hypotheses, target_field),
-        default_method=SYNTHETIC_METHOD_TEXT,
+        declarations=declarations,
+        default_method=options.get("method", SYNTHETIC_METHOD_TEXT),
+        **kwargs,
     )
 
 

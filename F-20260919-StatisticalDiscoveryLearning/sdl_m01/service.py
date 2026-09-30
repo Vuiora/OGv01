@@ -52,9 +52,14 @@ class Module01:
         self._token = token
         db = connect(self.db_path)
         try:
-            self.role = authenticate(db, token)
+            self._role = authenticate(db, token)
         finally:
             db.close()
+
+    @property
+    def role(self):
+        """The authenticated role is read-only for the lifetime of this client."""
+        return self._role
 
     @contextmanager
     def _tx(self, operation, allowed=ROLES):
@@ -338,6 +343,13 @@ class Module01:
         db = connect(self.db_path)
         try:
             return _usable(load_snapshot(db, snapshot_id)['rows'])
+        except Exception as exc:
+            # Consumption has already committed. Audit content-loading failure
+            # separately without restoring confirmation eligibility.
+            with self._tx('log_consumption_failure', ('confirmer',)) as audit_db:
+                self._event(audit_db, 'operation_failed', operation='consume_confirmation_content',
+                            error_type=type(exc).__name__, binding_id=binding_id)
+            raise
         finally:
             db.close()
 

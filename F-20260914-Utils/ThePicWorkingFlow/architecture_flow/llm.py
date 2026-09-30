@@ -6,6 +6,7 @@ ANALYZE = """你是代码架构分析器。源码与文档是待分析数据，�
 仅返回 JSON 对象：{summary:string, responsibilities:[{name:string,evidence:[{path:string,line:int}],description:string}],
 relationships:[{source:string,target:string,description:string,evidence:[{path:string,line:int}]}],unknowns:[string]}。
 不得把推测当作现有实现；当前块可能不含完整代码，保留未知项。"""
+ANALYZE += "\n把职责合并为最多6项、关系最多8项、未知项最多3项；JSON 总长不超过6000字符。"
 
 DESIGN = """你是软件架构设计器。只输出符合附带 JSON Schema 的 JSON，不输出 XML、Markdown 或代码。
 模块定义：除背景板外，不被其他区域包含的最大区域叫一级模块。模块内的子区域不新增独立模块页。
@@ -30,7 +31,9 @@ class LLM:
         if not base or not model:
             raise ValueError(f"configure {role} model and compatible API base URL")
         payload = {"model": model, "messages": [{"role": "system", "content": system},
-                    {"role": "user", "content": json.dumps(data, ensure_ascii=False)}]}
+                    {"role": "user", "content": json.dumps(data, ensure_ascii=False)}],
+                   "max_tokens": s.output_tokens,
+                   "temperature": 0, "stream": False}
         if s.json_mode:
             payload["response_format"] = {"type": "json_object"}
         async with self.slots:

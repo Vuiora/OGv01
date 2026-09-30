@@ -25,7 +25,7 @@ MTBMT 的主线为：数据与训练轨迹 → 相关性／重要性评测 → �
 | `guided_cart.py`、`guided_id3.py` | 节点分裂候选重排与替换 |
 | `hpo/guided_asha.py`、`scripts/rl/`、`scripts/dkt/` | 资源分配、强化学习和分组 BKT-like 实验 |
 
-基准经验记录默认不自动采集轨迹，需由对应训练过程提供。MTBMT 的策略建议可作为后续 SDL 探索侧适配候选；当前尚未实现跨项目接线。MTBMT 与 `F-20260914-Utils/Mentor` 分别维护训练策略和 Teacher/Student 应用构建方向。
+基准经验记录默认不自动采集轨迹，需由对应训练过程提供。后续新增的 `ogflow/recommendation.py` 已将 E 元特征、三种相关性方法、分组 CV 和历史随机森林推荐接入 SDL 探索侧；按当前数据集和来源散列排除经验，标签只由 E 评价产生。详细运行与接入边界见 [业务说明](BUSINESS_CLOSED_LOOP.md)。MTBMT 与 `F-20260914-Utils/Mentor` 分别维护训练策略和 Teacher/Student 应用构建方向。
 
 ## 本次验证
 

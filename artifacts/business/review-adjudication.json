@@ -1,0 +1,15 @@
+{
+  "mode": "manual_static_review",
+  "findings": [
+    {
+      "id": "f1",
+      "decision": "not_confirmed",
+      "reason": "JSONClient has a finite default of 12. Feedback uses its own provider budget (3 calls), architecture uses bounded TPWF stages. Neither uses the suggested unlimited client. Quoted lines exist but the behavioral claim is incorrect."
+    },
+    {
+      "id": "f2",
+      "decision": "confirmed_low_impact_deferred",
+      "reason": "Baseline V MSE is redundantly recomputed per candidate. Overall validation already requires per-candidate predictions. Performance was not measured; optimizing this is outside the read-only business feedback stage."
+    }
+  ]
+}

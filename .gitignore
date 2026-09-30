@@ -47,3 +47,4 @@ TESTORFILE
 .DS_Store
 Thumbs.db
 .migration-local/
+artifacts/business/**/jobs/

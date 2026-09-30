@@ -1,27 +1,39 @@
 # OGv01：自动化推理研究与工程
 
-本仓库整合文档与知识结构化、并行计算、统计发现、元学习与训练轨迹指导、智能体研发和工作流应用构建项目。保留原项目目录名及已有 Git 提交，统一导航、历史来源与离线验证入口。Git 历史包含 SDL、Mentor、MTBMT 三个来源的 54 个原始提交。
+本仓库整合文档知识、统计发现、元学习、并行计算与工作流项目。新增 `ogflow` 业务入口，实现观测数据 → MTBMT 推荐 → SDL 生成与筛选 → 冻结确证 → 归档，并接入文档知识、PLDA、Mentor 规格、Self Renew 只读审查和 TPWF 架构图生产。保留原目录及 SDL、Mentor、MTBMT 三个来源的 54 个原始 Git 提交。
 
 项目主线与实际完成状态见 [自动化推理主线](docs/自动化推理主线.md)，全部目录见 [项目清单](docs/项目清单.md)，历史整合方法见 [Git 历史迁移](docs/GIT_HISTORY.md)。
 
-[整合验证记录](docs/VERIFICATION.md) 记录文件与历史校验、凭据清理、1,971 个离线用例及原项目已有的 3 项失败。迁移完整性已验证，项目功能的既有失败仍需后续修复。
+[业务说明与运行](docs/BUSINESS_CLOSED_LOOP.md)、[本次业务验证](docs/BUSINESS_VERIFICATION.md) 说明实际接线和边界。[历史整合验证](docs/VERIFICATION.md) 保留初次迁移的记录；后续开发已修复 SDL 两项证据协议问题，并更新了两项过时的时间戳测试。
 
 ```mermaid
 flowchart LR
-  D[资料 / 源码 / 观测] --> K[Docling + 概念层级 / 关系图]
-  D --> S[SDL: 表示 → 模式 → 假说 → 筛选 → 确证]
-  S --> L[LLM 工具编排 + 受限代码执行]
-  L --> S
-  P[PLDA: 依赖分析 + 异构调度] -. 计算能力候选 .-> S
-  K -. 知识输入候选 .-> S
-  S --> A[取数 → 归档 → 下一轮发现]
-  T[MTBMT: 相关性评测 + 经验库] --> O[元学习选择 / 训练轨迹指导]
-  O -. 策略建议候选 .-> S
-  R[Self Renew: 审计 → 需求 → 开发 → 测试 / 审查] --> C[代码与补丁]
-  M[Mentor: Teacher / Student + AppSpec] --> W[n8n 文档应用]
+  D[观测 CSV] --> E[M1: E / V / 封存 C]
+  E --> T[MTBMT 方法和特征推荐]
+  T --> L[统一 UJN LLM 表达式提案]
+  K[Docling 结构桥 + CLC / CRD] --> L
+  L --> S[SDL 构造 / 筛选 / 冻结]
+  E --> S
+  S --> P[PLDA 计算 + 独立组确证]
+  P --> A[SDL 归档 / 审计 / 取数建议]
+  A -->|仅 E 方法评价| T
+  A --> R[Self Renew 只读审查]
+  A --> F[TPWF 可编辑 draw.io]
+  M[Mentor AppSpec + n8n 入口] --> E
 ```
 
-实线表示项目内部已有流程；虚线表示跨项目整合建议。当前统一的是代码仓库，各模块仍保留自己的接口、配置和运行环境。
+图中连接通过根目录 `ogflow` 的适配层实现。业务模型统一使用 `https://llm.ujn.edu.cn/v1` / `deepseek-v41-flash`；密钥仅在本机 `.env`。Wiki、Anki、早期 PRT 不参与该流程。
+
+## 运行业务闭环
+
+```powershell
+.\tools\business\setup.ps1
+.\.venv\Scripts\ogflow.exe run examples/business/demo-task.json
+.\.venv\Scripts\ogflow.exe architecture --output artifacts/business/architecture
+.\tools\business\start.ps1
+```
+
+示例是合成数据，仅用于实现验证。API 默认本机 8095 端口，需要 `OG_API_TOKEN`。参数、数据资格、失败重试与文档依赖见 [完整业务说明](docs/BUSINESS_CLOSED_LOOP.md)。架构产物位于 [artifacts/business](artifacts/business/)。
 
 ## 主要入口
 
@@ -39,14 +51,14 @@ flowchart LR
 
 ## 验证与运行
 
-推荐 Python 3.12。各项目单独安装自己的依赖，先在对应项目目录运行；不要从仓库根目录直接递归发现全部 `tests`，多个项目使用同名测试包。
+推荐 Python 3.12。根目录 `python -m pytest -q` 只运行业务测试。原项目回归仍需逐项目执行，避免多个同名测试包互相覆盖。
 
 ```powershell
 # 三个仅依赖标准库的核心项目，逐项目运行离线测试
 py -3.12 tools/monorepo/check_projects.py --stdlib
 
 # 检查迁移记录、文件散列、历史提交和敏感文件边界
-py -3.12 tools/monorepo/import_workspace.py verify --repo .
+py -3.12 tools/monorepo/import_workspace.py verify --repo . --revision 04e4cff
 ```
 
 CLC、CRD、架构工作台的测试分别在其项目目录执行 `python -m pytest -q`。配置说明和启动命令见各自 README；`.env.example` 可提交，实际 `.env`、n8n 数据库和模型密钥仅在本机配置。

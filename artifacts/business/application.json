@@ -1,0 +1,354 @@
+{
+  "app_spec": {
+    "schema_version": "0.1",
+    "app_id": "ogv01-discovery",
+    "app_version": "0.2.0",
+    "description": "Observation to meta-learning recommendation, SDL confirmation, archive and architecture production",
+    "target": "n8n",
+    "input": {
+      "formats": [
+        "pdf",
+        "png",
+        "jpeg"
+      ],
+      "languages": [
+        "zh",
+        "en"
+      ],
+      "max_pages": 20,
+      "max_file_bytes": 20971520
+    },
+    "policy": {
+      "max_student_repairs_per_step": 1,
+      "max_teacher_escalations_per_run": 0,
+      "max_model_requests_per_run": 24,
+      "max_run_seconds": 600,
+      "max_input_chars_per_chunk": 12000,
+      "max_output_tokens": 4000,
+      "max_total_tokens": 100000,
+      "max_cost_usd": 1.0
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "run_id": {
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "SUCCEEDED",
+            "FAILED"
+          ]
+        },
+        "artifacts": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "run_id",
+        "state",
+        "artifacts"
+      ]
+    },
+    "prompt": "Propose exploration expressions using declared variables and source evidence only; never assign confirmation grades.",
+    "rules": [],
+    "unresolved_questions": [],
+    "critical_fields": [],
+    "total_formula": "unknown"
+  },
+  "app_spec_digest": "8a9273f23d1fc4c8b72b4f6df6e07a6e4379bc97245b03f57e84919a87121155",
+  "task_schema": {
+    "$defs": {
+      "Confirmation": {
+        "additionalProperties": false,
+        "properties": {
+          "method": {
+            "const": "group_sign_test",
+            "default": "group_sign_test",
+            "title": "Method",
+            "type": "string"
+          },
+          "alpha": {
+            "default": 0.05,
+            "exclusiveMaximum": 1,
+            "exclusiveMinimum": 0,
+            "title": "Alpha",
+            "type": "number"
+          },
+          "min_effect": {
+            "default": 0.1,
+            "exclusiveMinimum": 0,
+            "title": "Min Effect",
+            "type": "number"
+          },
+          "min_groups": {
+            "default": 10,
+            "maximum": 10000,
+            "minimum": 5,
+            "title": "Min Groups",
+            "type": "integer"
+          },
+          "independence_assumption": {
+            "minLength": 10,
+            "title": "Independence Assumption",
+            "type": "string"
+          }
+        },
+        "required": [
+          "independence_assumption"
+        ],
+        "title": "Confirmation",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "version": {
+        "const": 1,
+        "default": 1,
+        "title": "Version",
+        "type": "integer"
+      },
+      "dataset_id": {
+        "maxLength": 100,
+        "minLength": 1,
+        "title": "Dataset Id",
+        "type": "string"
+      },
+      "observations": {
+        "title": "Observations",
+        "type": "string"
+      },
+      "target": {
+        "default": "Y",
+        "title": "Target",
+        "type": "string"
+      },
+      "features": {
+        "items": {
+          "type": "string"
+        },
+        "maxItems": 8,
+        "minItems": 1,
+        "title": "Features",
+        "type": "array"
+      },
+      "group_column": {
+        "default": "batch",
+        "title": "Group Column",
+        "type": "string"
+      },
+      "units": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "title": "Units",
+        "type": "object"
+      },
+      "environments": {
+        "default": [
+          "observed"
+        ],
+        "items": {
+          "type": "string"
+        },
+        "title": "Environments",
+        "type": "array"
+      },
+      "split_seed": {
+        "default": 20260930,
+        "maximum": 99999999,
+        "minimum": 0,
+        "title": "Split Seed",
+        "type": "integer"
+      },
+      "top_k": {
+        "default": 3,
+        "maximum": 8,
+        "minimum": 1,
+        "title": "Top K",
+        "type": "integer"
+      },
+      "max_candidates": {
+        "default": 48,
+        "maximum": 128,
+        "minimum": 4,
+        "title": "Max Candidates",
+        "type": "integer"
+      },
+      "freeze_cap": {
+        "default": 3,
+        "maximum": 8,
+        "minimum": 1,
+        "title": "Freeze Cap",
+        "type": "integer"
+      },
+      "n_resamples": {
+        "default": 8,
+        "maximum": 50,
+        "minimum": 0,
+        "title": "N Resamples",
+        "type": "integer"
+      },
+      "llm": {
+        "default": "live",
+        "enum": [
+          "live",
+          "offline"
+        ],
+        "title": "Llm",
+        "type": "string"
+      },
+      "confirmation": {
+        "$ref": "#/$defs/Confirmation"
+      },
+      "documents": {
+        "items": {
+          "type": "string"
+        },
+        "maxItems": 10,
+        "title": "Documents",
+        "type": "array"
+      },
+      "architecture": {
+        "default": true,
+        "title": "Architecture",
+        "type": "boolean"
+      },
+      "feedback": {
+        "default": true,
+        "title": "Feedback",
+        "type": "boolean"
+      },
+      "synthetic": {
+        "default": false,
+        "title": "Synthetic",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "dataset_id",
+      "observations",
+      "features",
+      "units",
+      "confirmation"
+    ],
+    "title": "TaskSpec",
+    "type": "object"
+  },
+  "execution_plan": {
+    "target": "ogflow-v1",
+    "stages": [
+      "observations",
+      "knowledge",
+      "recommendation",
+      "hypotheses",
+      "freeze",
+      "confirmation",
+      "archive",
+      "feedback",
+      "architecture"
+    ],
+    "student_executor": "ogflow.pipeline.BusinessPipeline",
+    "teacher_contract": "mentor.domain.AppSpec"
+  },
+  "workflow": {
+    "name": "OGv01 discovery closed loop",
+    "nodes": [
+      {
+        "id": "start",
+        "name": "Start discovery",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "ogv01-discovery",
+          "responseMode": "responseNode",
+          "authentication": "headerAuth"
+        },
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "CONFIGURE_OGFLOW_AUTH",
+            "name": "OGflow API"
+          }
+        }
+      },
+      {
+        "id": "submit",
+        "name": "Submit business task",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          260,
+          0
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $env.OGFLOW_URL + '/v1/runs' }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "timeout": 30000
+          }
+        },
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "CONFIGURE_OGFLOW_AUTH",
+            "name": "OGflow API"
+          }
+        }
+      },
+      {
+        "id": "reply",
+        "name": "Return task reference",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          520,
+          0
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseCode": 202
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Start discovery": {
+        "main": [
+          [
+            {
+              "node": "Submit business task",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Submit business task": {
+        "main": [
+          [
+            {
+              "node": "Return task reference",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    }
+  }
+}

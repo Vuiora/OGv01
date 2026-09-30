@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "synthetic": true,
+  "notice": "Implementation validation only, not an empirical discovery. Document branch separately resumed from grounded extraction.",
+  "run_id": "81cbbcfa493e471e8c27d2f9a8b647d5",
+  "state": "SUCCEEDED",
+  "llm": {
+    "base_url": "https://llm.ujn.edu.cn/v1",
+    "model": "deepseek-v41-flash",
+    "protocol": "chat/completions"
+  },
+  "rounds": [
+    {
+      "loop_version": "P16-v1.0",
+      "round_index": 1,
+      "status": "confirmed",
+      "alpha": 0.025,
+      "candidate_ids": [
+        "h-relation-17dde2aeadada4ac@1",
+        "h-relation-28f4d5c1a816cbe9@1",
+        "h-relation-b022ff42e622d7a6@1"
+      ],
+      "freeze_digest": "ecb1b33ba88df844d73469b5a9281cd0",
+      "binding_id": "binding_18eb9c8dd29578b84476991cb66ddaf1",
+      "plan_digest": "66e983295f845b3818b5beab7402f9df49b8aa14a174447a050eae51a98ec3aa",
+      "freeze_invariance_ok": true,
+      "aggregate_status": "supported",
+      "acquisition": null,
+      "notes": [
+        "候选 cand-ce22d386a08b653e 拟合失败（EquationError）：候选在受限样本上没有变异（Z 为常量），无法拟合斜率；该候选等价于常数基线",
+        "候选 cand-9e4d3efdd273b625 拟合失败（EquationError）：候选在受限样本上没有变异（Z 为常量），无法拟合斜率；该候选等价于常数基线",
+        "候选 cand-38a5111b6222822b 拟合失败（EquationError）：候选在受限样本上没有变异（Z 为常量），无法拟合斜率；该候选等价于常数基线",
+        "候选 cand-b5e0dbf5dfdbbcc6 拟合失败（EquationError）：候选在受限样本上没有变异（Z 为常量），无法拟合斜率；该候选等价于常数基线",
+        "本轮表示池 48 个候选，拟合成功 44 个，稳定性可得 44 个；不变量检测覆盖 0 条表达式（invariant check performed）。",
+        "本轮聚合结论：supported（检验族 3 条，不可得 0 条）。",
+        "冻结不变量复算通过：执行与归档之后，预处理与候选逐字节未变。"
+      ]
+    }
+  ],
+  "confirmation_statistics": {
+    "t::h-relation-17dde2aeadada4ac::batch mean loss gain::overall": {
+      "p_value": 5.960464477539063e-08,
+      "effect": 29.351468332750816,
+      "delta": 0.1,
+      "unit_count": 24,
+      "sample_size": 48
+    },
+    "t::h-relation-28f4d5c1a816cbe9::batch mean loss gain::overall": {
+      "p_value": 0.011327922344207764,
+      "effect": 23.509543432251768,
+      "delta": 0.1,
+      "unit_count": 24,
+      "sample_size": 48
+    },
+    "t::h-relation-b022ff42e622d7a6::batch mean loss gain::overall": {
+      "p_value": 0.003305375576019287,
+      "effect": 21.627245999818214,
+      "delta": 0.1,
+      "unit_count": 24,
+      "sample_size": 48
+    }
+  },
+  "archive_sha256": "d28c08ca90890288029dde57e58baf1c18ae9e8f52cc5f5d37668f5c21dd4c56",
+  "audit_sha256": "42a3c3afdb38ef4823993a5329375df49f52a56d0fc61754c9ccac3eb695c5f3",
+  "postprocessing_new_confirmation_evidence": false,
+  "knowledge_archives": 1,
+  "feedback": {
+    "mode": "live_self_renew_agent",
+    "usage": {
+      "calls": 1,
+      "input_tokens": 7960,
+      "output_tokens": 3995,
+      "total_tokens": 11955
+    },
+    "findings": 2
+  },
+  "architecture": {
+    "mode": "live_tpwf",
+    "quality_passed": true,
+    "page_count": 7,
+    "module_count": 6,
+    "llm": {
+      "base_url": "https://llm.ujn.edu.cn/v1",
+      "model": "deepseek-v41-flash",
+      "protocol": "chat/completions"
+    },
+    "source_count": 30,
+    "drawio": "C:\\Users\\Lenovo\\Desktop\\OGv01\\OGv01-monorepo\\.migration-local\\business-live-core\\81cbbcfa493e471e8c27d2f9a8b647d5\\architecture\\architecture.drawio",
+    "job_id": "3a8297f68e8d4d219b0aa480e9d06bae",
+    "usage": [
+      {
+        "stage": "analyze",
+        "chunk": 1,
+        "model": "deepseek-v41-flash",
+        "usage": {
+          "prompt_tokens": 5664,
+          "completion_tokens": 3337,
+          "total_tokens": 9001,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 1993
+          }
+        },
+        "request_id": "chatcmpl-008c7acc373e4b56af29c4c3"
+      },
+      {
+        "stage": "design",
+        "attempt": 1,
+        "model": "deepseek-v41-flash",
+        "usage": {
+          "prompt_tokens": 6165,
+          "completion_tokens": 2967,
+          "total_tokens": 9132,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 1189
+          }
+        },
+        "request_id": "chatcmpl-9a7f9ce7ee05404eb9dadabd"
+      },
+      {
+        "stage": "design",
+        "attempt": 2,
+        "model": "deepseek-v41-flash",
+        "usage": {
+          "prompt_tokens": 8518,
+          "completion_tokens": 2076,
+          "total_tokens": 10594,
+          "prompt_tokens_details": {
+            "cached_tokens": 6016,
+            "created_cache_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 355
+          }
+        },
+        "request_id": "chatcmpl-e33f8acc720d43db970ea9c5"
+      }
+    ],
+    "sha256": "de1e18416268a8cfdd9a068153ad1fad91d373cd41e2469fa259a3b31dfdeb14"
+  },
+  "documents": {
+    "sources": 1,
+    "clc_nodes": 13,
+    "clc_relations": 6,
+    "crd_concepts": 6,
+    "crd_relations": 0,
+    "retry_provenance": {
+      "failed_crd_job": "84592ee2495a4bf9b049f134a5b5e48d",
+      "resumed_crd_job": "63d0789da41442e2b7d02ad67416b779",
+      "reused_stages": [
+        "parse",
+        "extract"
+      ]
+    },
+    "knowledge_sha256": "f601459c21e6176d6313686965a05ebed46de2eb33d8ddc953f94de078cc1596"
+  }
+}

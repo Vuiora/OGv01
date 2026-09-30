@@ -1,0 +1,74 @@
+{
+  "mode": "live_self_renew_agent",
+  "findings": [
+    {
+      "id": "f1",
+      "kind": "fix",
+      "title": "finish() 恢复路径缺少 LLM 调用预算，与 run() 不一致",
+      "problem": "run() 构造 JSONClient 时传入 max_calls=8 限制 LLM 调用次数；而 finish() 在恢复 feedback/architecture 阶段时用 JSONClient(self.config) 构造客户端，没有 max_calls。触发条件：一次 run 失败后调用 finish() 重试发布，且 spec.llm != \"offline\"。此时 build_feedback 与 produce_architecture 走的是无预算客户端，可能发起远超 8 次的调用，破坏 run() 中设定的成本/配额约束。",
+      "evidence": [
+        {
+          "path": "pipeline.py",
+          "line": 48,
+          "quote": "        client = None if spec.llm == \"offline\" else self.client or JSONClient(self.config)"
+        },
+        {
+          "path": "pipeline.py",
+          "line": 112,
+          "quote": "            client = None if spec.llm == \"offline\" else self.client or JSONClient(self.config, max_calls=8)"
+        }
+      ],
+      "hypothesis": "未阅读 llm.py，无法确认 JSONClient 在缺省 max_calls 时是否真的无上限；若其默认值恰好为 8，则影响降为一致性/可读性问题。",
+      "expected_value": "让恢复路径与首次运行共享同一调用预算，避免重试时成本失控，并消除两处构造逻辑的分叉。",
+      "confidence": 0.7,
+      "impact": 3,
+      "effort": 1,
+      "risk": "low",
+      "priority_score": 2.1,
+      "evidence_status": "quote_verified_not_behavior_proven"
+    },
+    {
+      "id": "f2",
+      "kind": "fix",
+      "title": "V 集常数基线 MSE 在每次评估中重复计算",
+      "problem": "validate() 对 evaluations 逐条循环，而 null_mse 只依赖 V 与 baseline，与当前 evaluation 无关，却被放在循环体内每轮重算。触发条件：候选/评估数量较多且 V 较大时，产生 O(|evaluations| × |V|) 的冗余计算，纯属重复工作，拖慢验证阶段。",
+      "evidence": [
+        {
+          "path": "sdl_adapter.py",
+          "line": 85,
+          "quote": "            for row in V:"
+        },
+        {
+          "path": "sdl_adapter.py",
+          "line": 97,
+          "quote": "            null_mse = sum((r[\"values\"][spec.target] - baseline) ** 2 for r in V) / len(V) if V else None"
+        }
+      ],
+      "hypothesis": "未做性能测量，实际耗时取决于 evaluations 与 V 的规模；此处为静态代码结构判断，非实测结论。",
+      "expected_value": "把 null_mse 提到循环外计算一次，降低验证阶段的时间复杂度，且不改变任何判定结果。",
+      "confidence": 0.85,
+      "impact": 2,
+      "effort": 1,
+      "risk": "low",
+      "priority_score": 1.7,
+      "evidence_status": "quote_verified_not_behavior_proven"
+    }
+  ],
+  "rejected": [],
+  "project_summary": "静态审查（static review only）：仅阅读了仓库中 pipeline.py 与 sdl_adapter.py 两个完整文件，未运行代码、未查看测试日志或其他文件。pipeline.py 负责业务编排与失败语义，sdl_adapter.py 负责把推荐/LLM 提案接入 SDL 探索与 V 集验证。整体结构清晰、错误只暴露类型名、E/V 隔离与冻结基线设计合理。发现 2 个具体问题：恢复路径的 LLM 调用预算不一致，以及验证循环中基线 MSE 的重复计算。",
+  "limitations": [
+    "静态审查（static review only）：未执行任何代码，未运行测试，未查看测试日志或运行产物。",
+    "仅阅读了 pipeline.py 与 sdl_adapter.py 两个文件；store.py、llm.py、statistics.py、sdl_m02/sdl_pipeline 等依赖未读，因此涉及 RunStore.__init__ 状态、JSONClient 默认 max_calls、evaluate_expression 语义的判断只能作为假设。",
+    "未评估并发、真实数据规模下的性能，也未验证 E/V 划分与统计有效性的外部前提。",
+    "findings 上限为 2，可能遗漏其他文件中的更高价值问题。"
+  ],
+  "usage": {
+    "calls": 1,
+    "input_tokens": 7960,
+    "output_tokens": 3995,
+    "total_tokens": 11955
+  },
+  "input_digest": "9e855499dbe87de3e0357b411d6a82c5e98bef9828c24af74804a4fee7fabd54",
+  "state": "PROPOSED",
+  "note": "Read-only Self Renew audit; accepted source quotes are verified. Findings still require behavioral validation."
+}

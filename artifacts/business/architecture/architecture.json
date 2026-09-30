@@ -1,0 +1,440 @@
+{
+  "version": 1,
+  "title": "OGv01 整体业务闭环",
+  "modules": [
+    {
+      "id": "input",
+      "label": "观测与知识输入",
+      "kind": "data"
+    },
+    {
+      "id": "strategy",
+      "label": "MTBMT 探索策略",
+      "kind": "infrastructure"
+    },
+    {
+      "id": "discovery",
+      "label": "SDL 发现与确证",
+      "kind": "infrastructure"
+    },
+    {
+      "id": "compute",
+      "label": "PLDA 确定性计算",
+      "kind": "infrastructure"
+    },
+    {
+      "id": "archive",
+      "label": "归档与经验反馈",
+      "kind": "data"
+    },
+    {
+      "id": "engineering",
+      "label": "应用与架构生产",
+      "kind": "infrastructure"
+    }
+  ],
+  "components": [
+    {
+      "id": "csv",
+      "label": "带来源的观测数据",
+      "module": "input",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/observations.py",
+          "line": 8
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "knowledge",
+      "label": "Docling → CLC / CRD",
+      "module": "input",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/documents.py",
+          "line": 28
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "recommender",
+      "label": "元学习选择 / 分组冷启动",
+      "module": "strategy",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/recommendation.py",
+          "line": 14
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "proposal",
+      "label": "统一 LLM 提出表达式",
+      "module": "strategy",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/sdl_adapter.py",
+          "line": 23
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "evidence",
+      "label": "M1 证据与权限分区",
+      "module": "input",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/pipeline.py",
+          "line": 24
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "exploration",
+      "label": "E / V 探索与验证",
+      "module": "input",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/sdl_adapter.py",
+          "line": 38
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "sealed_c",
+      "label": "封存 C · 冻结后一次消费",
+      "module": "input",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/pipeline.py",
+          "line": 77
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "hypotheses",
+      "label": "M2–M5 候选与 V 门禁",
+      "module": "discovery",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/sdl_adapter.py",
+          "line": 38
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "freeze",
+      "label": "冻结方法 / 参数 / 阈值",
+      "module": "discovery",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/statistics.py",
+          "line": 57
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "sign_test",
+      "label": "独立组符号检验",
+      "module": "discovery",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/statistics.py",
+          "line": 57
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "plda",
+      "label": "任务 DAG / CPU 损失计算",
+      "module": "compute",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/statistics.py",
+          "line": 39
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "archive_store",
+      "label": "M8 发现档案与审计",
+      "module": "archive",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/pipeline.py",
+          "line": 77
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "experience",
+      "label": "E 经验库 → 下一任务推荐",
+      "module": "archive",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "MTBMT/src/mtbmt/experience_store.py",
+          "line": 40
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "mentor",
+      "label": "Mentor AppSpec / n8n 入口",
+      "module": "engineering",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/mentor.py",
+          "line": 9
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "renew",
+      "label": "Self Renew 研发建议",
+      "module": "engineering",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/feedback.py",
+          "line": 11
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "tpwf",
+      "label": "TPWF 分析 / 设计 / 校验",
+      "module": "engineering",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/architecture.py",
+          "line": 115
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "id": "ujn_llm",
+      "label": "UJN 统一 LLM 服务",
+      "module": "engineering",
+      "parent": null,
+      "role": "component",
+      "evidence": [
+        {
+          "path": "ogflow/llm.py",
+          "line": 9
+        }
+      ],
+      "status": "external"
+    }
+  ],
+  "connections": [
+    {
+      "id": "edge-0",
+      "source": "csv",
+      "target": "evidence",
+      "kind": "raw",
+      "label": "观测数据登记为带来源证据"
+    },
+    {
+      "id": "edge-1",
+      "source": "evidence",
+      "target": "exploration",
+      "kind": "standard",
+      "label": "仅探索分区 E/V 可反复使用"
+    },
+    {
+      "id": "edge-2",
+      "source": "evidence",
+      "target": "sealed_c",
+      "kind": "raw",
+      "label": "C 分区封存，冻结前不可见"
+    },
+    {
+      "id": "edge-3",
+      "source": "exploration",
+      "target": "recommender",
+      "kind": "analysis",
+      "label": "探索特征驱动元学习选择"
+    },
+    {
+      "id": "edge-4",
+      "source": "exploration",
+      "target": "hypotheses",
+      "kind": "standard",
+      "label": "探索结果生成候选假设"
+    },
+    {
+      "id": "edge-5",
+      "source": "sealed_c",
+      "target": "sign_test",
+      "kind": "standard",
+      "label": "冻结后一次性消费 C 做确证"
+    },
+    {
+      "id": "edge-6",
+      "source": "knowledge",
+      "target": "proposal",
+      "kind": "analysis",
+      "label": "文档知识仅用于探索性提议"
+    },
+    {
+      "id": "edge-7",
+      "source": "recommender",
+      "target": "proposal",
+      "kind": "analysis",
+      "label": "推荐策略约束表达式提议"
+    },
+    {
+      "id": "edge-8",
+      "source": "proposal",
+      "target": "hypotheses",
+      "kind": "analysis",
+      "label": "LLM 表达式进入 M2–M5 候选"
+    },
+    {
+      "id": "edge-9",
+      "source": "hypotheses",
+      "target": "freeze",
+      "kind": "standard",
+      "label": "通过 V 门禁后冻结方法参数"
+    },
+    {
+      "id": "edge-10",
+      "source": "freeze",
+      "target": "sign_test",
+      "kind": "dispatch",
+      "label": "冻结配置下发确证检验"
+    },
+    {
+      "id": "edge-11",
+      "source": "sign_test",
+      "target": "plda",
+      "kind": "dispatch",
+      "label": "确证任务下发 PLDA 计算"
+    },
+    {
+      "id": "edge-12",
+      "source": "plda",
+      "target": "sign_test",
+      "kind": "result",
+      "label": "确定性损失结果回传检验"
+    },
+    {
+      "id": "edge-13",
+      "source": "sign_test",
+      "target": "archive_store",
+      "kind": "result",
+      "label": "确证结论写入 M8 档案"
+    },
+    {
+      "id": "edge-14",
+      "source": "archive_store",
+      "target": "experience",
+      "kind": "standard",
+      "label": "档案沉淀为 E 经验记录"
+    },
+    {
+      "id": "edge-15",
+      "source": "experience",
+      "target": "recommender",
+      "kind": "analysis",
+      "label": "经验库回灌下一任务推荐"
+    },
+    {
+      "id": "edge-16",
+      "source": "archive_store",
+      "target": "renew",
+      "kind": "analysis",
+      "label": "档案驱动 Self Renew 建议"
+    },
+    {
+      "id": "edge-17",
+      "source": "mentor",
+      "target": "evidence",
+      "kind": "control",
+      "label": "Mentor 规格约束证据与任务边界"
+    },
+    {
+      "id": "edge-18",
+      "source": "archive_store",
+      "target": "tpwf",
+      "kind": "control",
+      "label": "档案输入 TPWF 生产流程"
+    },
+    {
+      "id": "edge-19",
+      "source": "proposal",
+      "target": "ujn_llm",
+      "kind": "dispatch",
+      "label": "表达式提议调用统一 LLM"
+    },
+    {
+      "id": "edge-20",
+      "source": "renew",
+      "target": "ujn_llm",
+      "kind": "dispatch",
+      "label": "建议生成调用统一 LLM"
+    },
+    {
+      "id": "edge-21",
+      "source": "tpwf",
+      "target": "ujn_llm",
+      "kind": "dispatch",
+      "label": "架构生产调用统一 LLM"
+    }
+  ],
+  "assumptions": [
+    "文档知识只用于探索；封存 C 分区不发送给 LLM，冻结后仅消费一次。",
+    "Self Renew 只输出待审查研发建议，不自动修改代码。",
+    "Mentor 适配器当前使用 AppSpec 并生成 OGflow 工作流。",
+    "组独立性由任务所有者声明，符号检验按独立组执行。",
+    "PDF/DOCX 输入需安装 Docling；n8n 编排需配置 API 凭据。",
+    "外部模块 sdl_m01、plda、clc、concept_relation、Mentor、TPWF 的内部实现未展开。"
+  ]
+}
