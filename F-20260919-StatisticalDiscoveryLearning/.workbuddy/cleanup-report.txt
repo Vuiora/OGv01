@@ -1,0 +1,2 @@
+﻿removed: _ctrl.txt, _dbg.txt, _ep.txt, _help.txt, _help_u8.txt, _home.txt, _logs.txt, _models.txt, _net.txt, _probe_cli.txt, _p_meta.txt, _se.txt, _so.txt, _ver.txt, _ver_exit.txt
+left: 

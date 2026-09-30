@@ -1,0 +1,496 @@
+{
+  "version": "1.0",
+  "description": "DS 阶段循环的机器可读阶段定义。由 scripts/ds_stage_loop.py 读取。人工修改时请与《DS协作指南-阶段划分与提示词.md》保持同步。",
+  "guide": "DS协作指南-阶段划分与提示词.md",
+  "ledger": "DS循环进度.md",
+  "state": ".workbuddy/ds-loop/state.json",
+  "frozen_paths": [
+    "sdl_m01"
+  ],
+  "gate": {
+    "unittest": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "forbid_patterns": [
+      "skip",
+      "xfail"
+    ],
+    "known_failures": [
+      "test_client_role_cannot_be_changed_to_bypass_authorization",
+      "test_failed_consumption_after_digest_check_remains_used_and_is_logged"
+    ],
+    "known_failures_note": "M01 基线既有失败（2026-09-22 实测，源码 mtime 均为 09-19，与本循环无关）。门禁放行这两项，但会拦截任何新增失败。修复后应从此列表移除，以恢复严格门禁。",
+    "require_stage_tests": true,
+    "require_stage_tests_note": "要求每个阶段的测试交付物在门禁时确实存在且相对基线发生变化。此前只声明 outputs 时，门禁无法验证『本阶段必须补充测试』，曾导致阶段在下属测试缺失的情况下被放行。"
+  },
+  "thresholds": {
+    "warn_no_change": 4,
+    "block_no_change": 8,
+    "overlap_minutes": 10,
+    "lease_minutes": 55
+  },
+  "dispatch": {
+    "enabled": false,
+    "disabled_reason": "2026-09-22 实测：headless 模式（-p/--print）在本环境中挂起不返回（>420 秒无输出，进程被终止）。CLI --version 正常（164ms），排除安装问题。故自动派发默认关闭，本脚本只负责『检测 + 门禁 + 组装提示词』；下一轮由人工在 WorkBuddy 中发起。若后续 headless 恢复可用，将 enabled 置 true 即可。",
+    "node": "C:\\Users\\Lenovo\\.workbuddy\\binaries\\node\\versions\\22.22.2-3\\node.exe",
+    "cli": "C:\\Program Files\\WorkBuddy\\resources\\app.asar.unpacked\\cli\\bin\\codebuddy",
+    "model": "deepseek-v41-flash",
+    "max_turns": 40,
+    "timeout_seconds": 5400,
+    "extra_args": [
+      "--permission-mode",
+      "acceptEdits"
+    ]
+  },
+  "stages": [
+    {
+      "id": "P00",
+      "name": "基线锚定与接口冻结",
+      "module": "-",
+      "deps": [],
+      "outputs": [
+        "INTERFACES.md"
+      ],
+      "guide_section": "§3 P00",
+      "prompt_lines": [
+        "完成阶段 P00。目标：验证基线并冻结模块间接口契约。",
+        "输入：仓库现状 + 《SDL算法框架说明》§2/§3 + IMPLEMENTATION_CONTRACT.md。",
+        "输出：新建 INTERFACES.md，定义 M2-M8 的数据对象与调用方向。",
+        "验收：测试全绿；每个数据对象字段含类型与必填标记；声明不改动 sdl_m01/。",
+        "本轮只做契约文档，不写任何实现代码。"
+      ],
+      "tests": []
+    },
+    {
+      "id": "P01",
+      "name": "受限表达式语法与规范化",
+      "module": "M2",
+      "deps": [
+        "P00"
+      ],
+      "outputs": [
+        "sdl_m02/expressions.py"
+      ],
+      "guide_section": "§3 P01",
+      "prompt_lines": [
+        "完成阶段 P01：受限表达式语法与规范化。",
+        "输出 sdl_m02/expressions.py，提供 parse / normalize / depth / node_count / AST 序列化。",
+        "验收：语义等价表达式规范化后 AST 相等；超深或超节点数被拒绝；语法子集覆盖 ±×÷ 与一元变换。",
+        "不得实现变量枚举（属 P02），不得执行表达式求值。"
+      ],
+      "tests": [
+        "tests/test_expressions.py"
+      ]
+    },
+    {
+      "id": "P02",
+      "name": "候选变量枚举与定义域追踪",
+      "module": "M2",
+      "deps": [
+        "P01"
+      ],
+      "outputs": [
+        "sdl_m02/domain.py"
+      ],
+      "guide_section": "§3 P02",
+      "prompt_lines": [
+        "完成阶段 P02：候选变量枚举与定义域追踪。",
+        "输出 sdl_m02/domain.py，提供 enumerate_candidates / DomainSpec / domain_ok。",
+        "验收：枚举有上界且无可重复语义；除法等候选显式携带定义域条件；定义域检查不读数据。",
+        "不得实现去重剪枝（属 P03），不得接触任何数据分区。"
+      ],
+      "tests": [
+        "tests/test_domain.py"
+      ]
+    },
+    {
+      "id": "P03",
+      "name": "表示构造管线与去重剪枝",
+      "module": "M2",
+      "deps": [
+        "P02"
+      ],
+      "outputs": [
+        "sdl_m02/represent.py"
+      ],
+      "guide_section": "§3 P03",
+      "prompt_lines": [
+        "完成阶段 P03：表示构造管线与去重剪枝。",
+        "输出 sdl_m02/represent.py，提供 build_representation / dedup / prune_dominated。",
+        "验收：仅通过 explorer 角色读取 E 分区；输出受预算约束；结构多样性保留、参数微变体合并。",
+        "严禁访问 V 或 C1 引用；不存在任何绕过令牌的读取路径。"
+      ],
+      "tests": [
+        "tests/test_represent.py"
+      ]
+    },
+    {
+      "id": "P04",
+      "name": "关系与方程搜索",
+      "module": "M3",
+      "deps": [
+        "P03"
+      ],
+      "outputs": [
+        "sdl_m03/equations.py"
+      ],
+      "guide_section": "§3 P04",
+      "prompt_lines": [
+        "完成阶段 P04：关系与方程搜索。",
+        "输出 sdl_m03/equations.py，提供 fit_relation / 两类基线 / 残差摘要。",
+        "验收：拟合只用 E 分区；结果必含误差、残差、复杂度；候选与基线必须在同一数据上比较。",
+        "复杂度此阶段用公式长度近似即可，并注明这不是严格 MDL。"
+      ],
+      "tests": [
+        "tests/test_equations.py"
+      ]
+    },
+    {
+      "id": "P05",
+      "name": "结构模式搜索",
+      "module": "M3",
+      "deps": [
+        "P03"
+      ],
+      "outputs": [
+        "sdl_m03/structure.py"
+      ],
+      "guide_section": "§3 P05",
+      "prompt_lines": [
+        "完成阶段 P05：结构模式搜索骨架。",
+        "输出 sdl_m03/structure.py，提供 find_clusters / find_changepoints / check_invariant。",
+        "验收：固定 seed 可复现；纯标准库简化实现；不适用时返回空结果。",
+        "不使用第三方库（无 numpy / sklearn）；稳定性评估属 P06，本轮不做重采样。"
+      ],
+      "tests": [
+        "tests/test_structure.py"
+      ]
+    },
+    {
+      "id": "P06",
+      "name": "稳定性与重采样评估",
+      "module": "M3",
+      "deps": [
+        "P04",
+        "P05"
+      ],
+      "outputs": [
+        "sdl_m03/stability.py"
+      ],
+      "guide_section": "§3 P06",
+      "prompt_lines": [
+        "完成阶段 P06：稳定性与重采样评估。",
+        "输出 sdl_m03/stability.py，提供 resample_evaluate 与 stability_score。",
+        "验收：重采样单位与 spec 的 split_unit 保持一致（分组级，不是记录级）；分数在 [0,1]；seed 可复现。",
+        "不得使用 V 分区，不得引入确证数据。"
+      ],
+      "tests": [
+        "tests/test_stability.py"
+      ]
+    },
+    {
+      "id": "P07",
+      "name": "假说对象与不可覆盖版本",
+      "module": "M4",
+      "deps": [
+        "P00"
+      ],
+      "outputs": [
+        "sdl_m04/hypothesis.py"
+      ],
+      "guide_section": "§3 P07",
+      "prompt_lines": [
+        "完成阶段 P07：假说对象与不可覆盖版本。",
+        "输出 sdl_m04/hypothesis.py，实现 §3 的 H 结构、版本链与字段校验。",
+        "验收：同 ID 新版本保留 parent_ids；已发布版本不可原地修改；provenance 缺失即报错。",
+        "不得实现从模式生成假说（属 P08），不得计算任何指标。"
+      ],
+      "tests": [
+        "tests/test_hypothesis.py"
+      ]
+    },
+    {
+      "id": "P08",
+      "name": "模式到假说与竞争解释",
+      "module": "M4",
+      "deps": [
+        "P07"
+      ],
+      "outputs": [
+        "sdl_m04/generate.py"
+      ],
+      "guide_section": "§3 P08",
+      "prompt_lines": [
+        "完成阶段 P08：模式到假说的转换与竞争解释。",
+        "输出 sdl_m04/generate.py，提供 hypotheses_from_patterns / attach_nulls / attach_alternatives。",
+        "验收：假说必含可证伪 predictions；至少一个零假说；池大小受契约约束。",
+        "若调用外部 LLM 生成文本解释，文本仅作字段填充，不得据此授予任何证据等级，且需可追溯。"
+      ],
+      "tests": [
+        "tests/test_generate.py"
+      ]
+    },
+    {
+      "id": "P09",
+      "name": "多维评估指标 G/S/N/C",
+      "module": "M5",
+      "deps": [
+        "P06",
+        "P08"
+      ],
+      "outputs": [
+        "sdl_m05/metrics.py"
+      ],
+      "guide_section": "§3 P09",
+      "prompt_lines": [
+        "完成阶段 P09：多维指标 G/S/N/C。",
+        "输出 sdl_m05/metrics.py，提供 gain / novelty / complexity / evaluate_hypothesis。",
+        "验收：新颖性绑定 K 版本号；复杂度标注为公式长度近似；本层不做加权总分。",
+        "不得实现 Pareto 排序（属 P10）。"
+      ],
+      "tests": [
+        "tests/test_metrics.py"
+      ]
+    },
+    {
+      "id": "P10",
+      "name": "Pareto 筛选与候选池管理",
+      "module": "M5",
+      "deps": [
+        "P09"
+      ],
+      "outputs": [
+        "sdl_m05/select.py"
+      ],
+      "guide_section": "§3 P10",
+      "prompt_lines": [
+        "完成阶段 P10：Pareto 筛选与候选池管理。",
+        "输出 sdl_m05/select.py，提供 pareto_front / top_k_reserved / select_freeze_candidates。",
+        "验收：优化方向显式声明；冻结候选上限可配置且默认 5；禁止引入总分抵消逻辑。",
+        "契约级约束：不得修改「确证不使用新颖性加分」这一原则。"
+      ],
+      "tests": [
+        "tests/test_select.py"
+      ]
+    },
+    {
+      "id": "P11",
+      "name": "冻结计划生成与确证绑定",
+      "module": "M6",
+      "deps": [
+        "P10"
+      ],
+      "outputs": [
+        "sdl_m06/freeze.py"
+      ],
+      "guide_section": "§3 P11",
+      "prompt_lines": [
+        "完成阶段 P11：冻结计划生成与确证绑定。",
+        "输出 sdl_m06/freeze.py，提供 build_frozen_plan 与 bind。",
+        "验收：计划字段与 IMPLEMENTATION_CONTRACT.md 的 Frozen plan 完全对齐；fit_dataset_refs 仅含 E；检验族完整登记；绑定前不读 C 内容。",
+        "本轮不得调用 consume_confirmation —— 消费属 P12，且必须原子化。"
+      ],
+      "tests": [
+        "tests/test_freeze.py"
+      ]
+    },
+    {
+      "id": "P12",
+      "name": "检验执行与跨轮误差预算",
+      "module": "M6",
+      "deps": [
+        "P11"
+      ],
+      "outputs": [
+        "sdl_m06/execute.py"
+      ],
+      "guide_section": "§3 P12",
+      "prompt_lines": [
+        "完成阶段 P12：检验执行与跨轮误差预算。",
+        "输出 sdl_m06/execute.py，提供 execute_family / holm_adjust / alpha_for_round。",
+        "验收：alpha_for_round 严格为 total_alpha/2**t；消费顺序为先提交 used 再返回数据；检验族完整；Holm 校正可运行且对空输入返回空。",
+        "本轮不得做结果分类与发布（属 P13）。"
+      ],
+      "tests": [
+        "tests/test_execute.py"
+      ]
+    },
+    {
+      "id": "P13",
+      "name": "结果三分类、记录与发布",
+      "module": "M6",
+      "deps": [
+        "P12"
+      ],
+      "outputs": [
+        "sdl_m06/report.py"
+      ],
+      "guide_section": "§3 P13",
+      "prompt_lines": [
+        "完成阶段 P13：结果三分类、记录与发布。",
+        "输出 sdl_m06/report.py，提供 classify_result 与 record_and_release。",
+        "验收：不显著 → inconclusive（不得判为反驳）；status 取值限于契约四值；发布仅含已登记结果，绝不外泄封存原始记录。"
+      ],
+      "tests": [
+        "tests/test_report.py"
+      ]
+    },
+    {
+      "id": "P14",
+      "name": "主动取证与反例搜索",
+      "module": "M7",
+      "deps": [
+        "P10"
+      ],
+      "outputs": [
+        "sdl_m07/acquisition.py"
+      ],
+      "guide_section": "§3 P14",
+      "prompt_lines": [
+        "完成阶段 P14：主动取证与反例搜索。",
+        "输出 sdl_m07/acquisition.py，提供 divergence 与 acquisition_plan。",
+        "验收：排序标注为启发式而非 EIG；确证类取证须含「采样前冻结」声明；计划不自动执行采集。"
+      ],
+      "tests": [
+        "tests/test_acquisition.py"
+      ]
+    },
+    {
+      "id": "P15",
+      "name": "知识归档与假说更新",
+      "module": "M8",
+      "deps": [
+        "P13"
+      ],
+      "outputs": [
+        "sdl_m08/archive.py"
+      ],
+      "guide_section": "§3 P15",
+      "prompt_lines": [
+        "完成阶段 P15：知识归档与假说更新。",
+        "输出 sdl_m08/archive.py，提供 archive_round / update_knowledge_version / revise_or_retire。",
+        "验收：证据等级按 E0/E1/E2 记录且不做因果升级；旧确证保留历史身份；已见确证数据可转历史视图，但不得被同一修订版本复用为确证。"
+      ],
+      "tests": [
+        "tests/test_archive.py"
+      ]
+    },
+    {
+      "id": "P16",
+      "name": "端到端主循环集成",
+      "module": "全",
+      "deps": [
+        "P14",
+        "P15"
+      ],
+      "outputs": [
+        "sdl_pipeline/loop.py"
+      ],
+      "guide_section": "§3 P16",
+      "prompt_lines": [
+        "完成阶段 P16：端到端主循环集成。",
+        "输出 sdl_pipeline/loop.py 与集成 demo，按 §5 伪代码实现主循环。",
+        "验收：含预算与停止条件；冻结后预处理与候选不变；产出发现档案/知识库版本/反例与证据不足清单；demo 明确标注为合成验证且不宣称因果或真实理论；全量测试通过。",
+        "本阶段可见的最终输出必须含「仍缺证据的问题清单」。"
+      ],
+      "tests": [
+        "tests/test_loop.py"
+      ]
+    },
+    {
+      "id": "P17",
+      "name": "自主取数执行器",
+      "module": "M9",
+      "deps": [
+        "P16"
+      ],
+      "outputs": [
+        "sdl_m09/collection.py"
+      ],
+      "guide_section": "§3 P17",
+      "prompt_lines": [
+        "完成阶段 P17：自主取数执行器。",
+        "输出 sdl_m09/collection.py，提供 SamplingCatalogue / plan_to_requests / collect / AutonomousCollector / extract_discovered_regularities / run_autonomous_discovery。",
+        "验收：M7 建议 → 采样设计的闭环成立（本轮采样的观测必须来自上一轮建议，且可溯源）；采样请求严格保持 M7 顺序不重排；「没采」与「采了为空」用不同原因码分列；取数不授予任何证据等级、不执行统计检验；采样目录由调用方提供，缺失时如实记为没采而不臆造设计。",
+        "取数只能经注入的 source 与 registrar，本模块自身不直连存储；端到端编排复用 P16 的公开主循环入口（acquisition_sink 钩子），不自行实现主循环。",
+        "不得修改 sdl_m01/；不得实现 P18 及以后的内容。"
+      ],
+      "tests": [
+        "tests/test_collection.py"
+      ]
+    },
+    {
+      "id": "P18",
+      "name": "分析决策层与工具调度",
+      "module": "M10",
+      "deps": [
+        "P17"
+      ],
+      "outputs": [
+        "sdl_m10/toolbox.py"
+      ],
+      "guide_section": "§3 P18",
+      "prompt_lines": [
+        "完成阶段 P18：分析决策层与工具调度。",
+        "输出 sdl_m10/toolbox.py，提供 Toolbox / ToolSpec / ToolResult / HandleStore / build_default_toolbox / self_check。",
+        "把 M2–M9 的既有公开接口封装为 LLM 可调用的工具目录，使 LLM 成为分析主体：由 LLM 决定调用顺序与参数，算法负责执行与校验。",
+        "验收：工具目录不新增任何统计能力、不授予证据等级、不替 LLM 决策；句柄机制只允许引用真实产物（形如 h_<hex>），不可构造内部对象；四类调度护栏（未知工具/被禁参数/缺参多余参/句柄类型不符）与封存泄漏检查齐备；参数 schema 由 inspect.signature 派生，不手写漂移。",
+        "不得修改 sdl_m01/；不得实现 P19 及以后的内容。"
+      ],
+      "tests": [
+        "tests/test_toolbox.py"
+      ]
+    },
+    {
+      "id": "P19",
+      "name": "LLM 驱动层",
+      "module": "M11",
+      "deps": [
+        "P18"
+      ],
+      "outputs": [
+        "sdl_m11/driver.py"
+      ],
+      "guide_section": "§7",
+      "prompt_lines": [
+        "完成阶段 P19：LLM 驱动层。",
+        "输出 sdl_m11/driver.py，提供 EndpointConfig / ToolCall / LLMReply / LLMClient / DriverStep / DriverSession / DriverLimits / HttpLLMClient / tool_schema / build_system_prompt / run_driver / self_check。",
+        "把 P18 的工具目录交给 LLM：由 LLM 决定调用哪个工具、以什么顺序、传什么参数，本层只负责执行其工具调用并把结果回喂，循环至 LLM 收手或触达预算。",
+        "验收：不替 LLM 决策、不新增算法、不跑统计、不授予证据等级；一切工具调用必须经 Toolbox.call()（不得绕过 M10 直接调用算法层）；endpoint 凭据只从环境变量或显式注入读取，绝不落盘/入日志/入提示词，且不参与 content_digest；可选代码沙箱工具默认关闭。",
+        "离线可测：把对话抽象为 LLMClient 协议，测试注入脚本化假 client，无需真实网络。",
+        "不得修改 sdl_m01/；不得实现 P20 及以后的内容。"
+      ],
+      "tests": [
+        "tests/test_driver.py"
+      ]
+    },
+    {
+      "id": "P20",
+      "name": "隔离代码执行环境",
+      "module": "M12",
+      "deps": [
+        "P19"
+      ],
+      "outputs": [
+        "sdl_m12/sandbox.py"
+      ],
+      "guide_section": "§2 末段（LLM 生成的代码须经检查并在隔离执行环境运行）",
+      "prompt_lines": [
+        "完成阶段 P20：隔离代码执行环境。",
+        "输出 sdl_m12/sandbox.py，提供 SandboxVerdict / SandboxRun / check_code / run_code / self_check。",
+        "接收一段 LLM 提交的分析代码，先做 AST 静态检查，只有完全通过检查的代码才允许在受限运行时里执行。",
+        "验收：不新增算法、不授予证据等级、不访问 M1 数据与令牌、不触网、不碰文件系统与进程；静态检查未通过的代码绝不执行（不存在「先跑再看」的路径）；资源受限（指令数/墙钟/递归/输出长度）。",
+        "不得修改 sdl_m01/；本阶段为当前循环的末阶段。"
+      ],
+      "tests": [
+        "tests/test_sandbox.py"
+      ]
+    }
+  ]
+}
