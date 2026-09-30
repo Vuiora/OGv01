@@ -26,12 +26,13 @@ def main():
     parser.add_argument("--python", default=sys.executable, help="Interpreter with project test dependencies")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
+    interpreter = str(Path(args.python).resolve()) if Path(args.python).is_file() else args.python
     results = []
     for name in args.project or list(PROJECTS):
         path, framework = PROJECTS[name]
         if args.stdlib and framework != "unittest":
             continue
-        command = [args.python, "-m", "unittest", "discover", "-s", "tests", "-v"] if framework == "unittest" else [args.python, "-m", "pytest", "-q"]
+        command = [interpreter, "-m", "unittest", "discover", "-s", "tests", "-v"] if framework == "unittest" else [interpreter, "-m", "pytest", "-q"]
         print(f"Running {name}: {path}", flush=True)
         started = time.monotonic()
         environment = os.environ.copy()

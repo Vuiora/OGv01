@@ -1,10 +1,10 @@
 # OGv01：自动化推理研究与工程
 
-本仓库整合文档与知识结构化、并行计算、统计发现、智能体研发和工作流应用构建项目。保留原项目目录名及已有 Git 提交，统一导航、历史来源与离线验证入口。
+本仓库整合文档与知识结构化、并行计算、统计发现、元学习与训练轨迹指导、智能体研发和工作流应用构建项目。保留原项目目录名及已有 Git 提交，统一导航、历史来源与离线验证入口。Git 历史包含 SDL、Mentor、MTBMT 三个来源的 54 个原始提交。
 
 项目主线与实际完成状态见 [自动化推理主线](docs/自动化推理主线.md)，全部目录见 [项目清单](docs/项目清单.md)，历史整合方法见 [Git 历史迁移](docs/GIT_HISTORY.md)。
 
-[整合验证记录](docs/VERIFICATION.md) 记录文件与历史校验、凭据清理、1,966 个离线用例及原项目已有的 3 项失败。迁移完整性已验证，项目功能的既有失败仍需后续修复。
+[整合验证记录](docs/VERIFICATION.md) 记录文件与历史校验、凭据清理、1,971 个离线用例及原项目已有的 3 项失败。迁移完整性已验证，项目功能的既有失败仍需后续修复。
 
 ```mermaid
 flowchart LR
@@ -15,6 +15,8 @@ flowchart LR
   P[PLDA: 依赖分析 + 异构调度] -. 计算能力候选 .-> S
   K -. 知识输入候选 .-> S
   S --> A[取数 → 归档 → 下一轮发现]
+  T[MTBMT: 相关性评测 + 经验库] --> O[元学习选择 / 训练轨迹指导]
+  O -. 策略建议候选 .-> S
   R[Self Renew: 审计 → 需求 → 开发 → 测试 / 审查] --> C[代码与补丁]
   M[Mentor: Teacher / Student + AppSpec] --> W[n8n 文档应用]
 ```
@@ -26,6 +28,7 @@ flowchart LR
 | 项目 | 作用 | 入口 |
 | --- | --- | --- |
 | SDL | 数据证据协议与统计发现闭环，M1–M12 | [项目目录](F-20260919-StatisticalDiscoveryLearning/)、[模块契约](F-20260919-StatisticalDiscoveryLearning/INTERFACES.md) |
+| MTBMT | 特征相关性量化、元学习算法选择、训练轨迹指导 | [README](MTBMT/README.md)、[整合说明](docs/MTBMT_INTEGRATION.md) |
 | PLDA | 保守并行可行性分析、CPU/GPU/NPU 调度 | [README](F-20260914-Utils/ParallelLogicDeterminationAlgorithModule/README.md) |
 | ConceptLayerConstructor | 文档 → 有原文依据的知识层级 | [README](F-20260914-Utils/ConceptLayerConstructor/README.md) |
 | ConceptRelationDraw | 文档 → 概念、关系与可复核图谱 | [README](F-20260914-Utils/ConceptRelationDraw/README.md) |
@@ -48,4 +51,4 @@ py -3.12 tools/monorepo/import_workspace.py verify --repo .
 
 CLC、CRD、架构工作台的测试分别在其项目目录执行 `python -m pytest -q`。配置说明和启动命令见各自 README；`.env.example` 可提交，实际 `.env`、n8n 数据库和模型密钥仅在本机配置。
 
-Wiki 使用参数化配置，详见 [迁移后的 Wiki 配置](docs/LOCAL_SETUP.md)。原有机器绝对路径在部分工具中仍需按新机器调整。许可证按各子项目及第三方内容分别适用，Mentor 的 `LICENSE` 保留在其原目录。
+Wiki 使用参数化配置，详见 [迁移后的 Wiki 配置](docs/LOCAL_SETUP.md)。原有机器绝对路径在部分工具中仍需按新机器调整。许可证按各子项目及第三方内容分别适用，Mentor 和 MTBMT 的 `LICENSE` 保留在各自目录。

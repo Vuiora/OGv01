@@ -1,11 +1,11 @@
 # 整合验证记录
 
-日期：2026-09-30。所有测试在整合后的目录中运行，复用原项目已安装的解释器和依赖；没有调用真实模型服务或启动付费任务。
+日期：2026-09-30。所有测试在整合后的目录中运行，原项目复用已安装的环境，追加的 MTBMT 使用独立 Python 3.12 环境；没有调用真实模型服务或启动付费任务。
 
 ## 仓库与文件完整性
 
-- 来源文件 1,100 个，共 147,399,815 bytes（约 140.57 MiB），最大单文件约 10.19 MiB。
-- SDL 的 11 个原始提交和 Mentor 的 3 个原始提交，共 14 个提交均可从 `main` 沿祖先关系访问；原始 SHA、作者、时间与父链保留。
+- 来源文件 1,224 个，共 180,181,812 bytes（约 171.83 MiB），最大单文件约 10.19 MiB。
+- SDL 的 11 个原始提交、Mentor 的 3 个原始提交及 MTBMT 的 40 个原始提交，共 54 个提交均可从 `main` 沿祖先关系访问；原始 SHA、作者、时间与父链保留。
 - 每个来源文件保存源文件和导入文件的 SHA-256；迁移工具逐文件校验，并确认来源文件都在 Git 索引中。
 - `git fsck --full --no-dangling` 通过；原仓库 HEAD 及 Git 工作目录状态与导入前一致。
 - 新增主线说明、项目清单和运行说明中的本地链接全部检查通过。
@@ -40,8 +40,11 @@ PRT Bash 与 PowerShell 脚本语法检查通过；Wiki Compose YAML 能解析�
 | ConceptLayerConstructor | 原项目 Python 3.12 环境 | 23 | 全部通过 |
 | ConceptRelationDraw | 原项目 Python 3.14 环境 | 48 | 全部通过 |
 | ThePicWorkingFlow | 原项目 Python 3.14 环境 | 19 | 全部通过 |
+| MTBMT | 独立 Python 3.12 环境 | 5 | 全部通过；另完成自带 Iris 数据的最小 Pearson 评测与 JSONL 经验写入 |
 
-总计 1,966 个用例：1,961 通过、3 失败、2 跳过。迁移校验与配置检查另计。Mentor 没有现成测试目录，且缺完整运行入口，未宣称端到端验收通过；GPU/NPU、Docker 部署和真实模型调用未在本次重复验证。
+总计 1,971 个用例：1,966 通过、3 失败、2 跳过。追加 MTBMT 时，既有模块的来源文件未改动，未重复运行其测试；迁移校验与配置检查另计。Mentor 没有现成测试目录，且缺完整运行入口，未宣称端到端验收通过；GPU/NPU、Docker 部署和真实模型调用未在本次重复验证。
+
+MTBMT 追加导入 124 个来源文件，并保留其已有跟踪的 CSV 样例；新下载缓存与运行时经验输出仍受忽略规则约束。其 199 个历史 blob 的凭据与大小检查通过，版本标签与完整历史已保留。具体范围与运行入口见 [MTBMT 整合说明](MTBMT_INTEGRATION.md)。
 
 ## 原项目已存在的失败
 
@@ -60,8 +63,9 @@ py -3.12 tools/monorepo/import_workspace.py verify --repo .
 git log --graph --oneline --all
 git merge-base --is-ancestor a7959a2 main
 git merge-base --is-ancestor 2072516 main
+git merge-base --is-ancestor d9cb7f4 main
 gh repo view Vuiora/OGv01 --json isPrivate,defaultBranchRef,url
-git ls-remote origin refs/heads/main refs/heads/history/sdl/main refs/heads/history/mentor/main
+git ls-remote origin refs/heads/main refs/heads/history/sdl/main refs/heads/history/mentor/main refs/heads/history/mtbmt/main
 ```
 
 `check_projects.py --stdlib` 当前会以非零退出，因为它如实汇总上述基线失败。使用各项目独立环境可避免依赖或模块名混用。

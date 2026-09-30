@@ -1,6 +1,6 @@
 # Git 历史整合方法
 
-整合仓库：`Vuiora/OGv01`，私有。原工作区和两个原始 Git 仓库保留原位。
+整合仓库：`Vuiora/OGv01`，私有。原工作区和 SDL、Mentor 原始 Git 仓库保留原位；MTBMT 从远端完整拉取到原工作区的 `MTBMT/`，随后合入整合仓库的同名目录。
 
 ## 保留范围
 
@@ -8,10 +8,11 @@
 | --- | --- | --- | --- |
 | StatisticalDiscoveryLearning | `a7959a2c34bb12cfc283e07efaa07a4535c357a0` | 11 | `history/sdl/main` / `history/sdl/imported-head` |
 | Mentor | `207251694b5a4b07951aa136d4d52f9674e454c6` | 3 | `history/mentor/main` / `history/mentor/imported-head` |
+| MTBMT | `d9cb7f443a95846c8053b60c19a63c8a7100f223` | 40 | `history/mtbmt/main` / `history/mtbmt/imported-head`；另保留 `history/mtbmt/v0.1.0` 和 `history/mtbmt/v0.1.1` |
 
 原始提交 SHA、作者、时间、消息和父链不改写。`main` 通过每个来源一个双父 merge 提交连接原始 HEAD；合并提交的树将原文件放在对应项目子目录，原始提交本身仍使用原仓库的根路径。
 
-这种方式使 14 个原始提交都成为 `main` 的祖先，克隆默认分支即可取得它们。保留的历史分支与标签便于直接检出原项目版本。没有 squash，没有把子项目变成 submodule，也没有把其 `.git` 目录提交为普通文件。
+这种方式使 54 个原始提交都成为 `main` 的祖先，克隆默认分支即可取得它们。保留的历史分支与标签便于直接检出原项目版本。没有 squash，没有把子项目变成 submodule，也没有把其 `.git` 目录提交为普通文件。
 
 ## 操作顺序
 
@@ -30,9 +31,11 @@
 git log --graph --oneline --all
 git log history/sdl/main
 git log history/mentor/main
+git log history/mtbmt/main
 git show a7959a2:sdl_m11/driver.py
 git merge-base --is-ancestor a7959a2 main
 git merge-base --is-ancestor 2072516 main
+git merge-base --is-ancestor d9cb7f4 main
 py -3.12 tools/monorepo/import_workspace.py verify --repo .
 ```
 
@@ -41,3 +44,13 @@ py -3.12 tools/monorepo/import_workspace.py verify --repo .
 `migration-manifest.json` 保存来源 refs。Mentor 另有 Codex checkpoint ref，属于工具内部检查点，不是独立的用户分支；正式历史保留以 Git 提交祖先、来源分支及标签为准。
 
 没有 Git 历史的项目在一次源码导入提交中建立起点。目录名里的日期只是来源信息，不伪造成过去的提交日期。原仓库未提交修改保存在整合后的导入提交中，原仓库 HEAD、索引和工作目录状态保持原样。
+
+## 增量追加 MTBMT
+
+使用新增的 `add` 子命令，在已有主线中连接完整来源历史，保留版本标签并追加文件散列记录。来源中的已跟踪数据样例按原 Git 内容纳入；运行时新增的缓存与经验输出继续受忽略规则约束。
+
+```powershell
+py -3.12 tools/monorepo/import_workspace.py add --source ../MTBMT --repo . --prefix MTBMT --id mtbmt
+```
+
+该操作已执行，不能对已存在的 `MTBMT/` 重复执行。来源与目标须为干净的完整仓库；导入前核对检出文件与原 Git 字节一致，扫描全部历史 blob，并对分支和标签分别加来源命名空间。
