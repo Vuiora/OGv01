@@ -2,6 +2,7 @@
 from __future__ import annotations
 import argparse
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -15,6 +16,7 @@ PROJECTS = {
     "clc": ("F-20260914-Utils/ConceptLayerConstructor", "pytest"),
     "crd": ("F-20260914-Utils/ConceptRelationDraw", "pytest"),
     "architecture": ("F-20260914-Utils/ThePicWorkingFlow", "pytest"),
+    "mtbmt": ("MTBMT", "pytest"),
 }
 
 def main():
@@ -32,7 +34,12 @@ def main():
         command = [args.python, "-m", "unittest", "discover", "-s", "tests", "-v"] if framework == "unittest" else [args.python, "-m", "pytest", "-q"]
         print(f"Running {name}: {path}", flush=True)
         started = time.monotonic()
-        result = subprocess.run(command, cwd=ROOT / path)
+        environment = os.environ.copy()
+        source = ROOT / path / "src"
+        if source.is_dir():
+            environment["PYTHONPATH"] = str(source) + (os.pathsep + environment["PYTHONPATH"]
+                                                      if environment.get("PYTHONPATH") else "")
+        result = subprocess.run(command, cwd=ROOT / path, env=environment)
         results.append({"project": name, "path": path, "exit_code": result.returncode,
                         "seconds": round(time.monotonic() - started, 2)})
     if args.output:

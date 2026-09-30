@@ -118,12 +118,13 @@ def scan_history(repo: Path, secrets: set[bytes]) -> int:
     return count
 
 
-def excluded(path: Path, relative: Path) -> bool:
+def excluded(path: Path, relative: Path, allow_tracked_data: bool = False) -> bool:
     return (path.is_symlink() or path.name in SKIP_FILES
             or (path.name.startswith(".env.") and path.name not in {".env.example", ".env.template"})
             or path.suffix.lower() in SKIP_SUFFIXES
             or ".sqlite" in path.name or path.name.endswith((".db", ".db-wal", ".db-shm"))
-            or any(x in SKIP_DIRS or x.endswith(".egg-info") for x in relative.parts))
+            or any((x in SKIP_DIRS and not (allow_tracked_data and x == "data"))
+                   or x.endswith(".egg-info") for x in relative.parts))
 
 
 def sanitize_source(relative: str, data: bytes, secrets: set[bytes]) -> tuple[bytes, bool]:
@@ -254,10 +255,77 @@ def import_all(source: Path, target: Path, resume: bool = False) -> None:
                       "excluded_entries": len(skipped)}, ensure_ascii=False), flush=True)
 
 
+def add_repository(source: Path, repo: Path, prefix: str, name: str) -> None:
+    """Add a complete, clean source repository to an existing monorepo."""
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", prefix):
+        raise ValueError("Prefix must be a single project directory name")
+    if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", name):
+        raise ValueError("History ID must use lowercase letters, digits and hyphens")
+    if source == repo or (repo / prefix).exists():
+        raise RuntimeError("Source must be separate and project prefix must not exist")
+    if git(repo, "branch", "--show-current") != "main" or git(repo, "status", "--porcelain"):
+        raise RuntimeError("Destination main must have a clean working tree")
+    if git(source, "status", "--porcelain") or git(source, "rev-parse", "--is-shallow-repository") != "false":
+        raise RuntimeError("Source must be clean and have a complete history")
+    if git(source, "rev-list", "--all", "--not", "HEAD"):
+        raise RuntimeError("Source has history outside HEAD; additional ancestry must be merged explicitly")
+    manifest = json.loads((repo / "docs/migration-manifest.json").read_text(encoding="utf-8"))
+    if any(item["id"] == name for item in manifest["histories"]):
+        raise RuntimeError("History ID already exists")
+    secrets = local_secret_values(source.parent)
+    commits = git(source, "rev-list", "--all").splitlines()
+    record = {"id": name, "path": prefix, "head": git(source, "rev-parse", "HEAD"),
+              "commits": commits, "refs": git(source, "show-ref").splitlines(),
+              "status_before": git(source, "-c", "core.quotepath=false", "status", "--porcelain"),
+              "source_url": git(source, "remote", "get-url", "origin"),
+              "scanned_blobs": scan_history(source, secrets)}
+    files = []
+    for relative in run(source, "ls-files", "-z").decode("utf-8").rstrip("\0").split("\0"):
+        path = source / relative
+        # Explicitly versioned sample data is part of the original project.
+        if excluded(path, Path(relative), allow_tracked_data=True):
+            raise RuntimeError("Source tracks an excluded local file: " + relative)
+        data = path.read_bytes()
+        canonical = run(source, "show", "HEAD:" + relative)
+        if data != canonical:
+            raise RuntimeError("Source checkout bytes differ from Git; normalize checkout first: " + relative)
+        if len(data) >= 100 * 1024 * 1024 or scan(data, secrets):
+            raise RuntimeError("Source file fails publication audit: " + relative)
+        files.append({"path": prefix + "/" + relative, "bytes": len(data), "source_sha256": digest(data),
+                      "imported_sha256": digest(data), "sanitized": False, "source_tracked": True})
+    git(repo, "fetch", "--no-tags", str(source),
+        f"+refs/heads/*:refs/heads/history/{name}/*",
+        f"+refs/remotes/origin/*:refs/heads/history/{name}/*",
+        f"+refs/tags/*:refs/tags/history/{name}/*")
+    # origin/HEAD is a remote alias, not an independent development branch.
+    alias = "refs/heads/history/" + name + "/HEAD"
+    if alias in git(repo, "for-each-ref", "--format=%(refname)", "refs/heads/history/" + name).splitlines():
+        git(repo, "update-ref", "-d", alias)
+    previous = git(repo, "rev-parse", "HEAD")
+    git(repo, "read-tree", "--prefix=" + prefix + "/", "-u", record["head"])
+    tree = git(repo, "write-tree")
+    merge = git(repo, "commit-tree", tree, "-p", previous, "-p", record["head"],
+                "-m", f"merge: preserve {name} original history under {prefix}")
+    git(repo, "update-ref", "refs/heads/main", merge, previous)
+    git(repo, "tag", "history/" + name + "/imported-head", record["head"])
+    record["merge_commit"] = merge
+    manifest["histories"].append(record)
+    manifest["files"].extend(files)
+    manifest["updated_at"] = datetime.now(timezone.utc).isoformat()
+    dump(repo / "docs/migration-manifest.json", manifest)
+    git(repo, "add", "docs/migration-manifest.json")
+    git(repo, "commit", "-m", f"import: record {name} source history and file provenance")
+    verify(repo, source.parent)
+    print(json.dumps({"project": prefix, "original_commits": len(commits), "files": len(files),
+                      "bytes": sum(item["bytes"] for item in files)}, ensure_ascii=False), flush=True)
+
+
 def verify(repo: Path, source: Path | None = None) -> None:
     manifest = json.loads((repo / "docs/migration-manifest.json").read_text(encoding="utf-8"))
     errors = []
     tracked = set(run(repo, "ls-files", "-z").decode("utf-8").rstrip("\0").split("\0"))
+    tracked_source_data = {item["path"] for item in manifest["files"]
+                           if item.get("source_tracked") and "data" in Path(item["path"]).parts}
     for entry in manifest["files"]:
         path = repo / entry["path"]
         if not path.is_file() or digest(path.read_bytes()) != entry["imported_sha256"]:
@@ -276,7 +344,7 @@ def verify(repo: Path, source: Path | None = None) -> None:
             if git(original, "rev-parse", "HEAD") != history["head"] or git(original, "-c", "core.quotepath=false", "status", "--porcelain") != history["status_before"]:
                 errors.append("source repository state changed: " + history["id"])
     for relative in tracked:
-        if excluded(repo / relative, Path(relative)):
+        if excluded(repo / relative, Path(relative), allow_tracked_data=relative in tracked_source_data):
             # Previously committed research notes are retained, runtime files are not.
             errors.append("excluded file tracked: " + relative)
         if scan((repo / relative).read_bytes(), set()):
@@ -295,12 +363,19 @@ def main() -> None:
     imp.add_argument("--source", type=Path, required=True)
     imp.add_argument("--repo", type=Path, required=True)
     imp.add_argument("--resume", action="store_true")
+    add = sub.add_parser("add", help="Preserve another repository under a new project directory")
+    add.add_argument("--source", type=Path, required=True)
+    add.add_argument("--repo", type=Path, required=True)
+    add.add_argument("--prefix", required=True)
+    add.add_argument("--id", required=True)
     check = sub.add_parser("verify")
     check.add_argument("--repo", type=Path, default=Path.cwd())
     check.add_argument("--source", type=Path)
     args = parser.parse_args()
     if args.action == "import":
         import_all(args.source.resolve(), args.repo.resolve(), args.resume)
+    elif args.action == "add":
+        add_repository(args.source.resolve(), args.repo.resolve(), args.prefix, args.id)
     else:
         verify(args.repo.resolve(), args.source.resolve() if args.source else None)
 
