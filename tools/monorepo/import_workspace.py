@@ -105,17 +105,36 @@ def scan(data: bytes, secrets: set[bytes]) -> bool:
 
 def scan_history(repo: Path, secrets: set[bytes]) -> int:
     objects = git(repo, "rev-list", "--objects", "--all").splitlines()
-    count = 0
-    for row in objects:
-        oid = row.split(" ", 1)[0]
-        if git(repo, "cat-file", "-t", oid) == "blob":
-            data = run(repo, "cat-file", "blob", oid)
-            if len(data) >= 100 * 1024 * 1024:
+    ids = "\n".join(row.split(" ", 1)[0] for row in objects) + "\n"
+    metadata = run(repo, "cat-file", "--batch-check=%(objectname) %(objecttype) %(objectsize)",
+                   data=ids.encode("ascii")).decode("ascii").splitlines()
+    blobs = []
+    for row in metadata:
+        oid, kind, size = row.split()
+        if kind == "blob":
+            if int(size) >= 100 * 1024 * 1024:
                 raise RuntimeError(f"Historical blob exceeds GitHub size limit: {oid}")
-            if scan(data, secrets):
+            blobs.append((oid, int(size)))
+    # Batch object reads with a bounded payload instead of launching Git per blob.
+    start = 0
+    while start < len(blobs):
+        end, size = start, 0
+        while end < len(blobs) and (end == start or size + blobs[end][1] <= 24 * 1024 * 1024):
+            size += blobs[end][1]
+            end += 1
+        batch = blobs[start:end]
+        payload = run(repo, "cat-file", "--batch", data=("\n".join(oid for oid, _ in batch) + "\n").encode("ascii"))
+        cursor = 0
+        for oid, size in batch:
+            header_end = payload.index(b"\n", cursor)
+            if payload[cursor:header_end] != f"{oid} blob {size}".encode("ascii"):
+                raise RuntimeError("Unexpected Git object batch response")
+            cursor = header_end + 1
+            if scan(payload[cursor:cursor + size], secrets):
                 raise RuntimeError(f"Historical credential match; import stopped: {oid}")
-            count += 1
-    return count
+            cursor += size + 1
+        start = end
+    return len(blobs)
 
 
 def excluded(path: Path, relative: Path, allow_tracked_data: bool = False) -> bool:
@@ -293,14 +312,12 @@ def add_repository(source: Path, repo: Path, prefix: str, name: str) -> None:
             raise RuntimeError("Source file fails publication audit: " + relative)
         files.append({"path": prefix + "/" + relative, "bytes": len(data), "source_sha256": digest(data),
                       "imported_sha256": digest(data), "sanitized": False, "source_tracked": True})
-    git(repo, "fetch", "--no-tags", str(source),
-        f"+refs/heads/*:refs/heads/history/{name}/*",
-        f"+refs/remotes/origin/*:refs/heads/history/{name}/*",
-        f"+refs/tags/*:refs/tags/history/{name}/*")
-    # origin/HEAD is a remote alias, not an independent development branch.
-    alias = "refs/heads/history/" + name + "/HEAD"
-    if alias in git(repo, "for-each-ref", "--format=%(refname)", "refs/heads/history/" + name).splitlines():
-        git(repo, "update-ref", "-d", alias)
+    specs = [f"+refs/heads/*:refs/heads/history/{name}/*", f"+refs/tags/*:refs/tags/history/{name}/*"]
+    local_branches = set(git(source, "for-each-ref", "--format=%(refname:strip=2)", "refs/heads").splitlines())
+    for branch in git(source, "for-each-ref", "--format=%(refname:strip=3)", "refs/remotes/origin").splitlines():
+        if branch != "HEAD" and branch not in local_branches:
+            specs.append(f"+refs/remotes/origin/{branch}:refs/heads/history/{name}/{branch}")
+    git(repo, "fetch", "--no-tags", str(source), *specs)
     previous = git(repo, "rev-parse", "HEAD")
     git(repo, "read-tree", "--prefix=" + prefix + "/", "-u", record["head"])
     tree = git(repo, "write-tree")
